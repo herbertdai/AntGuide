@@ -1,19 +1,14 @@
 package com.howfun.android.antguide;
 
 import android.content.Context;
-
+import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
-
 import android.graphics.Color;
-
 import android.graphics.Paint;
-
 import android.graphics.Rect;
-
-import android.view.MotionEvent;
+import android.graphics.drawable.Drawable;
 import android.view.SurfaceHolder;
-import android.view.View;
-
 import android.view.SurfaceView;
 
 public class AntView extends SurfaceView implements SurfaceHolder.Callback {
@@ -41,9 +36,15 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
    private float touchUpX = 200;
 
    private float touchUpY = 300;
-   
+
    private boolean mShowBlockLine;
 
+   private static final int ANT_HEIGHT = 100;
+   private static final int ANT_WIDTH = 100;
+
+   public int whichAnt = 0;
+   private Paint mBmpPaint;
+   private Bitmap mAntBmpArray[];
    UpdateThread updateThread;
 
    private static final String TAG = "AntView";
@@ -63,45 +64,85 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
       xVel = 2;
 
       yVel = 2;
-
+      loadAntBmp();
    }
 
-   public void setDownPos(float x, float y){
+   private void loadAntBmp() {
+      mAntBmpArray = new Bitmap[4];
+      Resources r = this.getContext().getResources();
+      Drawable antDrawable0 = r.getDrawable(R.drawable.ant0);
+      Drawable antDrawable1 = r.getDrawable(R.drawable.ant1);
+      Drawable antDrawable2 = r.getDrawable(R.drawable.ant2);
+      Drawable antDrawable3 = r.getDrawable(R.drawable.ant3);
+
+      Bitmap bitmap = Bitmap.createBitmap(ANT_WIDTH, ANT_HEIGHT,
+            Bitmap.Config.ARGB_8888);
+      Canvas canvas = new Canvas(bitmap);
+      antDrawable0.setBounds(0, 0, ANT_WIDTH, ANT_HEIGHT);
+      antDrawable0.draw(canvas);
+      mAntBmpArray[0] = bitmap;
+
+      bitmap = Bitmap.createBitmap(ANT_WIDTH, ANT_HEIGHT,
+            Bitmap.Config.ARGB_8888);
+      canvas = new Canvas(bitmap);
+      antDrawable1.setBounds(0, 0, ANT_WIDTH, ANT_HEIGHT);
+      antDrawable1.draw(canvas);
+      mAntBmpArray[1] = bitmap;
+
+      bitmap = Bitmap.createBitmap(ANT_WIDTH, ANT_HEIGHT,
+            Bitmap.Config.ARGB_8888);
+      canvas = new Canvas(bitmap);
+      antDrawable2.setBounds(0, 0, ANT_WIDTH, ANT_HEIGHT);
+      antDrawable2.draw(canvas);
+      mAntBmpArray[2] = bitmap;
+
+      bitmap = Bitmap.createBitmap(ANT_WIDTH, ANT_HEIGHT,
+            Bitmap.Config.ARGB_8888);
+      canvas = new Canvas(bitmap);
+      antDrawable3.setBounds(0, 0, ANT_WIDTH, ANT_HEIGHT);
+      antDrawable3.draw(canvas);
+      mAntBmpArray[3] = bitmap;
+   }
+
+   public void setDownPos(float x, float y) {
       touchDownX = x;
       touchDownY = y;
    }
-   
-   public void setUpPos(float x, float y){
+
+   public void setUpPos(float x, float y) {
       touchUpX = x;
       touchUpY = y;
    }
-   
+
    public void showBlockLine() {
       mShowBlockLine = true;
-      
+
    }
-  
+
    float oldTouchDownX, oldTouchDownY, oldTouchUpX, oldTouchUpY;
-   
+
    @Override
    protected void onDraw(Canvas canvas) {
 
       canvas.drawColor(Color.WHITE);
 
       canvas.drawCircle(xPos, yPos, circleRadius, circlePaint);
+      canvas.drawBitmap(mAntBmpArray[whichAnt], 12, xPos, mBmpPaint);
 
       if (mShowBlockLine) {
-         
-         canvas.drawLine(touchDownX, touchDownY, touchUpX, touchUpY, circlePaint);
-         
+
+         canvas.drawLine(touchDownX, touchDownY, touchUpX, touchUpY,
+               circlePaint);
+
          oldTouchDownX = touchDownX;
          oldTouchDownY = touchDownY;
          oldTouchUpX = touchUpX;
          oldTouchUpY = touchUpY;
          mShowBlockLine = false;
       } else {
-         canvas.drawLine(oldTouchDownX, oldTouchDownY, oldTouchUpX, oldTouchUpY, circlePaint);
-         
+         canvas.drawLine(oldTouchDownX, oldTouchDownY, oldTouchUpX,
+               oldTouchUpY, circlePaint);
+
       }
 
    }

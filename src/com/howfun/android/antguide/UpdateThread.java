@@ -9,10 +9,14 @@ public class UpdateThread extends Thread {
    private static final String TAG = "UpdateThread";
 
    private long time;
+   private long animTime;
 
-   private final int fps = 20;
+   private final int fps = 100;
+   private final int animFps = 10;
 
    private boolean toRun = false;
+
+   int whichAnt = 0;
 
    private AntView mAntView;
 
@@ -32,6 +36,14 @@ public class UpdateThread extends Thread {
 
    }
 
+   private int whichAnt() {
+      int which = whichAnt++;
+      if (whichAnt == 4) {
+         whichAnt = 0;
+      }
+      return which;
+   }
+
    public void run() {
 
       Canvas c;
@@ -48,7 +60,6 @@ public class UpdateThread extends Thread {
                c = surfaceHolder.lockCanvas(null);
 
                mAntView.updatePhysics();
-
                mAntView.onDraw(c);
 
             } finally {
@@ -60,11 +71,18 @@ public class UpdateThread extends Thread {
                }
 
             }
-            
+
             time = cTime;
 
          }
 
+         // anim
+         if ((cTime - animTime) > (1000 / animFps)) {
+            mAntView.whichAnt = whichAnt();
+
+            animTime = cTime;
+
+         }
 
       }
    }
