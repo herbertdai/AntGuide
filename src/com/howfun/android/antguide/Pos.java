@@ -2,12 +2,12 @@ package com.howfun.android.antguide;
 
 public class Pos {
    
-   public Pos(int i, int j) {
+   public Pos(float i, float j) {
       x = i;
       y = j;
    }
    
-   public int x;
-   public int y;
+   public float x;
+   public float y;
 
 }

@@ -52,21 +52,21 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
    UpdateThread updateThread;
 
    private CanvasManager mCanvasManager;
-   
+
    private static final String TAG = "AntView";
 
    private Context mContext;
-   
+
    public AntView(Context context) {
 
       super(context);
-      
+
       mContext = context;
 
       getHolder().addCallback(this);
 
       mCanvasManager = new CanvasManager(mContext);
-      
+
       circleRadius = 10;
 
       circlePaint = new Paint();
@@ -77,8 +77,6 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 
       yVel = 2;
       loadAnt();
-      loadGrass();
-      loadHole();
    }
 
    private void loadAnt() {
@@ -118,28 +116,6 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
       mAntBmpArray[3] = bitmap;
    }
 
-   private void loadGrass() {
-      Resources r = this.getContext().getResources();
-      Drawable grassDrawable = r.getDrawable(R.drawable.grass);
-      Bitmap bitmap = Bitmap.createBitmap(ANT_WIDTH, ANT_HEIGHT,
-            Bitmap.Config.ARGB_8888);
-      Canvas canvas = new Canvas(bitmap);
-      grassDrawable.setBounds(0, 0, 32, 32);
-      grassDrawable.draw(canvas);
-      mGrassBmp = bitmap;
-   }
-
-   private void loadHole() {
-      Resources r = this.getContext().getResources();
-      Drawable holeDrawable = r.getDrawable(R.drawable.hole);
-      Bitmap bitmap = Bitmap.createBitmap(ANT_WIDTH, ANT_HEIGHT,
-            Bitmap.Config.ARGB_8888);
-      Canvas canvas = new Canvas(bitmap);
-      holeDrawable.setBounds(0, 0, 32, 32);
-      holeDrawable.draw(canvas);
-      mHoleBmp = bitmap;
-   }
-
    public void setDownPos(float x, float y) {
       touchDownX = x;
       touchDownY = y;
@@ -155,42 +131,18 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 
    }
 
-   float oldTouchDownX, oldTouchDownY, oldTouchUpX, oldTouchUpY;
-
    @Override
    protected void onDraw(Canvas canvas) {
 
-       canvas.drawColor(Color.WHITE);
-       
-       mCanvasManager.draw(canvas);
-       
-       if(firstDraw){
-          canvas.drawBitmap(mGrassBmp, 68, 133, mBmpPaint);
-          canvas.drawBitmap(mGrassBmp, 12, 190, mBmpPaint);
-          canvas.drawBitmap(mGrassBmp, 310, 123, mBmpPaint);
-          canvas.drawBitmap(mGrassBmp, 120, 99, mBmpPaint);
-          canvas.drawBitmap(mGrassBmp, 200, 521, mBmpPaint);
-          canvas.drawBitmap(mHoleBmp, 300, 700, mBmpPaint);
-       }
-
-//      canvas.drawCircle(xPos, yPos, circleRadius, circlePaint);
-      canvas.drawBitmap(mAntBmpArray[whichAnt], 12, xPos, mBmpPaint);
+      canvas.drawColor(Color.WHITE);
 
       if (mShowBlockLine) {
 
-         canvas.drawLine(touchDownX, touchDownY, touchUpX, touchUpY,
-               circlePaint);
-
-         oldTouchDownX = touchDownX;
-         oldTouchDownY = touchDownY;
-         oldTouchUpX = touchUpX;
-         oldTouchUpY = touchUpY;
+         mCanvasManager.setNewLine(new Pos(touchDownX, touchDownY), new Pos(
+               touchUpX, touchUpY));
          mShowBlockLine = false;
-      } else {
-          canvas.drawLine(oldTouchDownX, oldTouchDownY, oldTouchUpX,
-          oldTouchUpY, circlePaint);
-
       }
+      mCanvasManager.draw(canvas);
 
    }
 

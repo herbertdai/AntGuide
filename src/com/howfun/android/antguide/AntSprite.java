@@ -12,6 +12,7 @@ public class AntSprite extends Sprite {
    
    private Context mContext;
    private Paint mPaint;
+   private int mAngle;   //Ant's running direction. Reversed on normal. 
    
    public AntSprite(Context c) {
       mContext = c;
@@ -39,10 +40,14 @@ public class AntSprite extends Sprite {
       
       return false;
    }
+   
+   private void setAngle(int angle) {
+      mAngle = angle;
+   }
 
    @Override
    protected Pos getNextPos() {
-      //Calc pos by current pos
+      //Calc pos by current pos and Angle
       mPos.x ++;
       mPos.y ++;
       return mPos;
@@ -52,7 +57,6 @@ public class AntSprite extends Sprite {
    @Override
    protected void draw(Canvas canvas) {
       //TODO: use fps
-      Utils.log(TAG, "draw()");
       getNextPos();
       canvas.drawCircle(mPos.x, mPos.y, 50, mPaint);
       
