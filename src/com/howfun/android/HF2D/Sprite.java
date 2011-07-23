@@ -1,4 +1,6 @@
-package com.howfun.android.antguide;
+package com.howfun.android.HF2D;
+
+import com.howfun.android.HF2D.Pos;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -23,5 +25,5 @@ public abstract class Sprite {
    
    protected abstract boolean checkCollision(Sprite s);
    
-   protected abstract void draw(Canvas canvas);
+   public abstract void draw(Canvas canvas);
 }

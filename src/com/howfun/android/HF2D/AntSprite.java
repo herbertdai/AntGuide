@@ -1,4 +1,4 @@
-package com.howfun.android.antguide;
+package com.howfun.android.HF2D;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import com.howfun.android.HF2D.*;
 
 public class AntSprite extends Sprite {
    private static final String TAG = "AntSprite";
@@ -51,14 +52,13 @@ public class AntSprite extends Sprite {
 
    @Override
    protected Pos getNextPos() {
-      //Calc pos by current pos and Angle
       HF2D.getNextPos(mPos, mSpeed, mAngle);
       return mPos;
    }
 
    
    @Override
-   protected void draw(Canvas canvas) {
+   public void draw(Canvas canvas) {
       //TODO: use fps
       getNextPos();
       canvas.drawCircle(mPos.x, mPos.y, 50, mPaint);

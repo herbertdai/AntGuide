@@ -1,4 +1,6 @@
-package com.howfun.android.antguide;
+package com.howfun.android.HF2D;
+
+import com.howfun.android.HF2D.Pos;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -30,7 +32,7 @@ public class LineSprite extends Sprite {
    }
 
    @Override
-   protected void draw(Canvas canvas) {
+   public void draw(Canvas canvas) {
       canvas.drawLine(mStartPos.x, mStartPos.y, mEndPos.x, mEndPos.y, mPaint);
 
    }

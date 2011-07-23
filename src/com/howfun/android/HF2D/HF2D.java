@@ -1,4 +1,7 @@
-package com.howfun.android.antguide;
+package com.howfun.android.HF2D;
+
+import android.graphics.Rect;
+
 
 public class HF2D {
 
@@ -17,5 +20,20 @@ public class HF2D {
       mPos.y = yStep;
       
    }
+   
+   /*
+    * Check collision of rect and line
+    * @return  new Angle 
+    */
+   public int checkCollision(AntSprite ant, LineSprite line) {
+       
+      return 0;
+   }
 
+   /*
+    * Check collision of two rect 
+    */
+   public void checkCollision(Rect r1, Rect r2) {
+      
+   }
 }

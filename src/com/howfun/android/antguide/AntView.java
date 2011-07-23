@@ -1,5 +1,7 @@
 package com.howfun.android.antguide;
 
+import com.howfun.android.HF2D.Pos;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
