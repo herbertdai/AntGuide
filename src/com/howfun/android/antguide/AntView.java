@@ -46,7 +46,6 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 
    public int whichAnt = 0;
    private Paint mBmpPaint;
-   private Bitmap mAntBmpArray[];
 
    private Bitmap mGrassBmp;
    private Bitmap mHoleBmp;
@@ -78,44 +77,6 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
       xVel = 2;
 
       yVel = 2;
-      loadAnt();
-   }
-
-   private void loadAnt() {
-      mAntBmpArray = new Bitmap[4];
-      Resources r = this.getContext().getResources();
-      Drawable antDrawable0 = r.getDrawable(R.drawable.ant0);
-      Drawable antDrawable1 = r.getDrawable(R.drawable.ant1);
-      Drawable antDrawable2 = r.getDrawable(R.drawable.ant2);
-      Drawable antDrawable3 = r.getDrawable(R.drawable.ant3);
-
-      Bitmap bitmap = Bitmap.createBitmap(ANT_WIDTH, ANT_HEIGHT,
-            Bitmap.Config.ARGB_8888);
-      Canvas canvas = new Canvas(bitmap);
-      antDrawable0.setBounds(0, 0, ANT_WIDTH, ANT_HEIGHT);
-      antDrawable0.draw(canvas);
-      mAntBmpArray[0] = bitmap;
-
-      bitmap = Bitmap.createBitmap(ANT_WIDTH, ANT_HEIGHT,
-            Bitmap.Config.ARGB_8888);
-      canvas = new Canvas(bitmap);
-      antDrawable1.setBounds(0, 0, ANT_WIDTH, ANT_HEIGHT);
-      antDrawable1.draw(canvas);
-      mAntBmpArray[1] = bitmap;
-
-      bitmap = Bitmap.createBitmap(ANT_WIDTH, ANT_HEIGHT,
-            Bitmap.Config.ARGB_8888);
-      canvas = new Canvas(bitmap);
-      antDrawable2.setBounds(0, 0, ANT_WIDTH, ANT_HEIGHT);
-      antDrawable2.draw(canvas);
-      mAntBmpArray[2] = bitmap;
-
-      bitmap = Bitmap.createBitmap(ANT_WIDTH, ANT_HEIGHT,
-            Bitmap.Config.ARGB_8888);
-      canvas = new Canvas(bitmap);
-      antDrawable3.setBounds(0, 0, ANT_WIDTH, ANT_HEIGHT);
-      antDrawable3.draw(canvas);
-      mAntBmpArray[3] = bitmap;
    }
 
    public void setDownPos(float x, float y) {

@@ -1,20 +1,30 @@
 package com.howfun.android.HF2D;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
+
 import com.howfun.android.HF2D.*;
+import com.howfun.android.antguide.R;
 
 public class AntSprite extends Sprite {
    private static final String TAG = "AntSprite";
 
    
+   
    private Context mContext;
    private Paint mPaint;
    private int mAngle;   //Ant's running direction. Reversed on normal. 
+   
+   private Bitmap mAntBmpArray[];
+   
+   private int ANT_WIDTH = 32;
+   private int ANT_HEIGHT = 32;
    
    public AntSprite(Context c) {
       mContext = c;
@@ -28,9 +38,13 @@ public class AntSprite extends Sprite {
       mAngle = 30;
       mSpeed = 1;
       
+      mRect = new Rect();
+      
       mPos = new Pos(10, 10);
       mType = TYPE_ANT;
       FPS = 50;
+      
+      loadAnt();
       
 //      Drawable antDrawable3 = mContext.getResources().getDrawable(R.drawable.ant3);
 //      mBitmap = new BitmapDrawable(antDrawable3);
@@ -46,13 +60,18 @@ public class AntSprite extends Sprite {
       return false;
    }
    
-   private void setAngle(int angle) {
+   public void setAngle(int angle) {
       mAngle = angle;
+   }
+   
+   public int getAngle() {
+      return mAngle;
    }
 
    @Override
    protected Pos getNextPos() {
       HF2D.getNextPos(mPos, mSpeed, mAngle);
+      HF2D.calRectByPos(mRect, mPos, ANT_WIDTH, ANT_HEIGHT);
       return mPos;
    }
 
@@ -61,8 +80,47 @@ public class AntSprite extends Sprite {
    public void draw(Canvas canvas) {
       //TODO: use fps
       getNextPos();
-      canvas.drawCircle(mPos.x, mPos.y, 50, mPaint);
+      canvas.drawBitmap(mAntBmpArray[0], mRect.left, mRect.top, mPaint);
+      
       
    }
+
+   private void loadAnt() {
+      mAntBmpArray = new Bitmap[4];
+      Resources r = mContext.getResources();
+      Drawable antDrawable0 = r.getDrawable(R.drawable.ant0);
+      Drawable antDrawable1 = r.getDrawable(R.drawable.ant1);
+      Drawable antDrawable2 = r.getDrawable(R.drawable.ant2);
+      Drawable antDrawable3 = r.getDrawable(R.drawable.ant3);
+
+      Bitmap bitmap = Bitmap.createBitmap(ANT_WIDTH, ANT_HEIGHT,
+            Bitmap.Config.ARGB_8888);
+      Canvas canvas = new Canvas(bitmap);
+      antDrawable0.setBounds(0, 0, ANT_WIDTH, ANT_HEIGHT);
+      antDrawable0.draw(canvas);
+      mAntBmpArray[0] = bitmap;
+
+      bitmap = Bitmap.createBitmap(ANT_WIDTH, ANT_HEIGHT,
+            Bitmap.Config.ARGB_8888);
+      canvas = new Canvas(bitmap);
+      antDrawable1.setBounds(0, 0, ANT_WIDTH, ANT_HEIGHT);
+      antDrawable1.draw(canvas);
+      mAntBmpArray[1] = bitmap;
+
+      bitmap = Bitmap.createBitmap(ANT_WIDTH, ANT_HEIGHT,
+            Bitmap.Config.ARGB_8888);
+      canvas = new Canvas(bitmap);
+      antDrawable2.setBounds(0, 0, ANT_WIDTH, ANT_HEIGHT);
+      antDrawable2.draw(canvas);
+      mAntBmpArray[2] = bitmap;
+
+      bitmap = Bitmap.createBitmap(ANT_WIDTH, ANT_HEIGHT,
+            Bitmap.Config.ARGB_8888);
+      canvas = new Canvas(bitmap);
+      antDrawable3.setBounds(0, 0, ANT_WIDTH, ANT_HEIGHT);
+      antDrawable3.draw(canvas);
+      mAntBmpArray[3] = bitmap;
+   }
+
 
 }

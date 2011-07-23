@@ -3,6 +3,7 @@ package com.howfun.android.antguide;
 import java.util.ArrayList;
 
 import com.howfun.android.HF2D.AntSprite;
+import com.howfun.android.HF2D.HF2D;
 import com.howfun.android.HF2D.LineSprite;
 import com.howfun.android.HF2D.Pos;
 import com.howfun.android.HF2D.Sprite;
@@ -28,13 +29,15 @@ public class CanvasManager {
    private Bitmap mBg;
    
    private Context mContext;
-   private LineSprite mLine;
 
    private Bitmap mGrassBmp;
 
    private Paint mBmpPaint;
 
    private Bitmap mHoleBmp;
+
+   private AntSprite mAnt;
+   private LineSprite mLine;
 
    
    public CanvasManager(Context c) {
@@ -49,6 +52,7 @@ public class CanvasManager {
    
    private void initAllSprite() {
       AntSprite ant = new AntSprite(mContext);
+      mAnt = ant;
       mSprites.add(ant);
       
       LineSprite line = new LineSprite();
@@ -66,17 +70,20 @@ public class CanvasManager {
     * Check collision of ant with line, hole, wall
     * 
     */
-   public Sprite[] checkCollision() {
+   public void checkCollision() {
       boolean isCollide = false;
       //TODO: get the ant and line and hole , check.
+      HF2D.checkCollision(mAnt, mLine);
+      
       if (isCollide) {
          //TODO: set ant direction, or go home. 
       }
-      return null;
       
    }
    
    public void draw(Canvas canvas) {
+      
+      checkCollision();
       
       drawBg(canvas);
       

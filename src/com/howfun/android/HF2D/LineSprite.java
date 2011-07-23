@@ -19,7 +19,15 @@ public class LineSprite extends Sprite {
       mEndPos = new Pos(0,0);
       
    }
+   
+   public Pos getStart() {
+      return mStartPos;
+   }
 
+   public Pos getEnd() {
+      return mEndPos;
+   }
+   
    public void setPos(Pos start, Pos end) {
       mStartPos = start;
       mEndPos = end;
