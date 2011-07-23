@@ -19,7 +19,7 @@ public class AntSprite extends Sprite {
    
    private Context mContext;
    private Paint mPaint;
-   private int mAngle;   //Ant's running direction. Reversed on normal. 
+   private float mAngle;   //Ant's running direction. Reversed on normal. 
    
    private Bitmap mAntBmpArray[];
    
@@ -60,11 +60,11 @@ public class AntSprite extends Sprite {
       return false;
    }
    
-   public void setAngle(int angle) {
+   public void setAngle(float angle) {
       mAngle = angle;
    }
    
-   public int getAngle() {
+   public float getAngle() {
       return mAngle;
    }
 
