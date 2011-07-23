@@ -12,6 +12,7 @@ public abstract class Sprite {
    protected BitmapDrawable[] mBitmaps;
    protected Pos mPos;
    protected int mType;
+   protected double mSpeed; //Move n pixels per step  
    
    protected static final int TYPE_ANT = 0;
    protected static final int TYPE_LINE = 1;

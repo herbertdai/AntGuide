@@ -8,7 +8,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 public class AntSprite extends Sprite {
-   private static final String TAG = "AntSprite";  
+   private static final String TAG = "AntSprite";
+
    
    private Context mContext;
    private Paint mPaint;
@@ -22,6 +23,9 @@ public class AntSprite extends Sprite {
    public void init() {
       mPaint = new Paint();
       mPaint.setColor(Color.RED);
+      
+      mAngle = 30;
+      mSpeed = 1;
       
       mPos = new Pos(10, 10);
       mType = TYPE_ANT;
@@ -48,8 +52,7 @@ public class AntSprite extends Sprite {
    @Override
    protected Pos getNextPos() {
       //Calc pos by current pos and Angle
-      mPos.x ++;
-      mPos.y ++;
+      HF2D.getNextPos(mPos, mSpeed, mAngle);
       return mPos;
    }
 
