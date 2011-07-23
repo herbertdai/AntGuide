@@ -51,14 +51,22 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
    private boolean firstDraw = true;
    UpdateThread updateThread;
 
+   private CanvasManager mCanvasManager;
+   
    private static final String TAG = "AntView";
 
+   private Context mContext;
+   
    public AntView(Context context) {
 
       super(context);
+      
+      mContext = context;
 
       getHolder().addCallback(this);
 
+      mCanvasManager = new CanvasManager(mContext);
+      
       circleRadius = 10;
 
       circlePaint = new Paint();
@@ -153,6 +161,9 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
    protected void onDraw(Canvas canvas) {
 
        canvas.drawColor(Color.WHITE);
+       
+       mCanvasManager.draw(canvas);
+       
        if(firstDraw){
           canvas.drawBitmap(mGrassBmp, 68, 133, mBmpPaint);
           canvas.drawBitmap(mGrassBmp, 12, 190, mBmpPaint);
