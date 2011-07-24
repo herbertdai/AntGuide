@@ -57,8 +57,8 @@ public class CanvasManager {
 						mSoundEffects[SOUND_EFFECT_COLLISION], 1),
 				mSoundPool.load(mContext, mSoundEffects[SOUND_EFFECT_VICTORY],
 						1) };
-		
-//		mSoundPool.play(mSoundIds[SOUND_EFFECT_COLLISION], 13, 15, 1, 0, 1f);
+
+		// mSoundPool.play(mSoundIds[SOUND_EFFECT_COLLISION], 13, 15, 1, 0, 1f);
 		mSprites = new ArrayList<Sprite>();
 
 		loadGrass();
@@ -88,10 +88,12 @@ public class CanvasManager {
 	public void checkCollision() {
 		boolean isCollide = false;
 		// TODO: get the ant and line and hole , check.
-		HF2D.checkCollision(mAnt, mLine);
+		isCollide = HF2D.checkCollision(mAnt, mLine);
 
 		if (isCollide) {
 			// TODO: set ant direction, or go home.
+			mSoundPool
+					.play(mSoundIds[SOUND_EFFECT_COLLISION], 13, 15, 1, 0, 1f);
 		}
 
 	}
