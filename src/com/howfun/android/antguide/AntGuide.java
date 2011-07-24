@@ -26,14 +26,19 @@ public class AntGuide extends Activity implements OnTouchListener {
       super.onCreate(savedInstanceState);
       getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
       this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-      mAntView = new AntView(this);
-      setContentView(mAntView);
       
       DisplayMetrics dm = new DisplayMetrics();
       this.getWindowManager().getDefaultDisplay().getMetrics(dm); 
       DEVICE_WIDTH = dm.widthPixels; 
       DEVICE_HEIGHT = dm.heightPixels;
       
+      
+      mAntView = new AntView(this);
+      setContentView(mAntView);
+      
+      
+      
+      Utils.log(TAG, "width="+DEVICE_WIDTH+",height=========:"+DEVICE_HEIGHT);
       mIntentService = new Intent("com.howfun.android.antguide.MusicService");
       mIntentReceiver = new Intent("com.howfun.android.antguide.MusicReceiver");
 

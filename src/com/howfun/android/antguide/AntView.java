@@ -82,6 +82,8 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 
 	}
 
+
+
 	@Override
 	protected void onDraw(Canvas canvas) {
 

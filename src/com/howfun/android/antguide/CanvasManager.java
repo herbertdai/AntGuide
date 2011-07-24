@@ -19,6 +19,7 @@ import com.howfun.android.HF2D.Pos;
 import com.howfun.android.HF2D.Sprite;
 
 public class CanvasManager {
+	
 	private static final int GRASS_WIDTH = 50;
 
 	private static final int HOLE_WIDTH = 50;
@@ -154,10 +155,9 @@ public class CanvasManager {
 	}
 
 	private void loadBackground() {
-//		int width = AntGuide.DEVICE_WIDTH;
-//		int height = AntGuide.DEVICE_HEIGHT;
-		int width = 480;
-		int height = 800;
+		int width = AntGuide.DEVICE_WIDTH;
+		int height = AntGuide.DEVICE_HEIGHT;
+		
 		Resources r = mContext.getResources();
 		Drawable holeDrawable = r.getDrawable(R.drawable.background);
 		Bitmap bitmap = Bitmap.createBitmap(width, height,
