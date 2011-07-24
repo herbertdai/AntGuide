@@ -1,6 +1,7 @@
 package com.howfun.android.antguide;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -10,6 +11,9 @@ public class AntGuide extends Activity implements OnTouchListener {
    private static final String TAG = "AntGuide";
 
    private AntView mAntView;
+   
+   Intent mIntentService = null;
+   Intent mIntentReceiver = null;
 
    @Override
    public void onCreate(Bundle savedInstanceState) {
@@ -17,6 +21,9 @@ public class AntGuide extends Activity implements OnTouchListener {
 
       mAntView = new AntView(this);
       setContentView(mAntView);
+      
+      mIntentService = new Intent("com.howfun.android.antguide.MusicService");
+      mIntentReceiver = new Intent("com.howfun.android.antguide.MusicReceiver");
 
       mAntView.setOnTouchListener(new OnTouchListener() {
 
@@ -50,5 +57,20 @@ public class AntGuide extends Activity implements OnTouchListener {
    @Override
    public boolean onTouch(View v, MotionEvent event) {
       return false;
+   }
+   
+   @Override
+   protected void onResume() {
+      super.onResume();
+
+      sendBroadcast(mIntentReceiver);
+//      startService(mIntentService);
+   }
+
+   @Override
+   protected void onPause() {
+      super.onPause();
+
+      stopService(mIntentService);
    }
 }
