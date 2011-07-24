@@ -15,9 +15,9 @@ public class HF2D {
     * @param[in]: speed       speed per step
     * @param[in]:angle        angle to move
     */
-   public static void getNextPos(Pos mPos, double speed, int angle) {
+   public static void getNextPos(Pos mPos, float speed, float angle) {
       
-      double radians = 2 * 3.1415 * angle / 360;
+      double radians = Math.toRadians(angle); 
       float xStep = (float) (mPos.x + speed * Math.cos(radians));
       float yStep = (float) (mPos.y + speed * Math.sin(radians));
       mPos.x = xStep;
@@ -50,10 +50,13 @@ public class HF2D {
       float lby = line.getEnd().y;
          
       boolean isCollision = false;
+      boolean isUpperCollision = false;
       //check upper horizontal line
       float rx = (y1 - lay) * (lbx - lax) / (lby -lay) + lax;
       if (rx >= x1 && rx <= x3) {
          isCollision = true; 
+         isUpperCollision = true;
+         
       }
       //check lower horizontal line
       rx = (y2 - lay) * (lbx - lax) / (lby -lay) + lax;
@@ -62,8 +65,36 @@ public class HF2D {
       }
       
       //TODO set ant a new angle
+      
       if (isCollision) {
-         ant.setAngle(ant.getAngle() + 20);
+         //set line two point a new sequence: smaller up, bigger down
+         if (lay > lby) {
+            //swap
+            float temp = lax;
+            lax = lbx;
+            lbx = temp;
+            
+            temp = lay;
+            lay = lby;
+            lby = temp;
+         }
+         
+         double lineAngle = Math.atan2((lby - lay),  (lbx - lax));
+         float degree = (float) Math.toDegrees(lineAngle);
+         float randomDegree = (float) (Math.random() * 180);
+         float angle = degree + randomDegree;
+         
+         if (lax < lbx) { //'\' line
+            if (!isUpperCollision) {
+               angle += 180;
+            }
+         } else {
+            if (isUpperCollision) {
+               angle += 180;
+            }
+         }
+         
+         ant.setAngle(angle );
       }
       
       

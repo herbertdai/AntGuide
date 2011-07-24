@@ -13,12 +13,15 @@ import android.graphics.drawable.Drawable;
 import com.howfun.android.antguide.R;
 import com.howfun.android.antguide.Utils;
 
-public class AntSprite extends Sprite {
-	private static final String TAG = "AntSprite";
+public class AntSprite extends Sprite{
+   private static final String TAG = "AntSprite";
+
+   
+   
 
 	private Context mContext;
 	private Paint mPaint;
-	private int mAngle; // Ant's running direction. Reversed on normal.
+	private float mAngle; // Ant's running direction. Reversed on normal.
 
 	private Bitmap mAntBmpArray[];
 
@@ -64,11 +67,11 @@ public class AntSprite extends Sprite {
 		return false;
 	}
 
-	public void setAngle(int angle) {
+	public void setAngle(float angle) {
 		mAngle = angle;
 	}
 
-	public int getAngle() {
+	public float getAngle() {
 		return mAngle;
 	}
 
@@ -128,7 +131,7 @@ public class AntSprite extends Sprite {
 		mAntBmpArray[3] = bitmap;
 	}
 
-	private Bitmap rotate(Bitmap b, int degrees) {
+	private Bitmap rotate(Bitmap b, float degrees) {
 		if (degrees >= 0 && b != null) {
 			Matrix m = new Matrix();
 			m.setRotate(degrees);
