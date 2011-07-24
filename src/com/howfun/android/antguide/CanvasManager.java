@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
@@ -50,6 +51,8 @@ public class CanvasManager {
 	private int[] mSoundEffects = { R.raw.collision, R.raw.victory };
 	private int[] mSoundIds;
 
+   private boolean mIsAntLost;
+
 	public CanvasManager(Context c) {
 		mContext = c;
 
@@ -64,6 +67,9 @@ public class CanvasManager {
 		// mSoundPool.play(mSoundIds[SOUND_EFFECT_COLLISION], 13, 15, 1, 0, 1f);
 		mSprites = new ArrayList<Sprite>();
 
+		mBmpPaint = new Paint();
+		mBmpPaint.setColor(Color.YELLOW);
+		
 		loadGrass();
 		loadHole();
 		loadBackground();
@@ -101,12 +107,36 @@ public class CanvasManager {
 		}
 
 	}
+	
+	private void checkOutOfScreen() {
+	   if (HF2D.checkOutOfScreen(mAnt)) {
+	      antLost();
+	   }
+	}
+	
+	
+	private void antLost() {
+	   mIsAntLost = true;
+	}
+	
+	private void drawResult(Canvas canvas) {
+	   if (mIsAntLost) {
+   	   canvas.drawText("Lost!!!", 20, 100, mBmpPaint); 
+	   } 
+//	   else 
+//	   if (mIsHome) {
+//	      
+//	   }
+	}
 
 	public void draw(Canvas canvas) {
 
 		checkCollision();
+		checkOutOfScreen();
 
 		drawBg(canvas);
+		
+		drawResult(canvas);
 
 		for (int i = 0; i < mSprites.size(); i++) {
 			mSprites.get(i).draw(canvas);

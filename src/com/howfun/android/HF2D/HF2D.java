@@ -31,10 +31,13 @@ public class HF2D {
     * @return true   collision
     */
    public static boolean checkCollision(AntSprite ant, LineSprite line) {
+      
       if (ant == null || line == null) {
          Utils.log(TAG, "ant or line is null in checkCollision()");
          return false;
       }
+      float oldAngle = ant.getAngle();
+      
       //Left two dot of rect and upper right dot
       float x1 = ant.mRect.left;
       float y1 = ant.mRect.top;
@@ -64,8 +67,6 @@ public class HF2D {
          isCollision = true; 
       }
       
-      //TODO set ant a new angle
-      
       if (isCollision) {
          //set line two point a new sequence: smaller up, bigger down
          if (lay > lby) {
@@ -94,7 +95,35 @@ public class HF2D {
             }
          }
          
+         
+         //Check horizon and vertical line
+         int YUZHI = 6;
+         //vertical
+         if (Math.abs(lax - lbx) <=YUZHI) {
+            Utils.log(TAG ,"vertical line");
+            
+            angle = 90 + randomDegree;
+            
+            //verify origin direction: if old and new on same PI, change to another PI 
+            if (oldAngle > 90 && oldAngle < 270) {
+               Utils.log(TAG, "change PI");
+               angle = angle + 180; 
+            }
+         }
+         //horizontal
+         Utils.log(TAG, "y differs: " + (lay - lby));
+         
+         if (Math.abs(lay - lby) <= YUZHI) {
+            Utils.log(TAG, "hori line");
+            angle = 0 + randomDegree;
+            if (oldAngle > 0 && oldAngle < 180) {
+               Utils.log(TAG, "change PI");
+               angle = angle + 180;
+            }
+         }
+         
          ant.setAngle(angle );
+         
       }
       
       

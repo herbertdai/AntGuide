@@ -46,21 +46,17 @@ public class AntGuide extends Activity implements OnTouchListener {
 
          @Override
          public boolean onTouch(View v, MotionEvent event) {
-            Utils.log(TAG, "ontouch...");
             int action = event.getAction();
             float x = event.getX();
             float y = event.getY();
             switch (action) {
             case MotionEvent.ACTION_DOWN:
-               Utils.log(TAG, "Down");
                mAntView.setDownPos(x, y);
 
                break;
             case MotionEvent.ACTION_MOVE:
-               Utils.log(TAG, "Move");
                break;
             case MotionEvent.ACTION_UP:
-               Utils.log(TAG, "Up");
                mAntView.setUpPos(x, y);
                mAntView.showBlockLine();
                break;
