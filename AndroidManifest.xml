@@ -10,6 +10,17 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
+		
+		<service android:enabled="true" android:name=".MusicService">
+			<intent-filter>
+				<action android:name="com.howfun.android.antguide.MusicService"></action>
+			</intent-filter>
+		</service>
+		<receiver android:name=".MusicReceiver">
+			<intent-filter>
+				<action android:name="com.howfun.android.antguide.MusicReceiver"></action>
+			</intent-filter>
+		</receiver>
 
 	</application>
 	<uses-sdk android:minSdkVersion="7" />

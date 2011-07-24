@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.util.DisplayMetrics;
 
 import com.howfun.android.HF2D.AntSprite;
 import com.howfun.android.HF2D.HF2D;
@@ -37,6 +38,7 @@ public class CanvasManager {
 	private Paint mBmpPaint;
 
 	private Bitmap mHoleBmp;
+	private Bitmap mBackgroundBmp;
 
 	private AntSprite mAnt;
 	private LineSprite mLine;
@@ -57,12 +59,13 @@ public class CanvasManager {
 						mSoundEffects[SOUND_EFFECT_COLLISION], 1),
 				mSoundPool.load(mContext, mSoundEffects[SOUND_EFFECT_VICTORY],
 						1) };
-		
-//		mSoundPool.play(mSoundIds[SOUND_EFFECT_COLLISION], 13, 15, 1, 0, 1f);
+
+		// mSoundPool.play(mSoundIds[SOUND_EFFECT_COLLISION], 13, 15, 1, 0, 1f);
 		mSprites = new ArrayList<Sprite>();
 
 		loadGrass();
 		loadHole();
+		loadBackground();
 		initAllSprite();
 	}
 
@@ -88,10 +91,12 @@ public class CanvasManager {
 	public void checkCollision() {
 		boolean isCollide = false;
 		// TODO: get the ant and line and hole , check.
-		HF2D.checkCollision(mAnt, mLine);
+		isCollide = HF2D.checkCollision(mAnt, mLine);
 
 		if (isCollide) {
 			// TODO: set ant direction, or go home.
+			mSoundPool
+					.play(mSoundIds[SOUND_EFFECT_COLLISION], 13, 15, 1, 0, 1f);
 		}
 
 	}
@@ -128,6 +133,7 @@ public class CanvasManager {
 
 	private void drawBg(Canvas canvas) {
 
+		canvas.drawBitmap(mBackgroundBmp, 0, 0, mBmpPaint);
 		canvas.drawBitmap(mGrassBmp, 68, 133, mBmpPaint);
 		canvas.drawBitmap(mGrassBmp, 12, 190, mBmpPaint);
 		canvas.drawBitmap(mGrassBmp, 310, 123, mBmpPaint);
@@ -156,6 +162,21 @@ public class CanvasManager {
 		holeDrawable.setBounds(0, 0, 32, 32);
 		holeDrawable.draw(canvas);
 		mHoleBmp = bitmap;
+	}
+
+	private void loadBackground() {
+//		int width = AntGuide.DEVICE_WIDTH;
+//		int height = AntGuide.DEVICE_HEIGHT;
+		int width = 480;
+		int height = 800;
+		Resources r = mContext.getResources();
+		Drawable holeDrawable = r.getDrawable(R.drawable.background);
+		Bitmap bitmap = Bitmap.createBitmap(width, height,
+				Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(bitmap);
+		holeDrawable.setBounds(0, 0, width, height);
+		holeDrawable.draw(canvas);
+		mBackgroundBmp = bitmap;
 	}
 
 	public void setWhichAntAnim(int which) {
