@@ -95,10 +95,21 @@ public class CanvasManager {
 		}
 
 	}
+	
+	private void checkOutOfScreen() {
+	   if (HF2D.checkOutOfScreen(mAnt)) {
+	      antLost();
+	   }
+	}
+	
+	private void antLost() {
+	   
+	}
 
 	public void draw(Canvas canvas) {
 
 		checkCollision();
+		checkOutOfScreen();
 
 		drawBg(canvas);
 
