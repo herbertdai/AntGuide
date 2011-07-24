@@ -86,7 +86,7 @@ public class AntSprite extends Sprite{
 	public void draw(Canvas canvas) {
 		// TODO: use fps
 		getNextPos();
-		Bitmap bmp = rotate(mAntBmpArray[mWhichAntAnim], mAngle);
+		Bitmap bmp = rotate(mAntBmpArray[mWhichAntAnim], mAngle + 90);
 		// canvas.drawBitmap(mAntBmpArray[0], mRect.left, mRect.top, mPaint);
 		if (bmp != null) {
 			canvas.drawBitmap(bmp, mRect.left, mRect.top, mPaint);
