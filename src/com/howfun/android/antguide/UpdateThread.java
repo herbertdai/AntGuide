@@ -7,84 +7,84 @@ import android.view.SurfaceHolder;
 
 public class UpdateThread extends Thread {
 
-   private static final String TAG = "UpdateThread";
+	private static final String TAG = "UpdateThread";
 
-   private long time;
-   private long animTime;
+	private long time;
+	private long animTime;
 
-   private final int fps = 100;
-   private final int animFps = 10;
+	private final int fps = 100; // frames per second
+	private final int animFps = 10;
 
-   private boolean toRun = false;
+	private boolean toRun = false;
 
-   int whichAnt = 0;
+	int whichAntAnim = 0;
 
-   private AntView mAntView;
+	private AntView mAntView;
 
-   private SurfaceHolder surfaceHolder;
+	private SurfaceHolder surfaceHolder;
 
-   public UpdateThread(AntView antView) {
+	public UpdateThread(AntView antView) {
 
-      mAntView = antView;
+		mAntView = antView;
 
-      surfaceHolder = mAntView.getHolder();
+		surfaceHolder = mAntView.getHolder();
 
-   }
+	}
 
-   public void setRunning(boolean run) {
+	public void setRunning(boolean run) {
 
-      toRun = run;
+		toRun = run;
 
-   }
+	}
 
-   private int whichAnt() {
-      int which = whichAnt++;
-      if (whichAnt == 4) {
-         whichAnt = 0;
-      }
-      return which;
-   }
+	private int whichAntAnim() {
+		int which = whichAntAnim++;
+		if (whichAntAnim == 4) {
+			whichAntAnim = 0;
+		}
+		return which;
+	}
 
-   public void run() {
+	public void run() {
 
-      Canvas c;
+		Canvas c;
 
-      while (toRun) {
+		while (toRun) {
 
-         long cTime = System.currentTimeMillis();
+			long cTime = System.currentTimeMillis();
 
-         if ((cTime - time) > (1000 / fps)) {
-            c = null;
+			if ((cTime - time) > (1000 / fps)) {
+				c = null;
 
-            try {
+				try {
 
-               c = surfaceHolder.lockCanvas(null);
+					c = surfaceHolder.lockCanvas(null);
 
-               mAntView.updatePhysics();
-               mAntView.onDraw(c);
+					mAntView.updatePhysics();
+					mAntView.onDraw(c);
 
-            } finally {
+				} finally {
 
-               if (c != null) {
+					if (c != null) {
 
-                  surfaceHolder.unlockCanvasAndPost(c);
+						surfaceHolder.unlockCanvasAndPost(c);
 
-               }
+					}
 
-            }
+				}
 
-            time = cTime;
+				time = cTime;
 
-         }
+			}
 
-         // anim
-         if ((cTime - animTime) > (1000 / animFps)) {
-            mAntView.whichAnt = whichAnt();
+			// update ant anim
+			if ((cTime - animTime) > (1000 / animFps)) {
+				mAntView.setWhichAntAnim(whichAntAnim());
 
-            animTime = cTime;
+				animTime = cTime;
 
-         }
+			}
 
-      }
-   }
+		}
+	}
 }
