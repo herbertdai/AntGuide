@@ -23,8 +23,8 @@ public class AntSprite extends Sprite {
    
    private Bitmap mAntBmpArray[];
    
-   private int ANT_WIDTH = 32;
-   private int ANT_HEIGHT = 32;
+   public static final int ANT_WIDTH = 32;
+   public static final  int ANT_HEIGHT = 32;
    
    public AntSprite(Context c) {
       mContext = c;

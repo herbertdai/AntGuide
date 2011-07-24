@@ -100,6 +100,17 @@ public class HF2D {
       
       return isCollision;
    }
+   
+   /*
+    * check if ant is out of screen
+    */
+   public static boolean checkOutOfScreen(AntSprite ant) {
+      
+      if ((ant.mPos.x < -AntSprite.ANT_WIDTH) || (ant.mPos.y > 800)) {
+         return true; 
+      }
+      return false;
+   }
 
    /*
     * Check collision of two rect 
