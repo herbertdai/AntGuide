@@ -38,6 +38,7 @@ public class CanvasManager {
 	private Bitmap mGrassBmp;
 
 	private Paint mBmpPaint;
+	private Paint mResultPaint;
 
 	private Bitmap mHoleBmp;
 	private Bitmap mBackgroundBmp;
@@ -52,6 +53,9 @@ public class CanvasManager {
 	private int[] mSoundIds;
 
    private boolean mIsAntLost;
+   private boolean mIsAntHome;
+
+   private float LOST_TEXT_SIZE = 50;
 
 	public CanvasManager(Context c) {
 		mContext = c;
@@ -69,6 +73,8 @@ public class CanvasManager {
 
 		mBmpPaint = new Paint();
 		mBmpPaint.setColor(Color.YELLOW);
+		mResultPaint = new Paint();
+		mResultPaint.setTextSize(LOST_TEXT_SIZE);
 		
 		loadGrass();
 		loadHole();
@@ -109,7 +115,7 @@ public class CanvasManager {
 	}
 	
 	private void checkOutOfScreen() {
-	   if (HF2D.checkOutOfScreen(mAnt)) {
+	   if (HF2D.checkOutOfScreen(mAnt, AntGuide.DEVICE_WIDTH, AntGuide.DEVICE_HEIGHT)) {
 	      antLost();
 	   }
 	}
@@ -121,12 +127,11 @@ public class CanvasManager {
 	
 	private void drawResult(Canvas canvas) {
 	   if (mIsAntLost) {
-   	   canvas.drawText("Lost!!!", 20, 100, mBmpPaint); 
-	   } 
-//	   else 
-//	   if (mIsHome) {
-//	      
-//	   }
+   	   canvas.drawText("Ant is Lost!!!", 20, 100, mResultPaint); 
+	   } else if (mIsAntHome) {
+	      canvas.drawText("Ant is home....", 200, 200, mResultPaint);
+	      
+	   }
 	}
 
 	public void draw(Canvas canvas) {

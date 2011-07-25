@@ -56,14 +56,25 @@ public class HF2D {
       boolean isUpperCollision = false;
       //check upper horizontal line
       float rx = (y1 - lay) * (lbx - lax) / (lby -lay) + lax;
-      if (rx >= x1 && rx <= x3) {
+      
+      float a = 0, b = 0;
+      if (lax < lbx) {
+         a = lax;
+         b = lbx;
+      } else {
+         b = lax;
+         a = lbx;
+      }
+      if (rx >= x1 && rx <= x3 
+            && rx >= a && rx <= b) {
          isCollision = true; 
          isUpperCollision = true;
          
       }
       //check lower horizontal line
       rx = (y2 - lay) * (lbx - lax) / (lby -lay) + lax;
-      if (rx >= x1 && rx <= x3) {
+      if (rx >= x1 && rx <= x3 &&
+            (rx >= a && rx <= b)) {
          isCollision = true; 
       }
       
@@ -133,9 +144,12 @@ public class HF2D {
    /*
     * check if ant is out of screen
     */
-   public static boolean checkOutOfScreen(AntSprite ant) {
+   public static boolean checkOutOfScreen(AntSprite ant, int screenWidth,int screenHeight) {
       
-      if ((ant.mPos.x < -AntSprite.ANT_WIDTH) || (ant.mPos.y > 800)) {
+      if ((ant.mPos.x < -AntSprite.ANT_WIDTH) 
+            ||(ant.mPos.x  > screenWidth )
+            ||(ant.mPos.y < -AntSprite.ANT_HEIGHT)
+            || (ant.mPos.y > screenHeight)) {
          return true; 
       }
       return false;
