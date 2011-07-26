@@ -11,10 +11,11 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.SoundPool;
-import android.util.DisplayMetrics;
+import android.os.Handler;
 
 import com.howfun.android.HF2D.AntSprite;
 import com.howfun.android.HF2D.HF2D;
+import com.howfun.android.HF2D.HomeSprite;
 import com.howfun.android.HF2D.LineSprite;
 import com.howfun.android.HF2D.Pos;
 import com.howfun.android.HF2D.Sprite;
@@ -40,7 +41,6 @@ public class CanvasManager {
 	private Paint mBmpPaint;
 	private Paint mResultPaint;
 
-	private Bitmap mHoleBmp;
 	private Bitmap mBackgroundBmp;
 
 	private AntSprite mAnt;
@@ -56,9 +56,14 @@ public class CanvasManager {
    private boolean mIsAntHome;
 
    private float LOST_TEXT_SIZE = 50;
+   private float HOME_SPACE = 100; //leave space around home
 
-	public CanvasManager(Context c) {
+   private HomeSprite mHome;
+   private Handler mHandler;
+
+	public CanvasManager(Context c, Handler handler) {
 		mContext = c;
+		mHandler = handler;
 
 		mSoundPool = new SoundPool(mSoundEffects.length,
 				AudioManager.STREAM_MUSIC, 100);
@@ -77,12 +82,20 @@ public class CanvasManager {
 		mResultPaint.setTextSize(LOST_TEXT_SIZE);
 		
 		loadGrass();
-		loadHole();
 		loadBackground();
 		initAllSprite();
 	}
 
-	private void initAllSprite() {
+	public void initAllSprite() {
+	   
+	   if (mSprites == null) {
+	      mSprites = new ArrayList<Sprite>();
+	   }
+	   
+	   mSprites.clear();
+	   mIsAntHome = false;
+	   mIsAntLost = false;
+	   
 		AntSprite ant = new AntSprite(mContext);
 		mAnt = ant;
 		mSprites.add(ant);
@@ -91,6 +104,11 @@ public class CanvasManager {
 		mLine = line;
 		mSprites.add(line);
 
+		float x = (float) (Math.random()* AntGuide.DEVICE_WIDTH - HOME_SPACE);
+		float y = (float) (Math.random()* AntGuide.DEVICE_HEIGHT - HOME_SPACE);
+		Pos homePos = new Pos(x, y); 
+		mHome = new HomeSprite(mContext, homePos);
+		mSprites.add(mHome);
 		// TODO add more sprites
 	}
 
@@ -103,15 +121,18 @@ public class CanvasManager {
 	 */
 	public void checkCollision() {
 		boolean isCollide = false;
-		// TODO: get the ant and line and hole , check.
-		isCollide = HF2D.checkCollision(mAnt, mLine);
+		
+		isCollide = HF2D.checkRectAndLineCollision(mAnt, mLine);
+		if(HF2D.checkCollsion(mAnt, mHome)) {
+		   antHome();
+		}
 
 		if (isCollide) {
-			// TODO: set ant direction, or go home.
 			mSoundPool
 					.play(mSoundIds[SOUND_EFFECT_COLLISION], 13, 15, 1, 0, 1f);
 		}
 
+		checkOutOfScreen();
 	}
 	
 	private void checkOutOfScreen() {
@@ -123,6 +144,11 @@ public class CanvasManager {
 	
 	private void antLost() {
 	   mIsAntLost = true;
+	   mHandler.sendMessage(mHandler.obtainMessage(Utils.MSG_ANT_LOST));
+	}
+	private void antHome() {
+	   mIsAntHome = true;
+	   mHandler.sendMessage(mHandler.obtainMessage(Utils.MSG_ANT_HOME));
 	}
 	
 	private void drawResult(Canvas canvas) {
@@ -137,7 +163,6 @@ public class CanvasManager {
 	public void draw(Canvas canvas) {
 
 		checkCollision();
-		checkOutOfScreen();
 
 		drawBg(canvas);
 		
@@ -164,7 +189,6 @@ public class CanvasManager {
 		canvas.drawBitmap(mGrassBmp, 310, 123, mBmpPaint);
 		canvas.drawBitmap(mGrassBmp, 120, 99, mBmpPaint);
 		canvas.drawBitmap(mGrassBmp, 200, 521, mBmpPaint);
-		canvas.drawBitmap(mHoleBmp, 300, 700, mBmpPaint);
 	}
 
 	private void loadGrass() {
@@ -178,16 +202,6 @@ public class CanvasManager {
 		mGrassBmp = bitmap;
 	}
 
-	private void loadHole() {
-		Resources r = mContext.getResources();
-		Drawable holeDrawable = r.getDrawable(R.drawable.hole);
-		Bitmap bitmap = Bitmap.createBitmap(HOLE_WIDTH, HOLE_HIGHT,
-				Bitmap.Config.ARGB_8888);
-		Canvas canvas = new Canvas(bitmap);
-		holeDrawable.setBounds(0, 0, 32, 32);
-		holeDrawable.draw(canvas);
-		mHoleBmp = bitmap;
-	}
 
 	private void loadBackground() {
 		int width = AntGuide.DEVICE_WIDTH;

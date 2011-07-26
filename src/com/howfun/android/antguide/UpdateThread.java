@@ -60,7 +60,6 @@ public class UpdateThread extends Thread {
 
 					c = surfaceHolder.lockCanvas(null);
 
-					mAntView.updatePhysics();
 					mAntView.onDraw(c);
 
 				} finally {

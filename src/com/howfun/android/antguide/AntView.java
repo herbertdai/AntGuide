@@ -1,34 +1,19 @@
 package com.howfun.android.antguide;
 
-import com.howfun.android.HF2D.Pos;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.Handler;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import com.howfun.android.HF2D.Pos;
 
 public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private static final String TAG = "AntView";
-
-	private int xPos;
-
-	private int yPos;
-
-	private int xVel;
-
-	private int yVel;
-
-	private int width;
-
-	private int border;
-
-	private int circleRadius;
-
-	private Paint circlePaint;
 
 	private float touchDownX = 10;
 
@@ -46,7 +31,7 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private Context mContext;
 
-	public AntView(Context context) {
+	public AntView(Context context, Handler handler) {
 
 		super(context);
 
@@ -54,17 +39,8 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 
 		getHolder().addCallback(this);
 
-		mCanvasManager = new CanvasManager(mContext);
+		mCanvasManager = new CanvasManager(mContext, handler);
 
-		circleRadius = 10;
-
-		circlePaint = new Paint();
-
-		circlePaint.setColor(Color.BLUE);
-
-		xVel = 2;
-
-		yVel = 2;
 	}
 
 	public void setDownPos(float x, float y) {
@@ -87,8 +63,6 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 	@Override
 	protected void onDraw(Canvas canvas) {
 
-		canvas.drawColor(Color.WHITE);
-
 		if (mShowBlockLine) {
 
 			mCanvasManager.setNewLine(new Pos(touchDownX, touchDownY), new Pos(
@@ -105,65 +79,24 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
-	public void updatePhysics() {
-
-		xPos += xVel;
-
-		yPos += yVel;
-
-		if (yPos - circleRadius < 0 || yPos + circleRadius > border) {
-
-			if (yPos - circleRadius < 0) {
-
-				yPos = circleRadius;
-
-			} else {
-
-				yPos = border - circleRadius;
-
-			}
-
-			yVel *= -1;
-
-		}
-
-		if (xPos - circleRadius < 0 || xPos + circleRadius > width) {
-
-			if (xPos - circleRadius < 0) {
-
-				xPos = circleRadius;
-
-			} else {
-
-				xPos = width - circleRadius;
-
-			}
-
-			xVel *= -1;
-
-		}
-
-	}
-
 	public void surfaceCreated(SurfaceHolder holder) {
 
 		Rect surfaceFrame = holder.getSurfaceFrame();
 
-		width = surfaceFrame.width();
-
-		border = surfaceFrame.height();
-
-		xPos = width / 2;
-
-		yPos = circleRadius;
-
-		updateThread = new UpdateThread(this);
-
-		updateThread.setRunning(true);
-
-		updateThread.start();
+		startGame();
+		startThread();
 
 	}
+	
+	public void startGame() {
+	   if (mCanvasManager == null) {
+	      Utils.log(TAG, "canvasManager is null");
+	      return;
+	   }
+	   mCanvasManager.initAllSprite();
+	   startThread();
+	}
+	
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int border) {
@@ -171,7 +104,21 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	public void surfaceDestroyed(SurfaceHolder holder) {
+	   
+	   stopThread();
 
+	}
+	
+	public void startThread() {
+	   
+		updateThread = new UpdateThread(this);
+
+		updateThread.setRunning(true);
+
+		updateThread.start();
+	}
+	
+	public void stopThread() {
 		boolean retry = true;
 
 		updateThread.setRunning(false);
@@ -189,7 +136,7 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 			}
 
 		}
-
+	   
 	}
 
 }

@@ -33,7 +33,7 @@ public class HF2D {
     * 
     * @return true collision
     */
-   public static boolean checkCollision(AntSprite ant, LineSprite line) {
+   public static boolean checkRectAndLineCollision(AntSprite ant, LineSprite line) {
 
       if (ant == null || line == null) {
          Utils.log(TAG, "ant or line is null in checkCollision()");
@@ -169,10 +169,22 @@ public class HF2D {
       return false;
    }
 
+   public static boolean checkCollsion(Sprite sprite1, Sprite sprite2) {
+      if (sprite1 == null || sprite2 == null) {
+         return false;
+      }
+      return checkRectCollision(sprite1.mRect, sprite1.mPos, sprite2.mRect, sprite2.mPos);
+   }
    /*
     * Check collision of two rect
     */
-   public static boolean checkCollision(Rect r1, Rect r2) {
+   public static boolean checkRectCollision(Rect r1, Pos pos1, Rect r2, Pos pos2) {
+      if (
+            (Math.abs(pos1.x - pos2.x) < (r1.width() + r2.width()) / 2)
+            && (Math.abs(pos1.y - pos2.y) <= (r1.height() + r2.height()) / 2 )
+            ) {
+         return true;
+      }
       return false;
    }
 
