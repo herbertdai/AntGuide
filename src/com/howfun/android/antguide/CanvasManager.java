@@ -14,6 +14,7 @@ import android.media.SoundPool;
 import android.os.Handler;
 
 import com.howfun.android.HF2D.AntSprite;
+import com.howfun.android.HF2D.FoodSprite;
 import com.howfun.android.HF2D.HF2D;
 import com.howfun.android.HF2D.HomeSprite;
 import com.howfun.android.HF2D.LineSprite;
@@ -109,6 +110,11 @@ public class CanvasManager {
 		Pos homePos = new Pos(x, y); 
 		mHome = new HomeSprite(mContext, homePos);
 		mSprites.add(mHome);
+		
+		Pos foodPos = new Pos(200,500);
+		FoodSprite food = new FoodSprite(mContext, foodPos);
+		mSprites.add(food);
+		
 		// TODO add more sprites
 	}
 
@@ -221,6 +227,17 @@ public class CanvasManager {
 		if (mAnt != null) {
 			mAnt.mWhichAntAnim = which;
 		}
+	}
+	
+	//clear memory
+	public void clear() {
+   	Utils.recycleBitmap(mBackgroundBmp);
+   	Utils.recycleBitmap(mGrassBmp);
+   	if (mSprites != null) {
+		for (int i = 0; i < mSprites.size(); i++) {
+			mSprites.get(i).clear();
+		}
+   	}
 	}
 
 }

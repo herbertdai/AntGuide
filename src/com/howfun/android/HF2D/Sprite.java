@@ -26,4 +26,6 @@ public abstract class Sprite {
    protected abstract boolean checkCollision(Sprite s);
    
    public abstract void draw(Canvas canvas);
+   
+   public abstract void clear();
 }
