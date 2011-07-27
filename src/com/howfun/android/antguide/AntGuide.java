@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +31,7 @@ public class AntGuide extends Activity implements OnTouchListener {
 	Intent mIntentReceiver = null;
 
 	private TextView gameScore;
+	private Chronometer gameChronometer;
 	private ImageView gamePause;
 	private ImageView gamePlay;
 	private AntView antView;
@@ -40,13 +43,21 @@ public class AntGuide extends Activity implements OnTouchListener {
 			switch (msg.what) {
 			case Utils.MSG_ANT_HOME:
 				antView.stopThread();
+				gamePause.setVisibility(View.INVISIBLE);
+				gamePlay.setVisibility(View.VISIBLE);
+
 				gameInfo.setVisibility(View.VISIBLE);
 				gameInfo.setText("Ant gets home...");
+				gameChronometer.stop();
 				break;
 			case Utils.MSG_ANT_LOST:
 				antView.stopThread();
+				gamePause.setVisibility(View.INVISIBLE);
+				gamePlay.setVisibility(View.VISIBLE);
+
 				gameInfo.setVisibility(View.VISIBLE);
 				gameInfo.setText("Ant is lost!!!");
+				gameChronometer.stop();
 				break;
 			}
 		}
@@ -76,6 +87,7 @@ public class AntGuide extends Activity implements OnTouchListener {
 
 	private void findViews() {
 		gameScore = (TextView) findViewById(R.id.game_score);
+		gameChronometer = (Chronometer) findViewById(R.id.game_chronometer);
 		gamePause = (ImageView) findViewById(R.id.game_pause);
 		gamePlay = (ImageView) findViewById(R.id.game_play);
 		antView = (AntView) findViewById(R.id.ant_view);
@@ -133,8 +145,11 @@ public class AntGuide extends Activity implements OnTouchListener {
 
 	private void init() {
 		antView.setHandler(mHandler);
+
 		gamePause.setVisibility(View.VISIBLE);
 		gamePlay.setVisibility(View.INVISIBLE);
+
+		gameChronometer.start();
 		mIntentService = new Intent("com.howfun.android.antguide.MusicService");
 		mIntentReceiver = new Intent(
 				"com.howfun.android.antguide.MusicReceiver");
@@ -144,6 +159,9 @@ public class AntGuide extends Activity implements OnTouchListener {
 		gamePause.setVisibility(View.INVISIBLE);
 		gamePlay.setVisibility(View.VISIBLE);
 		antView.stopThread();
+		gameInfo.setVisibility(View.VISIBLE);
+		gameInfo.setText("GAME OVER!!!");
+		gameChronometer.stop();
 	}
 
 	private void playGame() {
@@ -152,6 +170,8 @@ public class AntGuide extends Activity implements OnTouchListener {
 		gameInfo.setText("");
 		gameInfo.setVisibility(View.INVISIBLE);
 		antView.startGame();
+		gameChronometer.setBase(SystemClock.elapsedRealtime());
+		gameChronometer.start();
 	}
 
 	@Override
