@@ -1,6 +1,7 @@
 package com.howfun.android.HF2D;
 
 import com.howfun.android.HF2D.Pos;
+import com.howfun.android.antguide.Utils;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -48,6 +49,11 @@ public class LineSprite extends Sprite {
    @Override
    protected Pos getNextPos() {
       return mPos;
+   }
+
+   @Override
+   public void clear() {
+      //Utils.recycleBitmap(bitmap)
    }
 
 }

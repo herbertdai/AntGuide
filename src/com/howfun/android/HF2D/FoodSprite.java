@@ -9,25 +9,26 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
-public class HomeSprite extends Sprite {
+public class FoodSprite extends Sprite {
    
    
-   private static final int HOME_W = 70;
-   private static final int HOME_H = 70;
+   private static final int FOOD_W = 40;
+   private static final int FOOD_H = 40;
    
-	private Bitmap mHoleBmp;
+	private Bitmap mBmp;
    private Context mContext;
    private Paint mPaint;
 	
-   public HomeSprite(Context context, Pos pos) {
+   public FoodSprite(Context context, Pos pos) {
       mContext = context;
       mPos = pos;
       mRect = new Rect();
-      HF2D.calRectByPos(mRect, mPos, HOME_W, HOME_H);
+      HF2D.calRectByPos(mRect, mPos, FOOD_W, FOOD_H);
       
-      loadHole();
+      loadFood();
       mPaint = new Paint();
       
    }
@@ -43,7 +44,7 @@ public class HomeSprite extends Sprite {
       if (canvas == null) {
          return;
       }
-      canvas.drawBitmap(mHoleBmp, mRect.left, mRect.top, mPaint);
+      canvas.drawBitmap(mBmp, mRect.left, mRect.top, mPaint);
    }
 
    @Override
@@ -51,19 +52,19 @@ public class HomeSprite extends Sprite {
       return mPos;
    }
 
-	private void loadHole() {
+	private void loadFood() {
 		Resources r = mContext.getResources();
-		Drawable holeDrawable = r.getDrawable(R.drawable.hole);
-		Bitmap bitmap = Bitmap.createBitmap(HOME_W, HOME_H,
-				Bitmap.Config.ARGB_8888);
-		Canvas canvas = new Canvas(bitmap);
-		holeDrawable.setBounds(0, 0, 32, 32);
-		holeDrawable.draw(canvas);
-		mHoleBmp = bitmap;
+		Drawable holeDrawable = r.getDrawable(R.drawable.icon);
+//		Bitmap bitmap = Bitmap.createBitmap(FOOD_W, HOME_H,
+//				Bitmap.Config.ARGB_8888);
+//		Canvas canvas = new Canvas(bitmap);
+//		holeDrawable.draw(canvas);
+//		mBmp = bitmap;
+		mBmp = ((BitmapDrawable)holeDrawable).getBitmap();
 	}
 
    @Override
    public void clear() {
-      Utils.recycleBitmap(mHoleBmp);
+      Utils.recycleBitmap(mBmp);
    }
 }

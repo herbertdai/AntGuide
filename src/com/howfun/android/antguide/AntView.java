@@ -78,13 +78,16 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-
+	   if (mCanvasManager == null) {
+	      return;
+	   }
 		if (mShowBlockLine) {
 
 			mCanvasManager.setNewLine(new Pos(touchDownX, touchDownY), new Pos(
 					touchUpX, touchUpY));
 			mShowBlockLine = false;
 		}
+		
 		mCanvasManager.draw(canvas);
 
 	}
@@ -112,6 +115,14 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 		mCanvasManager.initAllSprite();
 		startThread();
 	}
+	
+	public void stopGame() {
+	   if (mCanvasManager != null) {
+	      mCanvasManager.clear();
+	      mCanvasManager = null;
+	   }
+	   stopThread();
+	}
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int border) {
@@ -119,8 +130,8 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	public void surfaceDestroyed(SurfaceHolder holder) {
-
-		stopThread();
+	   
+	   stopGame();
 
 	}
 

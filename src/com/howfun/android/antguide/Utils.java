@@ -2,6 +2,7 @@ package com.howfun.android.antguide;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 public final class Utils {
@@ -33,6 +34,13 @@ public final class Utils {
                context.getResources().getString(R.string.howfun)
                )
          .show().setCanceledOnTouchOutside(true);
+   }
+
+   public static void recycleBitmap(Bitmap bitmap) {
+      if (bitmap != null) {
+         bitmap.recycle();
+         bitmap = null;
+      }
    }
 
 }
