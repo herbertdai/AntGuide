@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Handler;
+import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -31,7 +32,7 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private Context mContext;
 
-	public AntView(Context context, Handler handler) {
+	public AntView(Context context) {
 
 		super(context);
 
@@ -39,8 +40,25 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 
 		getHolder().addCallback(this);
 
-		mCanvasManager = new CanvasManager(mContext, handler);
+		mCanvasManager = new CanvasManager(mContext);
 
+	}
+
+	public AntView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		
+		mContext = context;
+
+		getHolder().addCallback(this);
+
+		mCanvasManager = new CanvasManager(mContext);
+		
+	}
+	
+	public void setHandler(Handler handler){
+		if(mCanvasManager != null){
+			mCanvasManager.setHandler(handler);
+		}
 	}
 
 	public void setDownPos(float x, float y) {
@@ -57,8 +75,6 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 		mShowBlockLine = true;
 
 	}
-
-
 
 	@Override
 	protected void onDraw(Canvas canvas) {
@@ -87,16 +103,15 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 		startThread();
 
 	}
-	
+
 	public void startGame() {
-	   if (mCanvasManager == null) {
-	      Utils.log(TAG, "canvasManager is null");
-	      return;
-	   }
-	   mCanvasManager.initAllSprite();
-	   startThread();
+		if (mCanvasManager == null) {
+			Utils.log(TAG, "canvasManager is null");
+			return;
+		}
+		mCanvasManager.initAllSprite();
+		startThread();
 	}
-	
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int border) {
@@ -104,20 +119,20 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	public void surfaceDestroyed(SurfaceHolder holder) {
-	   
-	   stopThread();
+
+		stopThread();
 
 	}
-	
+
 	public void startThread() {
-	   
+
 		updateThread = new UpdateThread(this);
 
 		updateThread.setRunning(true);
 
 		updateThread.start();
 	}
-	
+
 	public void stopThread() {
 		boolean retry = true;
 
@@ -136,7 +151,7 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 			}
 
 		}
-	   
+
 	}
 
 }
