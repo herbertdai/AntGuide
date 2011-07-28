@@ -14,155 +14,147 @@ import com.howfun.android.HF2D.Pos;
 
 public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 
-	private static final String TAG = "AntView";
+   private static final String TAG = "AntView";
 
-	private float touchDownX = 10;
+   private float touchDownX = 10;
 
-	private float touchDownY = 10;
+   private float touchDownY = 10;
 
-	private float touchUpX = 200;
+   private float touchUpX = 200;
 
-	private float touchUpY = 300;
+   private float touchUpY = 300;
 
-	private boolean mShowBlockLine;
+   private boolean mShowBlockLine;
 
-	UpdateThread updateThread;
+   UpdateThread updateThread;
 
-	private CanvasManager mCanvasManager;
+   private CanvasManager mCanvasManager;
 
-	private Context mContext;
+   private Context mContext;
 
-	public AntView(Context context) {
+   public AntView(Context context) {
 
-		super(context);
+      super(context);
 
-		mContext = context;
+      mContext = context;
 
-		getHolder().addCallback(this);
+      getHolder().addCallback(this);
 
-		mCanvasManager = new CanvasManager(mContext);
+      mCanvasManager = new CanvasManager(mContext);
 
-	}
+   }
 
-	public AntView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		
-		mContext = context;
+   public AntView(Context context, AttributeSet attrs) {
+      super(context, attrs);
 
-		getHolder().addCallback(this);
+      mContext = context;
 
-		mCanvasManager = new CanvasManager(mContext);
-		
-	}
-	
-	public void setHandler(Handler handler){
-		if(mCanvasManager != null){
-			mCanvasManager.setHandler(handler);
-		}
-	}
+      getHolder().addCallback(this);
 
-	public void setDownPos(float x, float y) {
-		touchDownX = x;
-		touchDownY = y;
-	}
+      mCanvasManager = new CanvasManager(mContext);
 
-	public void setUpPos(float x, float y) {
-		touchUpX = x;
-		touchUpY = y;
-	}
+   }
 
-	public void showBlockLine() {
-		mShowBlockLine = true;
+   public void setHandler(Handler handler) {
+      if (mCanvasManager != null) {
+         mCanvasManager.setHandler(handler);
+      }
+   }
 
-	}
+   public void setDownPos(float x, float y) {
+      touchDownX = x;
+      touchDownY = y;
+   }
 
-	@Override
-	protected void onDraw(Canvas canvas) {
-	   if (mCanvasManager == null) {
-	      return;
-	   }
-		if (mShowBlockLine) {
+   public void setUpPos(float x, float y) {
+      touchUpX = x;
+      touchUpY = y;
+   }
 
-			mCanvasManager.setNewLine(new Pos(touchDownX, touchDownY), new Pos(
-					touchUpX, touchUpY));
-			mShowBlockLine = false;
-		}
-		
-		mCanvasManager.draw(canvas);
+   public void showBlockLine() {
+      mShowBlockLine = true;
 
-	}
+   }
 
-	public void setWhichAntAnim(int which) {
-		if (mCanvasManager != null) {
-			mCanvasManager.setWhichAntAnim(which);
-		}
-	}
+   @Override
+   protected void onDraw(Canvas canvas) {
+      if (mCanvasManager == null) {
+         return;
+      }
+      if (mShowBlockLine) {
 
-	public void surfaceCreated(SurfaceHolder holder) {
+         mCanvasManager.setNewLine(new Pos(touchDownX, touchDownY), new Pos(
+               touchUpX, touchUpY));
+         mShowBlockLine = false;
+      }
 
-		Rect surfaceFrame = holder.getSurfaceFrame();
+      mCanvasManager.draw(canvas);
 
-		startGame();
-		startThread();
+   }
 
-	}
+   public void setWhichAntAnim(int which) {
+      if (mCanvasManager != null) {
+         mCanvasManager.setWhichAntAnim(which);
+      }
+   }
 
-	public void startGame() {
-		if (mCanvasManager == null) {
-			Utils.log(TAG, "canvasManager is null");
-			return;
-		}
-		mCanvasManager.initAllSprite();
-		startThread();
-	}
-	
-	public void stopGame() {
-	   if (mCanvasManager != null) {
-	      mCanvasManager.clear();
-	      mCanvasManager = null;
-	   }
-	   stopThread();
-	}
+   public void surfaceCreated(SurfaceHolder holder) {
 
-	public void surfaceChanged(SurfaceHolder holder, int format, int width,
-			int border) {
+      mCanvasManager.initAllSprite();
+      updateThread = new UpdateThread(this);
 
-	}
+      updateThread.setRunning(true);
 
-	public void surfaceDestroyed(SurfaceHolder holder) {
-	   
-	   stopGame();
+      updateThread.start();
 
-	}
+   }
 
-	public void startThread() {
+   public void playGame() {
+      if (mCanvasManager == null) {
+         Utils.log(TAG, "canvasManager is null");
+         return;
+      }
+      mCanvasManager.initAllSprite();
+      updateThread.play();
+   }
+   
 
-		updateThread = new UpdateThread(this);
+   public void pauseGame() {
+      updateThread.pause();
+   }
 
-		updateThread.setRunning(true);
 
-		updateThread.start();
-	}
+   public void surfaceChanged(SurfaceHolder holder, int format, int width,
+         int border) {
 
-	public void stopThread() {
-		boolean retry = true;
+   }
 
-		updateThread.setRunning(false);
+   public void surfaceDestroyed(SurfaceHolder holder) {
 
-		while (retry) {
+      if (mCanvasManager != null) {
+         mCanvasManager.clear();
+         mCanvasManager = null;
+      }
 
-			try {
+      boolean retry = true;
 
-				updateThread.join();
+      updateThread.setRunning(false);
 
-				retry = false;
+      while (retry) {
 
-			} catch (InterruptedException e) {
+         try {
 
-			}
+            updateThread.join();
 
-		}
+            retry = false;
 
-	}
+         } catch (InterruptedException e) {
+
+         }
+
+      }
+
+   }
+
 
 }

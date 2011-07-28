@@ -42,7 +42,7 @@ public class AntGuide extends Activity implements OnTouchListener {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case Utils.MSG_ANT_HOME:
-				antView.stopThread();
+				antView.pauseGame();
 				gamePause.setVisibility(View.INVISIBLE);
 				gamePlay.setVisibility(View.VISIBLE);
 
@@ -51,7 +51,7 @@ public class AntGuide extends Activity implements OnTouchListener {
 				gameChronometer.stop();
 				break;
 			case Utils.MSG_ANT_LOST:
-				antView.stopThread();
+				antView.pauseGame();
 				gamePause.setVisibility(View.INVISIBLE);
 				gamePlay.setVisibility(View.VISIBLE);
 
@@ -158,7 +158,7 @@ public class AntGuide extends Activity implements OnTouchListener {
 	private void pauseGame() {
 		gamePause.setVisibility(View.INVISIBLE);
 		gamePlay.setVisibility(View.VISIBLE);
-		antView.stopThread();
+		antView.pauseGame();
 		gameInfo.setVisibility(View.VISIBLE);
 		gameInfo.setText("GAME OVER!!!");
 		gameChronometer.stop();
@@ -169,7 +169,7 @@ public class AntGuide extends Activity implements OnTouchListener {
 		gamePlay.setVisibility(View.INVISIBLE);
 		gameInfo.setText("");
 		gameInfo.setVisibility(View.INVISIBLE);
-		antView.startGame();
+		antView.playGame();
 		gameChronometer.setBase(SystemClock.elapsedRealtime());
 		gameChronometer.start();
 	}

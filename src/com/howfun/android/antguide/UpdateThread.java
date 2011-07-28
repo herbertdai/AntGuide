@@ -7,83 +7,97 @@ import android.view.SurfaceHolder;
 
 public class UpdateThread extends Thread {
 
-	private static final String TAG = "UpdateThread";
+   private static final String TAG = "UpdateThread";
 
-	private long time;
-	private long animTime;
+   private long time;
+   private long animTime;
 
-	private final int fps = 100; // frames per second
-	private final int animFps = 10;
+   private final int fps = 100; // frames per second
+   private final int animFps = 10;
 
-	private boolean toRun = false;
+   private boolean toRun = false;
 
-	int whichAntAnim = 0;
+   private boolean flag = true;
 
-	private AntView mAntView;
+   int whichAntAnim = 0;
 
-	private SurfaceHolder surfaceHolder;
+   private AntView mAntView;
 
-	public UpdateThread(AntView antView) {
+   private SurfaceHolder surfaceHolder;
 
-		mAntView = antView;
+   public UpdateThread(AntView antView) {
 
-		surfaceHolder = mAntView.getHolder();
+      mAntView = antView;
 
-	}
+      surfaceHolder = mAntView.getHolder();
 
-	public void setRunning(boolean run) {
+   }
 
-		toRun = run;
+   public void setRunning(boolean run) {
 
-	}
+      toRun = run;
 
-	private int whichAntAnim() {
-		int which = whichAntAnim++;
-		if (whichAntAnim == 4) {
-			whichAntAnim = 0;
-		}
-		return which;
-	}
+   }
 
-	public void run() {
+   public void play() {
+      flag = true;
+   }
 
-		Canvas c;
+   public void pause() {
+      flag = false;
+   }
 
-		while (toRun) {
+   private int whichAntAnim() {
+      int which = whichAntAnim++;
+      if (whichAntAnim == 4) {
+         whichAntAnim = 0;
+      }
+      return which;
+   }
 
-			long cTime = System.currentTimeMillis();
+   public void run() {
 
-			if ((cTime - time) > (1000 / fps)) {
-				c = null;
+      Canvas c;
 
-				try {
+      while (toRun) {
 
-					c = surfaceHolder.lockCanvas(null);
+         long cTime = System.currentTimeMillis();
 
-					mAntView.onDraw(c);
+         if ((cTime - time) > (1000 / fps)) {
+            c = null;
 
-				} finally {
+            if (flag) {
+               try {
 
-					if (c != null) {
+                  c = surfaceHolder.lockCanvas(null);
 
-						surfaceHolder.unlockCanvasAndPost(c);
+                  mAntView.onDraw(c);
 
-					}
+               } finally {
 
-				}
+                  if (c != null) {
 
-				time = cTime;
+                     surfaceHolder.unlockCanvasAndPost(c);
 
-			}
+                  }
 
-			// update ant anim
-			if ((cTime - animTime) > (1000 / animFps)) {
-				mAntView.setWhichAntAnim(whichAntAnim());
+               }
+            }
 
-				animTime = cTime;
+            time = cTime;
 
-			}
+         }
 
-		}
-	}
+         // update ant anim
+         if ((cTime - animTime) > (1000 / animFps)) {
+            if(flag){
+               mAntView.setWhichAntAnim(whichAntAnim());
+            }
+
+            animTime = cTime;
+
+         }
+
+      }
+   }
 }
