@@ -54,6 +54,13 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
       mCanvasManager = new CanvasManager(mContext);
 
    }
+   
+   public void init() {
+      
+      if (mCanvasManager == null) {
+         mCanvasManager = new CanvasManager(mContext);
+      }
+   }
 
    public void setHandler(Handler handler) {
       if (mCanvasManager != null) {
@@ -100,7 +107,10 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 
    public void surfaceCreated(SurfaceHolder holder) {
 
-      mCanvasManager.initAllSprite();
+      Utils.log(TAG, "surfaceCreated()....");
+      if (mCanvasManager != null) {
+         mCanvasManager.initAllSprite();
+      }
       updateThread = new UpdateThread(this);
 
       updateThread.setRunning(true);
@@ -112,25 +122,37 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
    public void playGame() {
       if (mCanvasManager == null) {
          Utils.log(TAG, "canvasManager is null");
+         //mCanvasManager = new CanvasManager(mContext);
          return;
       }
       mCanvasManager.initAllSprite();
-      updateThread.play();
+      if (updateThread != null) {
+         updateThread.play();
+      }
    }
-   
+
+   public void resumeGame() {
+      if (updateThread != null) {
+         updateThread.play();
+      }
+   }
 
    public void pauseGame() {
       updateThread.pause();
    }
 
-
    public void surfaceChanged(SurfaceHolder holder, int format, int width,
          int border) {
+      Utils.log(TAG, "surfaceChanged()....");
 
    }
 
    public void surfaceDestroyed(SurfaceHolder holder) {
 
+      Utils.log(TAG, "surfaceDestroyed()....");
+      
+      //TODO: save running data if press HOME, and enter into pause mode
+      
       if (mCanvasManager != null) {
          mCanvasManager.clear();
          mCanvasManager = null;
@@ -155,6 +177,5 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
       }
 
    }
-
 
 }

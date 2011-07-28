@@ -67,6 +67,7 @@ public class AntGuide extends Activity implements OnTouchListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Utils.log(TAG, "onCreate()");
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -78,10 +79,9 @@ public class AntGuide extends Activity implements OnTouchListener {
 
 		setContentView(R.layout.game_view);
 
-		findViews();
-		setupListeners();
-
-		init();
+//		findViews();
+//		setupListeners();
+//		init();
 
 	}
 
@@ -144,6 +144,7 @@ public class AntGuide extends Activity implements OnTouchListener {
 	}
 
 	private void init() {
+	   antView.init();
 		antView.setHandler(mHandler);
 
 		gamePause.setVisibility(View.VISIBLE);
@@ -156,6 +157,7 @@ public class AntGuide extends Activity implements OnTouchListener {
 	}
 
 	private void pauseGame() {
+		Utils.log(TAG, "pauseGame..");
 		gamePause.setVisibility(View.INVISIBLE);
 		gamePlay.setVisibility(View.VISIBLE);
 		antView.pauseGame();
@@ -165,6 +167,7 @@ public class AntGuide extends Activity implements OnTouchListener {
 	}
 
 	private void playGame() {
+		Utils.log(TAG, "playGame..");
 		gamePause.setVisibility(View.VISIBLE);
 		gamePlay.setVisibility(View.INVISIBLE);
 		gameInfo.setText("");
@@ -182,7 +185,11 @@ public class AntGuide extends Activity implements OnTouchListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
-
+		Utils.log(TAG, "onresume..");
+		
+		findViews();
+		setupListeners();
+		init();
 		sendBroadcast(mIntentReceiver);
 		// startService(mIntentService);
 	}
@@ -190,6 +197,8 @@ public class AntGuide extends Activity implements OnTouchListener {
 	@Override
 	protected void onPause() {
 		super.onPause();
+		Utils.log(TAG, "onPause..");
+		pauseGame();
 
 		stopService(mIntentService);
 	}
