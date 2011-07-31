@@ -1,63 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-    <RelativeLayout android:id="@+id/game_menu"
-    	android:layout_width="fill_parent"
-    	android:layout_height="50dp"
-    	android:background="#ffffff">
-    	
-    	<TextView android:id="@+id/game_score"
-    		android:layout_width="wrap_content"
-    		android:layout_height="wrap_content"
-    		android:text="SCORE"
-    		android:textColor="#000000"
-    		android:textSize="22sp"
-    		android:layout_alignParentLeft="true" 
-    		android:visibility="gone"/>
-    		
-    	<Chronometer android:id="@+id/game_chronometer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:paddingBottom="3dip"
-        android:textColor="#000000"
-        android:paddingTop="3dip"
-        />
-    	<FrameLayout android:layout_width="wrap_content"
-    		android:layout_height="wrap_content"
-    		android:layout_alignParentRight="true">
-    		<ImageView android:id="@+id/game_pause"
-    		android:layout_width="wrap_content"
-    		android:layout_height="wrap_content"
-    		android:src="@drawable/pause"
-    		 />
-    		
-    		<ImageView android:id="@+id/game_play"
-    		android:layout_width="wrap_content"
-    		android:layout_height="wrap_content"
-    		android:src="@drawable/play"
-    		 />
-    	</FrameLayout>	
-    </RelativeLayout>
-    <FrameLayout android:id="@+id/game_frame"
-    	android:layout_width="fill_parent"
-    	android:layout_height="fill_parent"
-    	>
-    	<com.howfun.android.antguide.AntView
-    		android:id="@+id/ant_view"
-    		android:layout_width="fill_parent"
-    		android:layout_height="fill_parent"
-    		/>
-    	<TextView android:id="@+id/game_info"
-    		android:layout_width="fill_parent"
-    		android:layout_height="fill_parent"
-    		android:text="game info"
-    		android:textColor="#000000"
-    		android:textSize="38sp"
-    		android:gravity="center_vertical"
-    		android:visibility="gone" />
-    </FrameLayout>
-</LinearLayout>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/game_frame" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<com.howfun.android.antguide.AntView
+		android:id="@+id/ant_view" android:layout_width="fill_parent"
+		android:layout_height="fill_parent" />
+	<RelativeLayout android:id="@+id/game_menu"
+		android:layout_width="fill_parent" android:layout_height="50dp"
+		android:background="#00112233">
+		<Chronometer android:id="@+id/game_chronometer"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:layout_weight="0" android:paddingBottom="3dip"
+			android:textColor="#000000" android:paddingTop="3dip"
+			android:textSize ="22sp"
+			android:layout_alignParentLeft="true" />
+
+      
+		<TextView android:id="@+id/game_score" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="0"
+			android:textColor="#000000" android:textSize="22sp"
+			
+			android:layout_centerHorizontal="true"/>
+
+
+		<FrameLayout android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_alignParentRight="true">
+			<ImageView android:id="@+id/game_pause"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:src="@drawable/pause" />
+
+			<ImageView android:id="@+id/game_play"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:src="@drawable/play" />
+		</FrameLayout>
+	</RelativeLayout>
+</FrameLayout>
+

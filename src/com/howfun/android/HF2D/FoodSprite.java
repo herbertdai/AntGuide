@@ -17,6 +17,8 @@ public class FoodSprite extends Sprite {
    
    private static final int FOOD_W = 40;
    private static final int FOOD_H = 40;
+   private static final int FOOD_RANGE_Y = 800;
+   private static final int FOOD_RANGE_X = 480;
    
 	private Bitmap mBmp;
    private Context mContext;
@@ -54,17 +56,24 @@ public class FoodSprite extends Sprite {
 
 	private void loadFood() {
 		Resources r = mContext.getResources();
-		Drawable holeDrawable = r.getDrawable(R.drawable.icon);
-//		Bitmap bitmap = Bitmap.createBitmap(FOOD_W, HOME_H,
-//				Bitmap.Config.ARGB_8888);
-//		Canvas canvas = new Canvas(bitmap);
-//		holeDrawable.draw(canvas);
-//		mBmp = bitmap;
-		mBmp = ((BitmapDrawable)holeDrawable).getBitmap();
+		Drawable holeDrawable = r.getDrawable(R.drawable.play);
+		Bitmap bitmap = Bitmap.createBitmap(FOOD_W, FOOD_H,
+				Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(bitmap);
+      holeDrawable.setBounds(0, 0, FOOD_W, FOOD_H);
+		holeDrawable.draw(canvas);
+		mBmp = bitmap;
+		//mBmp = ((BitmapDrawable)holeDrawable).getBitmap();
 	}
 
    @Override
    public void clear() {
       Utils.recycleBitmap(mBmp);
+      mBmp = null;
+   }
+
+   public void setNewPos() {
+      mPos = HF2D.getNewPos(FOOD_RANGE_X, FOOD_RANGE_Y);
+      HF2D.calRectByPos(mRect, mPos, FOOD_W, FOOD_H);
    }
 }

@@ -151,6 +151,7 @@ public class AntSprite extends Sprite {
    @Override
    public void clear() {
       Utils.recycleBitmap(mRotatedBitmap);
+      mRotatedBitmap = null;
       for (int i = 0; i < mAntBmpArray.length; i++) {
          Utils.recycleBitmap(mAntBmpArray[i]);
          mAntBmpArray[i] = null;

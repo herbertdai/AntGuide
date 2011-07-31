@@ -8,6 +8,7 @@ public class HF2D {
 
    private static final String TAG = "HF2D";
    private static final int YUZHI = 6;
+   private static final double SPACE = 150;
 
    /*
     * Get next pos by angle and speed
@@ -183,6 +184,7 @@ public class HF2D {
             (Math.abs(pos1.x - pos2.x) < (r1.width() + r2.width()) / 2)
             && (Math.abs(pos1.y - pos2.y) <= (r1.height() + r2.height()) / 2 )
             ) {
+         Utils.log(TAG, "pos1=" + pos1.x + ", " + pos1.y + "   pos2=" + pos2.x + ", " + pos2.y);
          return true;
       }
       return false;
@@ -200,5 +202,17 @@ public class HF2D {
       mRect.right = mRect.left + width;
       mRect.top = (int) (mPos.y - height / 2);
       mRect.bottom = mRect.top + height;
+   }
+   
+   /*
+    * Get a random position in the given rectangle
+    */
+   public static Pos getNewPos(int width, int height) {
+      
+      int x = (int) (Math.random()* (width - SPACE) + SPACE / 2);
+      int y = (int) (Math.random() * (height - SPACE) + SPACE / 2);
+      Pos pos = new Pos(x,y);
+      return pos;
+      
    }
 }

@@ -35,7 +35,9 @@ public class AntGuide extends Activity implements OnTouchListener {
 	private ImageView gamePause;
 	private ImageView gamePlay;
 	private AntView antView;
-	private TextView gameInfo;
+	
+	private int mScore;
+   private static final int FOOD_SCORE = 100;
 
 	private Handler mHandler = new Handler() {
 
@@ -46,8 +48,6 @@ public class AntGuide extends Activity implements OnTouchListener {
 				gamePause.setVisibility(View.INVISIBLE);
 				gamePlay.setVisibility(View.VISIBLE);
 
-				gameInfo.setVisibility(View.VISIBLE);
-				gameInfo.setText("Ant gets home...");
 				gameChronometer.stop();
 				break;
 			case Utils.MSG_ANT_LOST:
@@ -55,10 +55,13 @@ public class AntGuide extends Activity implements OnTouchListener {
 				gamePause.setVisibility(View.INVISIBLE);
 				gamePlay.setVisibility(View.VISIBLE);
 
-				gameInfo.setVisibility(View.VISIBLE);
-				gameInfo.setText("Ant is lost!!!");
 				gameChronometer.stop();
 				break;
+			case Utils.MSG_UPDATE_SCORE:
+			   updateScore();
+			   break;
+		   default:
+			      break;
 			}
 		}
 
@@ -91,7 +94,6 @@ public class AntGuide extends Activity implements OnTouchListener {
 		gamePause = (ImageView) findViewById(R.id.game_pause);
 		gamePlay = (ImageView) findViewById(R.id.game_play);
 		antView = (AntView) findViewById(R.id.ant_view);
-		gameInfo = (TextView) findViewById(R.id.game_info);
 	}
 
 	private void setupListeners() {
@@ -161,8 +163,6 @@ public class AntGuide extends Activity implements OnTouchListener {
 		gamePause.setVisibility(View.INVISIBLE);
 		gamePlay.setVisibility(View.VISIBLE);
 		antView.pauseGame();
-		gameInfo.setVisibility(View.VISIBLE);
-		gameInfo.setText("GAME OVER!!!");
 		gameChronometer.stop();
 	}
 
@@ -170,11 +170,11 @@ public class AntGuide extends Activity implements OnTouchListener {
 		Utils.log(TAG, "playGame..");
 		gamePause.setVisibility(View.VISIBLE);
 		gamePlay.setVisibility(View.INVISIBLE);
-		gameInfo.setText("");
-		gameInfo.setVisibility(View.INVISIBLE);
 		antView.playGame();
 		gameChronometer.setBase(SystemClock.elapsedRealtime());
 		gameChronometer.start();
+		mScore = 0;
+		gameScore.setText(String.valueOf(mScore));
 	}
 
 	@Override
@@ -201,5 +201,14 @@ public class AntGuide extends Activity implements OnTouchListener {
 		pauseGame();
 
 		stopService(mIntentService);
+	}
+	
+   
+	private void updateScore() {
+	   mScore += FOOD_SCORE;
+	   if (gameScore != null) {
+	      gameScore.setText(String.valueOf(mScore));
+	   }
+	   
 	}
 }

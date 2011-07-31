@@ -12,24 +12,23 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 
 public class HomeSprite extends Sprite {
-   
-   
+
    private static final int HOME_W = 70;
    private static final int HOME_H = 70;
-   
-	private Bitmap mHoleBmp;
+
+   private Bitmap mHoleBmp;
    private Context mContext;
    private Paint mPaint;
-	
+
    public HomeSprite(Context context, Pos pos) {
       mContext = context;
       mPos = pos;
       mRect = new Rect();
       HF2D.calRectByPos(mRect, mPos, HOME_W, HOME_H);
-      
+
       loadHole();
       mPaint = new Paint();
-      
+
    }
 
    @Override
@@ -51,19 +50,20 @@ public class HomeSprite extends Sprite {
       return mPos;
    }
 
-	private void loadHole() {
-		Resources r = mContext.getResources();
-		Drawable holeDrawable = r.getDrawable(R.drawable.hole);
-		Bitmap bitmap = Bitmap.createBitmap(HOME_W, HOME_H,
-				Bitmap.Config.ARGB_8888);
-		Canvas canvas = new Canvas(bitmap);
-		holeDrawable.setBounds(0, 0, 32, 32);
-		holeDrawable.draw(canvas);
-		mHoleBmp = bitmap;
-	}
+   private void loadHole() {
+      Resources r = mContext.getResources();
+      Drawable holeDrawable = r.getDrawable(R.drawable.hole);
+      Bitmap bitmap = Bitmap.createBitmap(HOME_W, HOME_H,
+            Bitmap.Config.ARGB_8888);
+      Canvas canvas = new Canvas(bitmap);
+      holeDrawable.setBounds(0, 0, 32, 32);
+      holeDrawable.draw(canvas);
+      mHoleBmp = bitmap;
+   }
 
    @Override
    public void clear() {
       Utils.recycleBitmap(mHoleBmp);
+      mHoleBmp = null;
    }
 }

@@ -10,4 +10,7 @@
     <string name="about">About</string>
 	<string name="exit">Exit</string>
 	<string name="record_play_error_text"> Audio playback failed </string>
+	
+	<string name="start">Start</string>
+	<string name="hiscore">High Score</string>
 </resources>

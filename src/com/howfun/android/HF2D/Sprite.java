@@ -15,6 +15,7 @@ public abstract class Sprite {
    protected Pos mPos;
    protected int mType;
    protected float mSpeed; //Move n pixels per step  
+   protected boolean mIsVisible;
    
    protected static final int TYPE_ANT = 0;
    protected static final int TYPE_LINE = 1;
