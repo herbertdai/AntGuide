@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:gravity="center_horizontal">
+	<TextView android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:paddingTop="5dp"
+		android:paddingBottom="5dp"
+		android:text="SCORE BOARD"
+		android:textSize="30sp"
+		android:textColor="#ffffff" />
+	<TextView android:id="@+id/no_score_record"
+		android:gravity="center"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:text="no score record"
+		android:textSize="22sp"
+		android:textColor="#ffffff"
+		android:visibility="gone" />
+	<ListView android:id="@+id/score_board"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"/>
+
+</LinearLayout>

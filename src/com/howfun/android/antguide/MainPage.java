@@ -42,6 +42,8 @@ public class MainPage extends Activity implements OnClickListener{
          startActivityForResult(intent, Utils.RESULT_ANT_GUIDE);
          break;
       case R.id.mainpage_hiscore_btn:
+         intent.setClass(MainPage.this, ScoreBoardActivity.class);
+         startActivity(intent);
          break;
       case R.id.mainpage_about_btn:
          showAbout();
