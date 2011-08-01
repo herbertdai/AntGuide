@@ -3,6 +3,7 @@ package com.howfun.android.antguide;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -18,6 +19,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.animation.AnimationUtils;
 import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -214,7 +216,11 @@ public class AntGuide extends Activity implements OnTouchListener {
    private void updateScore() {
       mScore += FOOD_SCORE;
       if (gameScore != null) {
+         gameScore.setAnimation(AnimationUtils.loadAnimation(this,
+                    R.anim.push_up_in));
          gameScore.setText(String.valueOf(mScore));
+         gameScore.setAnimation(AnimationUtils.loadAnimation(this,
+               R.anim.push_up_out));
       }
 
    }
