@@ -15,8 +15,6 @@ import android.widget.TextView;
 
 public class ScoreBoardActivity extends Activity {
 
-   private static final int TOP = 10;
-
    private TextView noScoreRecord;
    private ListView scoreBoard;
 
@@ -28,7 +26,7 @@ public class ScoreBoardActivity extends Activity {
       List<Score> l = new ArrayList<Score>();
       DBAdapter db = new DBAdapter(this);
       db.open();
-      l = db.getHighScores(TOP);
+      l = db.getHighScores(Utils.TOP_SCORE_COUNT);
       db.close();
       if (l == null || l.size() == 0) {
          noScoreRecord.setVisibility(View.VISIBLE);
