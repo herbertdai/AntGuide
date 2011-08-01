@@ -9,11 +9,15 @@ public final class Utils {
 
    private static final String TAG = "Ant Guide";
    
+   public static final int TOP_SCORE_COUNT = 5;
+   
    public static final int MSG_ANT_HOME = 1; 
    public static final int MSG_ANT_LOST = 2;
    public static final int MSG_UPDATE_SCORE = 3; 
 
    public static final int RESULT_ANT_GUIDE = 1;
+   
+   public static final String SCORE = "score";
 
    
    public static void log(String tag, String info) {
