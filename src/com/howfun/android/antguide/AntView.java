@@ -140,6 +140,9 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
    public void pauseGame() {
       updateThread.pause();
    }
+   public void continueGame() {
+      updateThread.play();
+   }
 
    public void surfaceChanged(SurfaceHolder holder, int format, int width,
          int border) {

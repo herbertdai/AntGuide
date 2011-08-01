@@ -113,7 +113,8 @@ public class AntGuide extends Activity implements OnTouchListener {
 
 				@Override
 				public void onClick(View v) {
-					playGame();
+					//playGame();
+				   continueGame();//test
 				}
 			});
 		}
@@ -175,6 +176,10 @@ public class AntGuide extends Activity implements OnTouchListener {
 		gameChronometer.start();
 		mScore = 0;
 		gameScore.setText(String.valueOf(mScore));
+	}
+	
+	private void continueGame() {
+	   antView.continueGame();
 	}
 
 	@Override
