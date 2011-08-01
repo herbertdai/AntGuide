@@ -2,11 +2,7 @@ package com.howfun.android.antguide;
 
 import java.util.ArrayList;
 import java.util.List;
-
-
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -43,6 +39,8 @@ public class AntGuide extends Activity implements OnTouchListener {
 
    private int mScore;
    private static final int FOOD_SCORE = 100;
+   
+   private GameStatus mStatus;
 
    private Handler mHandler = new Handler() {
 
@@ -87,10 +85,6 @@ public class AntGuide extends Activity implements OnTouchListener {
 
       setContentView(R.layout.game_view);
 
-      // findViews();
-      // setupListeners();
-      // init();
-
    }
 
    private void findViews() {
@@ -118,7 +112,8 @@ public class AntGuide extends Activity implements OnTouchListener {
 
             @Override
             public void onClick(View v) {
-               playGame();
+               //playGame();
+               continueGame();
             }
          });
       }
@@ -160,6 +155,8 @@ public class AntGuide extends Activity implements OnTouchListener {
       gameChronometer.start();
       mIntentService = new Intent("com.howfun.android.antguide.MusicService");
       mIntentReceiver = new Intent("com.howfun.android.antguide.MusicReceiver");
+      mStatus = new GameStatus(AntGuide.this);
+      mStatus.setStaus(GameStatus.GAME_RUNNING);
    }
 
    private void pauseGame() {
@@ -168,6 +165,7 @@ public class AntGuide extends Activity implements OnTouchListener {
       gamePlay.setVisibility(View.VISIBLE);
       antView.pauseGame();
       gameChronometer.stop();
+      mStatus.setStaus(GameStatus.GAME_PAUSED);
    }
 
    private void playGame() {
@@ -179,6 +177,7 @@ public class AntGuide extends Activity implements OnTouchListener {
       gameChronometer.start();
       mScore = 0;
       gameScore.setText(String.valueOf(mScore));
+      mStatus.setStaus(GameStatus.GAME_RUNNING);
    }
 
    @Override
@@ -254,6 +253,10 @@ public class AntGuide extends Activity implements OnTouchListener {
    }
    
 	private void continueGame() {
+      gamePause.setVisibility(View.VISIBLE);
+      gamePlay.setVisibility(View.INVISIBLE);
+      gameChronometer.start();
 	   antView.continueGame();
+	   mStatus.setStaus(GameStatus.GAME_RUNNING);
 	}
 }
