@@ -2,6 +2,7 @@ package com.howfun.android.antguide;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.animation.AnimationUtils;
 import android.widget.Chronometer;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,10 +38,11 @@ public class AntGuide extends Activity implements OnTouchListener {
    private ImageView gamePause;
    private ImageView gamePlay;
    private AntView antView;
+   private FrameLayout mGameInfo;
 
    private int mScore;
    private static final int FOOD_SCORE = 100;
-   
+
    private GameStatus mStatus;
 
    private Handler mHandler = new Handler() {
@@ -57,6 +60,8 @@ public class AntGuide extends Activity implements OnTouchListener {
             antView.pauseGame();
             gamePause.setVisibility(View.INVISIBLE);
             gamePlay.setVisibility(View.VISIBLE);
+            mStatus.setStaus(GameStatus.GAME_STOPPED);
+            mGameInfo.setVisibility(View.VISIBLE);
 
             gameChronometer.stop();
             break;
@@ -93,6 +98,7 @@ public class AntGuide extends Activity implements OnTouchListener {
       gamePause = (ImageView) findViewById(R.id.game_pause);
       gamePlay = (ImageView) findViewById(R.id.game_play);
       antView = (AntView) findViewById(R.id.ant_view);
+      mGameInfo = (FrameLayout) findViewById(R.id.game_view_info);
    }
 
    private void setupListeners() {
@@ -112,8 +118,11 @@ public class AntGuide extends Activity implements OnTouchListener {
 
             @Override
             public void onClick(View v) {
-               //playGame();
-               continueGame();
+               if (mStatus.getStatus() == GameStatus.GAME_PAUSED) {
+                  continueGame();
+               } else if (mStatus.getStatus() == GameStatus.GAME_STOPPED) {
+                  playGame();
+               }
             }
          });
       }
@@ -172,6 +181,7 @@ public class AntGuide extends Activity implements OnTouchListener {
       Utils.log(TAG, "playGame..");
       gamePause.setVisibility(View.VISIBLE);
       gamePlay.setVisibility(View.INVISIBLE);
+      mGameInfo.setVisibility(View.GONE);
       antView.playGame();
       gameChronometer.setBase(SystemClock.elapsedRealtime());
       gameChronometer.start();
@@ -209,14 +219,14 @@ public class AntGuide extends Activity implements OnTouchListener {
          Utils.log(TAG, "needs show score board");
          showScoreBoard();
       }
-      
+
    }
 
    private void updateScore() {
       mScore += FOOD_SCORE;
       if (gameScore != null) {
          gameScore.setAnimation(AnimationUtils.loadAnimation(this,
-                    R.anim.push_up_in));
+               R.anim.push_up_in));
          gameScore.setText(String.valueOf(mScore));
          gameScore.setAnimation(AnimationUtils.loadAnimation(this,
                R.anim.push_up_out));
@@ -251,12 +261,12 @@ public class AntGuide extends Activity implements OnTouchListener {
       }
       return flag;
    }
-   
-	private void continueGame() {
+
+   private void continueGame() {
       gamePause.setVisibility(View.VISIBLE);
       gamePlay.setVisibility(View.INVISIBLE);
       gameChronometer.start();
-	   antView.continueGame();
-	   mStatus.setStaus(GameStatus.GAME_RUNNING);
-	}
+      antView.continueGame();
+      mStatus.setStaus(GameStatus.GAME_RUNNING);
+   }
 }

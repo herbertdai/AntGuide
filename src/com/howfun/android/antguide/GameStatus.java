@@ -6,7 +6,7 @@ public class GameStatus {
    private int mStatus;
    public static final int GAME_RUNNING = 1;
    public static final int GAME_PAUSED = 2;
-   public static final int GAME_STOPED = 3;
+   public static final int GAME_STOPPED = 3;
    
    private Context mContext;
    
