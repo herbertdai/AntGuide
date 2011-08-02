@@ -1,0 +1,14 @@
+
+=========================================================
+
+   Ant Guide
+            --HOW FUN Studio Presents (2011)
+
+=========================================================
+
+V0.80.00 
+   2011Aug2
+   TODO: Fix the bug when pause game the time is still under counting.
+   TODO: Add Images and icons
+   
+   Done: Add Cool down of collision check.

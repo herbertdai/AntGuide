@@ -28,6 +28,10 @@ public class AntSprite extends Sprite {
    public static final int ANT_WIDTH = 32;
    public static final int ANT_HEIGHT = 32;
 
+   //Cool down after collision
+   public static final int COOL_DOWN = 15;
+   private int mCoolDown; 
+   
    public AntSprite(Context c) {
       mContext = c;
       init();
@@ -155,6 +159,18 @@ public class AntSprite extends Sprite {
       for (int i = 0; i < mAntBmpArray.length; i++) {
          Utils.recycleBitmap(mAntBmpArray[i]);
          mAntBmpArray[i] = null;
+      }
+   }
+
+   public void startCoolDown() {
+      mCoolDown = COOL_DOWN;
+   }
+   
+   public boolean checkIsCoolDown() {
+      if (mCoolDown -- <= 0) {
+         return false;
+      } else{
+         return true;
       }
    }
 

@@ -35,6 +35,10 @@ public class HF2D {
     * @return true collision
     */
    public static boolean checkRectAndLineCollision(AntSprite ant, LineSprite line) {
+      
+      if (ant.checkIsCoolDown()) {
+         return false;
+      }
 
       if (ant == null || line == null) {
          Utils.log(TAG, "ant or line is null in checkCollision()");
@@ -153,6 +157,9 @@ public class HF2D {
          }
       }
 
+      if (isCollision) {
+         ant.startCoolDown();
+      }
       return isCollision;
    }
 
