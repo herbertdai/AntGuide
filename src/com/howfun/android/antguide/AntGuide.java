@@ -55,6 +55,7 @@ public class AntGuide extends Activity implements OnTouchListener {
             gamePlay.setVisibility(View.VISIBLE);
 
             gameChronometer.stop();
+            showScoreBoard();
             break;
          case Utils.MSG_ANT_LOST:
             antView.pauseGame();
@@ -64,6 +65,7 @@ public class AntGuide extends Activity implements OnTouchListener {
             mGameInfo.setVisibility(View.VISIBLE);
 
             gameChronometer.stop();
+            showScoreBoard();
             break;
          case Utils.MSG_UPDATE_SCORE:
             updateScore();
@@ -214,11 +216,6 @@ public class AntGuide extends Activity implements OnTouchListener {
       pauseGame();
 
       stopService(mIntentService);
-      // TODO
-      if (isHighScore()) {
-         Utils.log(TAG, "needs show score board");
-         showScoreBoard();
-      }
 
    }
 
@@ -235,9 +232,12 @@ public class AntGuide extends Activity implements OnTouchListener {
    }
 
    private void showScoreBoard() {
+      if (!isHighScore())
+         return;
       Intent intent = new Intent(this, BigNameActivity.class);
       long score = mScore;
       intent.putExtra(Utils.SCORE, score);
+      mScore = 0;
       startActivity(intent);
    }
 
