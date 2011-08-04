@@ -45,16 +45,17 @@ public class AntGuide extends Activity implements OnTouchListener {
    Intent mIntentReceiver = null;
 
    private TextView gameScore;
-   private Chronometer gameChronometer;
+   // private Chronometer gameChronometer;
    private ImageView gamePause;
    private ImageView gamePlay;
    private AntView antView;
    private FrameLayout mGameInfo;
+   private TextView mGameInfoText;
 
    private int mScore;
    private static final int FOOD_SCORE = 100;
 
-   private GameStatus mStatus;
+   private GameStatus mGameStatus;
 
    private Handler mHandler = new Handler() {
 
@@ -62,23 +63,11 @@ public class AntGuide extends Activity implements OnTouchListener {
          switch (msg.what) {
          case Utils.MSG_ANT_HOME:
             playSoundEffect(SOUND_EFFECT_VICTORY);
-            antView.pauseGame();
-            gamePause.setVisibility(View.INVISIBLE);
-            gamePlay.setVisibility(View.VISIBLE);
-
-            gameChronometer.stop();
-            showScoreBoard();
+            stopGame(Utils.ANT_HOME);
             break;
          case Utils.MSG_ANT_LOST:
             playSoundEffect(SOUND_EFFECT_LOST);
-            antView.pauseGame();
-            gamePause.setVisibility(View.INVISIBLE);
-            gamePlay.setVisibility(View.VISIBLE);
-            mStatus.setStaus(GameStatus.GAME_STOPPED);
-            mGameInfo.setVisibility(View.VISIBLE);
-
-            gameChronometer.stop();
-            showScoreBoard();
+            stopGame(Utils.ANT_LOST);
             break;
          case Utils.MSG_ANT_COLLISION:
             playSoundEffect(SOUND_EFFECT_COLLISION);
@@ -90,6 +79,7 @@ public class AntGuide extends Activity implements OnTouchListener {
             break;
          case Utils.MSG_ANT_TIMEOUT:
             // TODO: game timeout
+            stopGame(Utils.ANT_TIMEOUT);
             break;
          default:
             break;
@@ -117,16 +107,47 @@ public class AntGuide extends Activity implements OnTouchListener {
       findViews();
       setupListeners();
       loadSoundEffects();
+      init();
+
+   }
+
+   @Override
+   protected void onResume() {
+      super.onResume();
+      Utils.log(TAG, "onresume..");
+
+      sendBroadcast(mIntentReceiver);
+      int gameStatus = mGameStatus.getStatus();
+
+      if (gameStatus == GameStatus.GAME_INIT) {
+         playGame();
+      } else if (gameStatus == GameStatus.GAME_STOPPED) {
+         playGame();
+      } else if (gameStatus == GameStatus.GAME_PAUSED) {
+         resumeGame();
+      } else {
+         // TODO stop
+      }
+
+   }
+
+   @Override
+   protected void onPause() {
+      super.onPause();
+      Utils.log(TAG, "onPause..");
+      pauseGame();
+      stopService(mIntentService);
 
    }
 
    private void findViews() {
       gameScore = (TextView) findViewById(R.id.game_score);
-      gameChronometer = (Chronometer) findViewById(R.id.game_chronometer);
       gamePause = (ImageView) findViewById(R.id.game_pause);
       gamePlay = (ImageView) findViewById(R.id.game_play);
       antView = (AntView) findViewById(R.id.ant_view);
       mGameInfo = (FrameLayout) findViewById(R.id.game_view_info);
+
+      mGameInfoText = (TextView) findViewById(R.id.game_view_info_text);
    }
 
    private void setupListeners() {
@@ -146,9 +167,9 @@ public class AntGuide extends Activity implements OnTouchListener {
 
             @Override
             public void onClick(View v) {
-               if (mStatus.getStatus() == GameStatus.GAME_PAUSED) {
-                  continueGame();
-               } else if (mStatus.getStatus() == GameStatus.GAME_STOPPED) {
+               if (mGameStatus.getStatus() == GameStatus.GAME_PAUSED) {
+                  resumeGame();
+               } else if (mGameStatus.getStatus() == GameStatus.GAME_STOPPED) {
                   playGame();
                }
             }
@@ -200,64 +221,105 @@ public class AntGuide extends Activity implements OnTouchListener {
    }
 
    private void init() {
-      antView.init();
-      antView.setHandler(mHandler);
-
-      gamePause.setVisibility(View.VISIBLE);
-      gamePlay.setVisibility(View.INVISIBLE);
-
-      gameChronometer.start();
       mIntentService = new Intent("com.howfun.android.antguide.MusicService");
       mIntentReceiver = new Intent("com.howfun.android.antguide.MusicReceiver");
-      mStatus = new GameStatus(AntGuide.this);
-      mStatus.setStaus(GameStatus.GAME_RUNNING);
-   }
 
-   private void pauseGame() {
-      Utils.log(TAG, "pauseGame..");
-      gamePause.setVisibility(View.INVISIBLE);
-      gamePlay.setVisibility(View.VISIBLE);
-      antView.pauseGame();
-      gameChronometer.stop();
-      mStatus.setStaus(GameStatus.GAME_PAUSED);
+      mGameStatus = new GameStatus();
+      antView.setHandler(mHandler);
    }
 
    private void playGame() {
       Utils.log(TAG, "playGame..");
-      gamePause.setVisibility(View.VISIBLE);
-      gamePlay.setVisibility(View.INVISIBLE);
-      mGameInfo.setVisibility(View.GONE);
+      mGameStatus.setStaus(GameStatus.GAME_RUNNING);
+
       antView.playGame();
-      gameChronometer.setBase(SystemClock.elapsedRealtime());
-      gameChronometer.start();
+
+      showGamePause();
+
+      hideGameInfo();
+
       mScore = 0;
       gameScore.setText(String.valueOf(mScore));
-      mStatus.setStaus(GameStatus.GAME_RUNNING);
+
+      // TODO timing starts
+
+   }
+
+   private void resumeGame() {
+      mGameStatus.setStaus(GameStatus.GAME_RUNNING);
+
+      antView.resumeGame();
+
+      showGamePause();
+      hideGameInfo();
+      // TODO timing resume
+   }
+
+   /**
+    * if pause btn is clicked or activity runs onPause(),u should call this func
+    */
+   private void pauseGame() {
+      Utils.log(TAG, "pauseGame..");
+      mGameStatus.setStaus(GameStatus.GAME_PAUSED);
+      antView.pauseGame();
+      hideGamePause();
+      showGameInfo("game paused");
+      // TODO timing pause
+   }
+
+   /**
+    * stop the game if ant gets home or lost
+    * 
+    * @param why
+    *           why stops the game ,the reasons may be ant gets home or ant gets
+    *           disappeared
+    */
+   private void stopGame(int why) {
+      mGameStatus.setStaus(GameStatus.GAME_STOPPED);
+      antView.stopGame();
+      hideGamePause();
+
+      String info = "";
+      if (why == Utils.ANT_HOME) {
+         info = "Great,Ant got home!";
+      } else if (why == Utils.ANT_LOST) {
+         info = "Opps,Ant got lost!!!";
+      } else {
+         info = "Ehhhhhhhhhhhhh!";
+      }
+      showGameInfo("Game over");
+      mScore = 0;
+      gameScore.setText(String.valueOf(mScore));
+      // TODO timing clear
+   }
+
+   private void showGamePause() {
+      gamePause.setVisibility(View.VISIBLE);
+      gamePlay.setVisibility(View.INVISIBLE);
+   }
+
+   private void hideGamePause() {
+      gamePause.setVisibility(View.INVISIBLE);
+      gamePlay.setVisibility(View.VISIBLE);
+   }
+
+   private void hideGameInfo() {
+      mGameInfo.setVisibility(View.GONE);
+   }
+
+   /**
+    * 
+    * @param info
+    *           pause or game over
+    */
+   private void showGameInfo(String info) {
+      mGameInfo.setVisibility(View.VISIBLE);
+      mGameInfoText.setText(info);
    }
 
    @Override
    public boolean onTouch(View v, MotionEvent event) {
       return false;
-   }
-
-   @Override
-   protected void onResume() {
-      super.onResume();
-      Utils.log(TAG, "onresume..");
-
-      init();
-      sendBroadcast(mIntentReceiver);
-      // startService(mIntentService);
-   }
-
-   @Override
-   protected void onPause() {
-      super.onPause();
-      Utils.log(TAG, "onPause..");
-      pauseGame();
-
-      stopService(mIntentService);
-
    }
 
    private void updateScore() {
@@ -303,11 +365,4 @@ public class AntGuide extends Activity implements OnTouchListener {
       return flag;
    }
 
-   private void continueGame() {
-      gamePause.setVisibility(View.VISIBLE);
-      gamePlay.setVisibility(View.INVISIBLE);
-      gameChronometer.start();
-      antView.continueGame();
-      mStatus.setStaus(GameStatus.GAME_RUNNING);
-   }
 }
