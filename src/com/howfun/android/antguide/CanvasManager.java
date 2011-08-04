@@ -228,7 +228,7 @@ public class CanvasManager {
       int height = AntGuide.DEVICE_HEIGHT;
 
       Resources r = mContext.getResources();
-      Drawable holeDrawable = r.getDrawable(R.drawable.background);
+      Drawable holeDrawable = r.getDrawable(R.drawable.ground_paper);
       Bitmap bitmap = Bitmap.createBitmap(width, height,
             Bitmap.Config.ARGB_8888);
       Canvas canvas = new Canvas(bitmap);
