@@ -81,6 +81,11 @@ public class AntGuide extends Activity implements OnTouchListener {
             // TODO: game timeout
             stopGame(Utils.ANT_TIMEOUT);
             break;
+
+         case Utils.MSG_SCORE_BOARD:
+            Utils.log(TAG, "show scroe board,score====" + msg.arg1);
+            showScoreBoard(msg.arg1);
+            break;
          default:
             break;
          }
@@ -135,7 +140,8 @@ public class AntGuide extends Activity implements OnTouchListener {
    protected void onPause() {
       super.onPause();
       Utils.log(TAG, "onPause..");
-      pauseGame();
+//      pauseGame();
+      //TODO pause bug
       stopService(mIntentService);
 
    }
@@ -231,7 +237,6 @@ public class AntGuide extends Activity implements OnTouchListener {
    private void playGame() {
       Utils.log(TAG, "playGame..");
       mGameStatus.setStaus(GameStatus.GAME_RUNNING);
-
       antView.playGame();
 
       showGamePause();
@@ -284,13 +289,22 @@ public class AntGuide extends Activity implements OnTouchListener {
          info = "Great,Ant got home!";
       } else if (why == Utils.ANT_LOST) {
          info = "Opps,Ant got lost!!!";
+      } else if (why == Utils.ANT_TIMEOUT) {
+         info = "Oh,Time Out....";
       } else {
          info = "Ehhhhhhhhhhhhh!";
       }
-      showGameInfo("Game over");
+      showGameInfo(info);
+      // TODO timing clear
+
+      if (isHighScore(mScore)) {
+         Message msg = new Message();
+         msg.what = Utils.MSG_SCORE_BOARD;
+         msg.arg1 = mScore;
+         mHandler.sendMessage(msg);
+      }
       mScore = 0;
       gameScore.setText(String.valueOf(mScore));
-      // TODO timing clear
    }
 
    private void showGamePause() {
@@ -334,19 +348,15 @@ public class AntGuide extends Activity implements OnTouchListener {
 
    }
 
-   private void showScoreBoard() {
-      if (!isHighScore())
-         return;
+   private void showScoreBoard(long score) {
       Intent intent = new Intent(this, BigNameActivity.class);
-      long score = mScore;
       intent.putExtra(Utils.SCORE, score);
-      mScore = 0;
       startActivity(intent);
    }
 
-   private boolean isHighScore() {
+   private boolean isHighScore(long score) {
       boolean flag = false;
-      if (mScore == 0) {
+      if (score == 0) {
          return false;
       }
       List<Score> l = new ArrayList<Score>();
@@ -357,8 +367,8 @@ public class AntGuide extends Activity implements OnTouchListener {
       if (l.size() < Utils.TOP_SCORE_COUNT) {
          flag = true;
       } else {
-         long score = l.get(l.size() - 1).getScore();
-         if (mScore >= score) {
+         long scoreT = l.get(l.size() - 1).getScore();
+         if (score >= scoreT) {
             flag = true;
          }
       }
