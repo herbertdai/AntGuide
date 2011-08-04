@@ -122,6 +122,8 @@ public class AntGuide extends Activity implements OnTouchListener {
       Utils.log(TAG, "onresume..");
 
       sendBroadcast(mIntentReceiver);
+      
+      antView.init(mHandler);
       int gameStatus = mGameStatus.getStatus();
 
       if (gameStatus == GameStatus.GAME_INIT) {
@@ -140,7 +142,7 @@ public class AntGuide extends Activity implements OnTouchListener {
    protected void onPause() {
       super.onPause();
       Utils.log(TAG, "onPause..");
-//      pauseGame();
+      pauseGame();
       //TODO pause bug
       stopService(mIntentService);
 
@@ -231,7 +233,6 @@ public class AntGuide extends Activity implements OnTouchListener {
       mIntentReceiver = new Intent("com.howfun.android.antguide.MusicReceiver");
 
       mGameStatus = new GameStatus();
-      antView.setHandler(mHandler);
    }
 
    private void playGame() {
