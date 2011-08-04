@@ -5,6 +5,8 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -30,6 +32,15 @@ public class AntGuide extends Activity implements OnTouchListener {
    public static int DEVICE_WIDTH;
    public static int DEVICE_HEIGHT;
 
+   private static final int SOUND_EFFECT_COLLISION = 0;
+   private static final int SOUND_EFFECT_FOOD = 1;
+   private static final int SOUND_EFFECT_VICTORY = 2;
+   private static final int SOUND_EFFECT_LOST = 3;
+
+   private SoundPool mSoundPool;
+   private int[] mSounds;
+   private int[] mSoundIds;
+
    Intent mIntentService = null;
    Intent mIntentReceiver = null;
 
@@ -50,6 +61,7 @@ public class AntGuide extends Activity implements OnTouchListener {
       public void handleMessage(Message msg) {
          switch (msg.what) {
          case Utils.MSG_ANT_HOME:
+            playSoundEffect(SOUND_EFFECT_VICTORY);
             antView.pauseGame();
             gamePause.setVisibility(View.INVISIBLE);
             gamePlay.setVisibility(View.VISIBLE);
@@ -58,6 +70,7 @@ public class AntGuide extends Activity implements OnTouchListener {
             showScoreBoard();
             break;
          case Utils.MSG_ANT_LOST:
+            playSoundEffect(SOUND_EFFECT_LOST);
             antView.pauseGame();
             gamePause.setVisibility(View.INVISIBLE);
             gamePlay.setVisibility(View.VISIBLE);
@@ -67,8 +80,16 @@ public class AntGuide extends Activity implements OnTouchListener {
             gameChronometer.stop();
             showScoreBoard();
             break;
-         case Utils.MSG_UPDATE_SCORE:
+         case Utils.MSG_ANT_COLLISION:
+            playSoundEffect(SOUND_EFFECT_COLLISION);
+            break;
+
+         case Utils.MSG_ANT_FOOD:
+            playSoundEffect(SOUND_EFFECT_FOOD);
             updateScore();
+            break;
+         case Utils.MSG_ANT_TIMEOUT:
+            // TODO: game timeout
             break;
          default:
             break;
@@ -87,10 +108,15 @@ public class AntGuide extends Activity implements OnTouchListener {
 
       DisplayMetrics dm = new DisplayMetrics();
       this.getWindowManager().getDefaultDisplay().getMetrics(dm);
+      // get device pixels
       DEVICE_WIDTH = dm.widthPixels;
       DEVICE_HEIGHT = dm.heightPixels;
 
       setContentView(R.layout.game_view);
+
+      findViews();
+      setupListeners();
+      loadSoundEffects();
 
    }
 
@@ -156,6 +182,23 @@ public class AntGuide extends Activity implements OnTouchListener {
       }
    }
 
+   private void loadSoundEffects() {
+      mSounds = new int[] { R.raw.collision, R.raw.food, R.raw.victory,
+            R.raw.lost };
+      mSoundPool = new SoundPool(mSounds.length, AudioManager.STREAM_MUSIC, 100);
+      mSoundIds = new int[] {
+            mSoundPool.load(this, mSounds[SOUND_EFFECT_COLLISION], 1),
+            mSoundPool.load(this, mSounds[SOUND_EFFECT_FOOD], 1),
+            mSoundPool.load(this, mSounds[SOUND_EFFECT_VICTORY], 1),
+            mSoundPool.load(this, mSounds[SOUND_EFFECT_LOST], 1) };
+   }
+
+   private void playSoundEffect(int id) {
+      if (mSoundPool != null) {
+         mSoundPool.play(mSoundIds[id], 13, 15, 1, 0, 1f);
+      }
+   }
+
    private void init() {
       antView.init();
       antView.setHandler(mHandler);
@@ -202,8 +245,6 @@ public class AntGuide extends Activity implements OnTouchListener {
       super.onResume();
       Utils.log(TAG, "onresume..");
 
-      findViews();
-      setupListeners();
       init();
       sendBroadcast(mIntentReceiver);
       // startService(mIntentService);

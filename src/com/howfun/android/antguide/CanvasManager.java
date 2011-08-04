@@ -25,12 +25,10 @@ import com.howfun.android.HF2D.Sprite;
 public class CanvasManager {
 
 	private static final int GRASS_WIDTH = 50;
-
-	private static final int HOLE_WIDTH = 50;
-
-	private static final int HOLE_HIGHT = 40;
-
 	private static final int GRASS_HEIGHT = 50;
+	
+	private static final int HOLE_WIDTH = 50;
+   private static final int HOLE_HIGHT = 40;
 
 	private ArrayList<Sprite> mSprites;
 
@@ -49,16 +47,10 @@ public class CanvasManager {
 	private LineSprite mLine;
 	private FoodSprite mFood;
 
-	private SoundPool mSoundPool;
-	private static final int SOUND_EFFECT_COLLISION = 0;
-	private static final int SOUND_EFFECT_VICTORY = 1;
-	private static final int SOUND_EFFECT_FOOD = 2;
-
 	private static final String TAG = "CanvasManager";
 
-	private int[] mSoundEffects = { R.raw.collision, R.raw.victory3,
-			R.raw.food2 };
-	private int[] mSoundIds;
+	
+	
 
 	private boolean mIsAntLost;
 	private boolean mIsAntHome;
@@ -71,16 +63,6 @@ public class CanvasManager {
 
 	public CanvasManager(Context c) {
 		mContext = c;
-
-		mSoundPool = new SoundPool(mSoundEffects.length,
-				AudioManager.STREAM_MUSIC, 100);
-		mSoundIds = new int[] {
-				mSoundPool.load(mContext,
-						mSoundEffects[SOUND_EFFECT_COLLISION], 1),
-				mSoundPool.load(mContext, mSoundEffects[SOUND_EFFECT_VICTORY],
-						1),
-				mSoundPool.load(mContext, mSoundEffects[SOUND_EFFECT_FOOD],
-						1) };
 
 		mSprites = new ArrayList<Sprite>();
 
@@ -150,8 +132,8 @@ public class CanvasManager {
 		isCollide = HF2D.checkRectAndLineCollision(mAnt, mLine);
 
 		if (isCollide) {
-			mSoundPool
-					.play(mSoundIds[SOUND_EFFECT_COLLISION], 13, 15, 1, 0, 1f);
+		   mHandler.sendMessage(mHandler
+               .obtainMessage(Utils.MSG_ANT_COLLISION));
 		}
 
 	}
@@ -167,12 +149,9 @@ public class CanvasManager {
 		if (mFood != null) {
 			if (HF2D.checkCollsion(mAnt, mFood)) {
 				Utils.log(TAG, "Eat food!!!");
-				mSoundPool
-				.play(mSoundIds[SOUND_EFFECT_FOOD], 13, 15, 1, 0, 1f);
-				
 				mFood.setNewPos();
 				mHandler.sendMessage(mHandler
-						.obtainMessage(Utils.MSG_UPDATE_SCORE));
+						.obtainMessage(Utils.MSG_ANT_FOOD));
 
 			}
 
@@ -193,7 +172,6 @@ public class CanvasManager {
 
 	private void antHome() {
 		mIsAntHome = true;
-		mSoundPool.play(mSoundIds[SOUND_EFFECT_VICTORY], 13, 15, 1, 0, 1f);
 		mHandler.sendMessage(mHandler.obtainMessage(Utils.MSG_ANT_HOME));
 	}
 
