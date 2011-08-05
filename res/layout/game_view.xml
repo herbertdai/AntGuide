@@ -10,7 +10,7 @@
 		android:background="#00112233">
 		<RelativeLayout android:id="@+id/game_time_board"
 			android:layout_width="wrap_content" android:layout_alignParentLeft="true"
-			android:layout_height="wrap_content">
+			android:layout_height="wrap_content" android:layout_marginTop="10px">
 
 			<ImageView android:id="@+id/time_min0"
 				android:layout_width="20px" android:layout_height="20px" />
@@ -29,7 +29,7 @@
 		</RelativeLayout>
 		<RelativeLayout android:id="@+id/game_score"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:layout_centerHorizontal="true">
+			android:layout_centerHorizontal="true" android:layout_marginTop="10px">
 
 			<ImageView android:id="@+id/score_0" android:layout_width="30px"
 				android:layout_height="30px" />
@@ -42,7 +42,7 @@
 
 
 		<FrameLayout android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:layout_alignParentRight="true">
+			android:layout_height="wrap_content" android:layout_alignParentRight="true" android:layout_marginTop="10px">
 			<ImageView android:id="@+id/game_pause"
 				android:layout_width="wrap_content" android:layout_height="wrap_content"
 				android:src="@drawable/pause" />
