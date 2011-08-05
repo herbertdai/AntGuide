@@ -163,7 +163,7 @@ public class AntGuide extends Activity implements OnTouchListener {
       pauseGame();
       // TODO pause bug
       stopService(mIntentService);
-
+      
    }
 
    @Override
