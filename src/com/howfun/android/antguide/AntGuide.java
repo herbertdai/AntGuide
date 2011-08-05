@@ -37,6 +37,13 @@ public class AntGuide extends Activity implements OnTouchListener {
    private static final int SOUND_EFFECT_VICTORY = 2;
    private static final int SOUND_EFFECT_LOST = 3;
 
+   private static final int FOOD_SCORE = 100;
+
+   private static final int[] nums = { R.drawable.num_0, R.drawable.num_1,
+         R.drawable.num_2, R.drawable.num_3, R.drawable.num_4,
+         R.drawable.num_5, R.drawable.num_6, R.drawable.num_7,
+         R.drawable.num_8, R.drawable.num_9 };
+
    private SoundPool mSoundPool;
    private int[] mSounds;
    private int[] mSoundIds;
@@ -52,10 +59,15 @@ public class AntGuide extends Activity implements OnTouchListener {
    private FrameLayout mGameInfo;
    private TextView mGameInfoText;
 
+   private ImageView mTimeMin0;
+   private ImageView mTimeMin1;
+   private ImageView mTimeSec0;
+   private ImageView mTimeSec1;
+
    private int mScore;
-   private static final int FOOD_SCORE = 100;
 
    private GameStatus mGameStatus;
+   private TimeManager mTimeManager;
 
    private Handler mHandler = new Handler() {
 
@@ -85,6 +97,10 @@ public class AntGuide extends Activity implements OnTouchListener {
          case Utils.MSG_SCORE_BOARD:
             Utils.log(TAG, "show scroe board,score====" + msg.arg1);
             showScoreBoard(msg.arg1);
+            break;
+         case Utils.MSG_TIME_UPDATED:
+            String time = (String) msg.obj;
+            updateTimeBoard(time);
             break;
          default:
             break;
@@ -122,7 +138,7 @@ public class AntGuide extends Activity implements OnTouchListener {
       Utils.log(TAG, "onresume..");
 
       sendBroadcast(mIntentReceiver);
-      
+
       antView.init(mHandler);
       int gameStatus = mGameStatus.getStatus();
 
@@ -143,7 +159,7 @@ public class AntGuide extends Activity implements OnTouchListener {
       super.onPause();
       Utils.log(TAG, "onPause..");
       pauseGame();
-      //TODO pause bug
+      // TODO pause bug
       stopService(mIntentService);
 
    }
@@ -156,6 +172,11 @@ public class AntGuide extends Activity implements OnTouchListener {
       mGameInfo = (FrameLayout) findViewById(R.id.game_view_info);
 
       mGameInfoText = (TextView) findViewById(R.id.game_view_info_text);
+
+      mTimeMin0 = (ImageView) findViewById(R.id.time_min0);
+      mTimeMin1 = (ImageView) findViewById(R.id.time_min1);
+      mTimeSec0 = (ImageView) findViewById(R.id.time_sec0);
+      mTimeSec1 = (ImageView) findViewById(R.id.time_sec1);
    }
 
    private void setupListeners() {
@@ -233,6 +254,7 @@ public class AntGuide extends Activity implements OnTouchListener {
       mIntentReceiver = new Intent("com.howfun.android.antguide.MusicReceiver");
 
       mGameStatus = new GameStatus();
+      mTimeManager = new TimeManager(mHandler);
    }
 
    private void playGame() {
@@ -248,6 +270,7 @@ public class AntGuide extends Activity implements OnTouchListener {
       gameScore.setText(String.valueOf(mScore));
 
       // TODO timing starts
+      mTimeManager.start();
 
    }
 
@@ -259,6 +282,7 @@ public class AntGuide extends Activity implements OnTouchListener {
       showGamePause();
       hideGameInfo();
       // TODO timing resume
+      mTimeManager.resume();
    }
 
    /**
@@ -271,6 +295,7 @@ public class AntGuide extends Activity implements OnTouchListener {
       hideGamePause();
       showGameInfo("game paused");
       // TODO timing pause
+      mTimeManager.pause();
    }
 
    /**
@@ -297,6 +322,7 @@ public class AntGuide extends Activity implements OnTouchListener {
       }
       showGameInfo(info);
       // TODO timing clear
+      mTimeManager.stop();
 
       if (isHighScore(mScore)) {
          Message msg = new Message();
@@ -353,6 +379,17 @@ public class AntGuide extends Activity implements OnTouchListener {
       Intent intent = new Intent(this, BigNameActivity.class);
       intent.putExtra(Utils.SCORE, score);
       startActivity(intent);
+   }
+
+   private void updateTimeBoard(String time) {
+      int min0 = Integer.parseInt(String.valueOf(time.charAt(0)));
+      int min1 = Integer.parseInt(String.valueOf(time.charAt(1)));
+      int sec0 = Integer.parseInt(String.valueOf(time.charAt(2)));
+      int sec1 = Integer.parseInt(String.valueOf(time.charAt(3)));
+      mTimeMin0.setBackgroundResource(nums[min0]);
+      mTimeMin1.setBackgroundResource(nums[min1]);
+      mTimeSec0.setBackgroundResource(nums[sec0]);
+      mTimeSec1.setBackgroundResource(nums[sec1]);
    }
 
    private boolean isHighScore(long score) {

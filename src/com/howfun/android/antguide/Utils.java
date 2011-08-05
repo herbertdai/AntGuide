@@ -18,6 +18,7 @@ public final class Utils {
    public static final int MSG_ANT_COLLISION = 4;
    public static final int MSG_ANT_TIMEOUT = 5;
    public static final int MSG_SCORE_BOARD = 6;
+   public static final int MSG_TIME_UPDATED = 7;
    
    public static final int ANT_HOME = 1;
    public static final int ANT_LOST = 2;

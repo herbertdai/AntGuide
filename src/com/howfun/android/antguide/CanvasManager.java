@@ -75,6 +75,7 @@ public class CanvasManager {
 
    public void setHandler(Handler handler) {
       mHandler = handler;
+      Utils.log(TAG, "set canvas manager handler");
       // game time out 
       mHandler.sendEmptyMessageDelayed(Utils.MSG_ANT_TIMEOUT, Utils.TIMEOUT);
    }
@@ -131,7 +132,9 @@ public class CanvasManager {
       isCollide = HF2D.checkRectAndLineCollision(mAnt, mLine);
 
       if (isCollide) {
-         mHandler.sendMessage(mHandler.obtainMessage(Utils.MSG_ANT_COLLISION));
+         if(mHandler != null){
+            mHandler.sendMessage(mHandler.obtainMessage(Utils.MSG_ANT_COLLISION));
+         }
       }
 
    }

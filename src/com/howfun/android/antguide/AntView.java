@@ -58,8 +58,8 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
    public void init(Handler handler){
       if(mCanvasManager == null){
          mCanvasManager = new CanvasManager(mContext);
-         mCanvasManager.setHandler(handler);
       }
+      mCanvasManager.setHandler(handler);
    }
 
 
