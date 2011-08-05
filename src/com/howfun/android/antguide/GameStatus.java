@@ -4,7 +4,7 @@ import android.content.Context;
 
 public class GameStatus {
    private int mStatus;
-   public static final int GAME_INIT = 0;
+   public static final int GAME_INIT = 0; //is to run
    public static final int GAME_RUNNING = 1;
    public static final int GAME_PAUSED = 2;
    public static final int GAME_STOPPED = 3;

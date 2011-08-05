@@ -50,7 +50,6 @@ public class AntGuide extends Activity implements OnTouchListener {
    Intent mIntentReceiver = null;
 
    private TextView gameScore;
-   // private Chronometer gameChronometer;
    private ImageView gamePause;
    private ImageView gamePlay;
    private AntView antView;
