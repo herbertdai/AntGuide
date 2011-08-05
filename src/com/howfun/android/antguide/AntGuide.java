@@ -35,7 +35,7 @@ public class AntGuide extends Activity implements OnTouchListener {
    private static final int SOUND_EFFECT_VICTORY = 2;
    private static final int SOUND_EFFECT_LOST = 3;
 
-   private static final int FOOD_SCORE = 100;
+   private static final int MAX_SCORE = 999;
 
    private static final int[] nums = { R.drawable.num_0, R.drawable.num_1,
          R.drawable.num_2, R.drawable.num_3, R.drawable.num_4,
@@ -49,7 +49,7 @@ public class AntGuide extends Activity implements OnTouchListener {
    Intent mIntentService = null;
    Intent mIntentReceiver = null;
 
-   private TextView gameScore;
+   // private TextView gameScore;
    private ImageView gamePause;
    private ImageView gamePlay;
    private AntView antView;
@@ -61,7 +61,11 @@ public class AntGuide extends Activity implements OnTouchListener {
    private ImageView mTimeSec0;
    private ImageView mTimeSec1;
 
-   private int mScore;
+   private ImageView mScore0;
+   private ImageView mScore1;
+   private ImageView mScore2;
+
+   private int mScore = 0;
 
    private GameStatus mGameStatus;
    private TimeManager mTimeManager;
@@ -125,6 +129,7 @@ public class AntGuide extends Activity implements OnTouchListener {
       findViews();
       setupListeners();
       loadSoundEffects();
+      initScoreBoard();
       init();
 
    }
@@ -169,7 +174,6 @@ public class AntGuide extends Activity implements OnTouchListener {
    }
 
    private void findViews() {
-      gameScore = (TextView) findViewById(R.id.game_score);
       gamePause = (ImageView) findViewById(R.id.game_pause);
       gamePlay = (ImageView) findViewById(R.id.game_play);
       antView = (AntView) findViewById(R.id.ant_view);
@@ -181,6 +185,10 @@ public class AntGuide extends Activity implements OnTouchListener {
       mTimeMin1 = (ImageView) findViewById(R.id.time_min1);
       mTimeSec0 = (ImageView) findViewById(R.id.time_sec0);
       mTimeSec1 = (ImageView) findViewById(R.id.time_sec1);
+
+      mScore0 = (ImageView) findViewById(R.id.score_0);
+      mScore1 = (ImageView) findViewById(R.id.score_1);
+      mScore2 = (ImageView) findViewById(R.id.score_2);
    }
 
    private void setupListeners() {
@@ -270,9 +278,6 @@ public class AntGuide extends Activity implements OnTouchListener {
 
       hideGameInfo();
 
-      mScore = 0;
-      gameScore.setText(String.valueOf(mScore));
-
       // TODO timing starts
       mTimeManager.start();
 
@@ -328,14 +333,12 @@ public class AntGuide extends Activity implements OnTouchListener {
       // TODO timing clear
       mTimeManager.stop();
 
-      if (isHighScore(mScore)) {
-         Message msg = new Message();
-         msg.what = Utils.MSG_SCORE_BOARD;
-         msg.arg1 = mScore;
-         mHandler.sendMessage(msg);
-      }
-      mScore = 0;
-      gameScore.setText(String.valueOf(mScore));
+      // if (isHighScore(mScore)) {
+      // Message msg = new Message();
+      // msg.what = Utils.MSG_SCORE_BOARD;
+      // msg.arg1 = mScore;
+      // mHandler.sendMessage(msg);
+      // }
    }
 
    private void showGamePause() {
@@ -367,13 +370,86 @@ public class AntGuide extends Activity implements OnTouchListener {
       return false;
    }
 
+   private int getUnit(int score) {
+      int unit;
+      if (score < 10) {
+         unit = score;
+      } else if (score < 100) {
+         unit = score % 10;
+      } else {
+         int temp = score % 100;
+         unit = temp % 10;
+      }
+      return unit;
+   }
+
+   private int getTen(int score) {
+      int ten;
+      if (score < 10) {
+         ten = 0;
+      } else if (score < 100) {
+         ten = score / 10;
+      } else {
+         int temp = score % 100;
+         ten = temp / 10;
+      }
+      return ten;
+   }
+
+   private int getHundred(int score) {
+      int hundred;
+      if (score < 100) {
+         hundred = 0;
+      } else {
+         hundred = score / 100;
+      }
+      return hundred;
+   }
+
+   private void initScoreBoard() {
+      int score0 = getHundred(mScore);
+      int score1 = getTen(mScore);
+      int score2 = getUnit(mScore);
+      mScore0.setBackgroundResource(nums[score0]);
+      mScore1.setBackgroundResource(nums[score1]);
+      mScore2.setBackgroundResource(nums[score2]);
+   }
+
    private void updateScore() {
-      mScore += FOOD_SCORE;
-      if (gameScore != null) {
-         gameScore.setAnimation(AnimationUtils.loadAnimation(this,
+      int score = mScore;
+      mScore++;
+      if (mScore > MAX_SCORE)
+         return;
+      int score0 = getHundred(mScore);
+      int score1 = getTen(mScore);
+      int score2 = getUnit(mScore);
+
+      int score0t = getHundred(score);
+      int score1t = getTen(score);
+      boolean tenChange = false;
+      boolean hundredChange = false;
+      if (score0 != score0t)
+         hundredChange = true;
+      if (score1 != score1t)
+         tenChange = true;
+
+      mScore2.setAnimation(AnimationUtils
+            .loadAnimation(this, R.anim.push_up_in));
+      mScore2.setBackgroundResource(nums[score2]);
+      mScore2.setAnimation(AnimationUtils.loadAnimation(this,
+            R.anim.push_up_out));
+      if (tenChange) {
+         mScore1.setAnimation(AnimationUtils.loadAnimation(this,
                R.anim.push_up_in));
-         gameScore.setText(String.valueOf(mScore));
-         gameScore.setAnimation(AnimationUtils.loadAnimation(this,
+         mScore1.setBackgroundResource(nums[score1]);
+         mScore1.setAnimation(AnimationUtils.loadAnimation(this,
+               R.anim.push_up_out));
+      }
+      if (hundredChange) {
+         mScore0.setAnimation(AnimationUtils.loadAnimation(this,
+               R.anim.push_up_in));
+         mScore0.setBackgroundResource(nums[score0]);
+         mScore0.setAnimation(AnimationUtils.loadAnimation(this,
                R.anim.push_up_out));
       }
 

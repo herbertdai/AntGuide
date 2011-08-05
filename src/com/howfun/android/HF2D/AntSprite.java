@@ -42,7 +42,7 @@ public class AntSprite extends Sprite {
       mPaint.setColor(Color.RED);
 
       mAngle = 30;
-      mSpeed = 1;
+      mSpeed = 2;
 
       mRect = new Rect();
 
