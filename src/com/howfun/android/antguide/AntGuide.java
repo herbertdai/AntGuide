@@ -10,7 +10,6 @@ import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,7 +18,6 @@ import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.animation.AnimationUtils;
-import android.widget.Chronometer;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -162,6 +160,13 @@ public class AntGuide extends Activity implements OnTouchListener {
       // TODO pause bug
       stopService(mIntentService);
 
+   }
+
+   @Override
+   protected void onStop() {
+      super.onStop();
+      Utils.log(TAG, "onStop..");
+      mTimeManager.kill();
    }
 
    private void findViews() {

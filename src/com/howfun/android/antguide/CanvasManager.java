@@ -208,11 +208,11 @@ public class CanvasManager {
    private void drawBg(Canvas canvas) {
 
       canvas.drawBitmap(mBackgroundBmp, 0, 0, mBmpPaint);
-      canvas.drawBitmap(mGrassBmp, 68, 133, mBmpPaint);
-      canvas.drawBitmap(mGrassBmp, 12, 190, mBmpPaint);
-      canvas.drawBitmap(mGrassBmp, 310, 123, mBmpPaint);
-      canvas.drawBitmap(mGrassBmp, 120, 99, mBmpPaint);
-      canvas.drawBitmap(mGrassBmp, 200, 521, mBmpPaint);
+//      canvas.drawBitmap(mGrassBmp, 68, 133, mBmpPaint);
+//      canvas.drawBitmap(mGrassBmp, 12, 190, mBmpPaint);
+//      canvas.drawBitmap(mGrassBmp, 310, 123, mBmpPaint);
+//      canvas.drawBitmap(mGrassBmp, 120, 99, mBmpPaint);
+//      canvas.drawBitmap(mGrassBmp, 200, 521, mBmpPaint);
    }
 
    private void loadGrass() {

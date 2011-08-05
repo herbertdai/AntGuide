@@ -4,6 +4,8 @@ import android.os.Handler;
 import android.os.Message;
 
 public class TimeManager {
+
+   private static final String TAG = "TimeManager";
    private static final int SECOND = 60;
    private int time;
 
@@ -30,6 +32,7 @@ public class TimeManager {
                   e.printStackTrace();
                }
             }
+            Utils.log(TAG, "in time manager");
          }
       }
    };
@@ -58,6 +61,10 @@ public class TimeManager {
 
    public void stop() {
       flag = false;
+   }
+
+   public void kill() {
+      toRun = false;
    }
 
    public int getMinute() {
