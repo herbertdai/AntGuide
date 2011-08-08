@@ -34,7 +34,7 @@ public class ShopActivity extends Activity {
                int position, long id) {
             
             //TODO judge if the shop can be open
-            Intent intent = new Intent(ShopActivity.this,AntGuide.class);
+            Intent intent = new Intent(ShopActivity.this,AntGuideActivity.class);
             startActivity(intent);
 
          }

@@ -1,8 +1,5 @@
 package com.howfun.android.HF2D;
 
-import com.howfun.android.antguide.R;
-import com.howfun.android.antguide.Utils;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -10,6 +7,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+
+import com.howfun.android.antguide.R;
+import com.howfun.android.antguide.utils.Utils;
 
 public class HomeSprite extends Sprite {
 

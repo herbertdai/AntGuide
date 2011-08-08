@@ -1,16 +1,16 @@
-package com.howfun.android.antguide;
+package com.howfun.android.antguide.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.howfun.android.HF2D.Pos;
+import com.howfun.android.antguide.game.CanvasManager;
+import com.howfun.android.antguide.game.UpdateThread;
+import com.howfun.android.antguide.utils.Utils;
 
 public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -85,7 +85,7 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
    }
 
    @Override
-   protected void onDraw(Canvas canvas) {
+   public void onDraw(Canvas canvas) {
       if (mCanvasManager == null) {
          return;
       }
@@ -150,7 +150,7 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
       if (mCanvasManager != null) {
          mCanvasManager.initAllSprite();
       }
-      updateThread = new UpdateThread(this);
+      updateThread = new UpdateThread(AntView.this);
 
       updateThread.setRunning(true);
 

@@ -1,7 +1,9 @@
-package com.howfun.android.antguide;
+package com.howfun.android.antguide.game;
 
 import android.os.Handler;
 import android.os.Message;
+
+import com.howfun.android.antguide.utils.Utils;
 
 public class TimeManager {
 

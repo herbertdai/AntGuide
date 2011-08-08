@@ -1,4 +1,4 @@
-package com.howfun.android.antguide;
+package com.howfun.android.antguide.entity;
 
 public class Score {
 

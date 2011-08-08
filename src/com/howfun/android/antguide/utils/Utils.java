@@ -1,9 +1,12 @@
-package com.howfun.android.antguide;
+package com.howfun.android.antguide.utils;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
+
+import com.howfun.android.antguide.AntGuideApplication;
+import com.howfun.android.antguide.R;
 
 public final class Utils {
 

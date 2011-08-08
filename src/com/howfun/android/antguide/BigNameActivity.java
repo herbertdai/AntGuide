@@ -8,6 +8,10 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.howfun.android.antguide.entity.Score;
+import com.howfun.android.antguide.utils.DBAdapter;
+import com.howfun.android.antguide.utils.Utils;
+
 public class BigNameActivity extends Activity {
 
    private EditText bigName;

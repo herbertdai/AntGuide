@@ -1,8 +1,8 @@
 package com.howfun.android.HF2D;
 
-import com.howfun.android.antguide.Utils;
-
 import android.graphics.Rect;
+
+import com.howfun.android.antguide.utils.Utils;
 
 public class HF2D {
 

@@ -10,6 +10,8 @@ import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
+import com.howfun.android.antguide.utils.Utils;
+
 public class MainPage extends Activity implements OnClickListener {
 
    private ImageView mStart;
@@ -41,7 +43,7 @@ public class MainPage extends Activity implements OnClickListener {
       Intent intent = new Intent();
       switch (arg0.getId()) {
       case R.id.mainpage_start:
-         intent.setClass(MainPage.this, AntGuide.class);
+         intent.setClass(MainPage.this, AntGuideActivity.class);
          startActivityForResult(intent, Utils.RESULT_ANT_GUIDE);
          break;
       case R.id.mainpage_shop:

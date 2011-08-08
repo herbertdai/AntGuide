@@ -1,4 +1,4 @@
-package com.howfun.android.antguide;
+package com.howfun.android.antguide.game;
 
 import java.util.ArrayList;
 
@@ -9,10 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.media.AudioManager;
-import android.media.SoundPool;
 import android.os.Handler;
-import android.os.Message;
 
 import com.howfun.android.HF2D.AntSprite;
 import com.howfun.android.HF2D.FoodSprite;
@@ -21,6 +18,9 @@ import com.howfun.android.HF2D.HomeSprite;
 import com.howfun.android.HF2D.LineSprite;
 import com.howfun.android.HF2D.Pos;
 import com.howfun.android.HF2D.Sprite;
+import com.howfun.android.antguide.AntGuideActivity;
+import com.howfun.android.antguide.R;
+import com.howfun.android.antguide.utils.Utils;
 
 public class CanvasManager {
 
@@ -98,13 +98,13 @@ public class CanvasManager {
       mLine = line;
       mSprites.add(line);
 
-      Pos homePos = HF2D.getNewPos(AntGuide.DEVICE_WIDTH,
-            AntGuide.DEVICE_HEIGHT);
+      Pos homePos = HF2D.getNewPos(AntGuideActivity.DEVICE_WIDTH,
+            AntGuideActivity.DEVICE_HEIGHT);
       mHome = new HomeSprite(mContext, homePos);
       mSprites.add(mHome);
 
-      Pos foodPos = HF2D.getNewPos(AntGuide.DEVICE_WIDTH,
-            AntGuide.DEVICE_HEIGHT);
+      Pos foodPos = HF2D.getNewPos(AntGuideActivity.DEVICE_WIDTH,
+            AntGuideActivity.DEVICE_HEIGHT);
       mFood = new FoodSprite(mContext, foodPos);
       mSprites.add(mFood);
 
@@ -159,8 +159,8 @@ public class CanvasManager {
    }
 
    private void checkOutOfScreen() {
-      if (HF2D.checkOutOfScreen(mAnt, AntGuide.DEVICE_WIDTH,
-            AntGuide.DEVICE_HEIGHT)) {
+      if (HF2D.checkOutOfScreen(mAnt, AntGuideActivity.DEVICE_WIDTH,
+            AntGuideActivity.DEVICE_HEIGHT)) {
          antLost();
       }
    }
@@ -227,8 +227,8 @@ public class CanvasManager {
    }
 
    private void loadBackground() {
-      int width = AntGuide.DEVICE_WIDTH;
-      int height = AntGuide.DEVICE_HEIGHT;
+      int width = AntGuideActivity.DEVICE_WIDTH;
+      int height = AntGuideActivity.DEVICE_HEIGHT;
 
       Resources r = mContext.getResources();
       Drawable holeDrawable = r.getDrawable(R.drawable.background);

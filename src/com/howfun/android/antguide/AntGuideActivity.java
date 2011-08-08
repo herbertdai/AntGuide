@@ -22,7 +22,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class AntGuide extends Activity implements OnTouchListener {
+import com.howfun.android.antguide.entity.Score;
+import com.howfun.android.antguide.game.GameStatus;
+import com.howfun.android.antguide.game.TimeManager;
+import com.howfun.android.antguide.utils.DBAdapter;
+import com.howfun.android.antguide.utils.Utils;
+import com.howfun.android.antguide.view.AntView;
+
+public class AntGuideActivity extends Activity implements OnTouchListener {
    private static final String TAG = "AntGuide";
 
    // private AntView mAntView;
