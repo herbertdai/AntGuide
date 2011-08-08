@@ -57,7 +57,7 @@ public class CanvasManager {
 	private static final String TAG = "CanvasManager";
 
 	private int[] mSoundEffects = { R.raw.collision, R.raw.victory3,
-			R.raw.food2 };
+			R.raw.food };
 	private int[] mSoundIds;
 
 	private boolean mIsAntLost;
