@@ -271,6 +271,7 @@ public class HF2D {
       return isCollision;
    }
 
+
    /*
     * check if ant is out of screen
     */

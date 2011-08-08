@@ -43,8 +43,8 @@ public class MainPage extends Activity implements OnClickListener {
       Intent intent = new Intent();
       switch (arg0.getId()) {
       case R.id.mainpage_start:
-         intent.setClass(MainPage.this, AntGuideActivity.class);
-         startActivityForResult(intent, Utils.RESULT_ANT_GUIDE);
+         intent.setClass(MainPage.this, HelpPage.class);
+         startActivity(intent);
          break;
       case R.id.mainpage_shop:
          // intent.setClass(MainPage.this, ScoreBoardActivity.class);
