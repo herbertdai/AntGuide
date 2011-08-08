@@ -164,6 +164,113 @@ public class HF2D {
    }
 
    /*
+    * Check collision of rect and line if collision, then set a mirror angle 
+    * @return true collision
+    */
+   public static boolean checkRectAndLineCollision_mirror(AntSprite ant, LineSprite line) {
+      
+      if (ant.checkIsCoolDown()) {
+         return false;
+      }
+
+      if (ant == null || line == null) {
+         Utils.log(TAG, "ant or line is null in checkCollision()");
+         return false;
+      }
+      float oldAngle = ant.getAngle();
+
+      // Left two dot of rect and upper right dot
+      float x1 = ant.mRect.left;
+      float y1 = ant.mRect.top;
+      float x2 = x1;
+      float y2 = ant.mRect.top + ant.mRect.height();
+      float x3 = ant.mRect.left + ant.mRect.width();
+      float y3 = y1;
+
+      // Line's two dot
+      float lax = line.getStart().x;
+      float lay = line.getStart().y;
+      float lbx = line.getEnd().x;
+      float lby = line.getEnd().y;
+
+      boolean isCollision = false;
+      boolean isUpperCollision = false;
+
+      // check upper horizontal side
+      float rx = (y1 - lay) * (lbx - lax) / (lby - lay) + lax;
+
+      float a = 0, b = 0;
+      if (lax < lbx) {
+         a = lax;
+         b = lbx;
+      } else {
+         b = lax;
+         a = lbx;
+      }
+      if (rx >= x1 && rx <= x3 && rx >= a && rx <= b) {
+         isCollision = true;
+         isUpperCollision = true;
+
+      }
+      // check lower horizontal side
+      rx = (y2 - lay) * (lbx - lax) / (lby - lay) + lax;
+      if (rx >= x1 && rx <= x3 && (rx >= a && rx <= b)) {
+         isCollision = true;
+      }
+
+      if (isCollision) {
+         // set line two point a new sequence: smaller up, bigger down
+         if (lay > lby) {
+            // swap
+            float temp = lax;
+            lax = lbx;
+            lbx = temp;
+
+            temp = lay;
+            lay = lby;
+            lby = temp;
+         }
+
+         double lineAngle = Math.atan2((lby - lay), (lbx - lax));
+         float degree = (float) Math.toDegrees(lineAngle);
+         
+         //new mirror angle = lineangle + (lineangle - antangle)
+         float angle = degree + (degree - ant.getAngle());
+
+         Utils.log(TAG, "set angle = " + angle);
+         ant.setAngle(angle);
+
+      }
+
+      // fix bug: horizontal line can't be checked
+      if (!isCollision) {
+         float angle = 0;
+         float ry = (x2 - lax) * (lby - lay) / (lbx - lax) + lay;
+         if (lay < lby) {
+            a = lay;
+            b = lby;
+         } else {
+            a = lby;
+            b = lay;
+         }
+         if ((ry >= y1) && (ry <= y2) && (ry >= a) && (ry <= b)) {
+            isCollision = true;
+         }
+         if (isCollision) {
+
+            Utils.log(TAG, "hori line");
+            angle = - ant.getAngle();
+            ant.setAngle(angle);
+         }
+      }
+
+      if (isCollision) {
+         ant.startCoolDown();
+      }
+      return isCollision;
+   }
+
+   /*
     * check if ant is out of screen
     */
    public static boolean checkOutOfScreen(AntSprite ant, int screenWidth,

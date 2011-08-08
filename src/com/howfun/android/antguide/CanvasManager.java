@@ -147,7 +147,7 @@ public class CanvasManager {
 
 		boolean isCollide = false;
 
-		isCollide = HF2D.checkRectAndLineCollision(mAnt, mLine);
+		isCollide = HF2D.checkRectAndLineCollision_mirror(mAnt, mLine);
 
 		if (isCollide) {
 			mSoundPool

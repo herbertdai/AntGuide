@@ -151,7 +151,7 @@ public class AntSprite extends Sprite {
    }
 
    private Bitmap rotate(Bitmap b, float degrees) {
-      if (degrees >= 0 && b != null) {
+      if (b != null) {
          Matrix m = new Matrix();
          m.setRotate(degrees);
 
