@@ -163,6 +163,7 @@ public class HF2D {
       return isCollision;
    }
 
+   
    /*
     * Check collision of rect and line if collision, then set a mirror angle 
     * @return true collision
@@ -269,6 +270,7 @@ public class HF2D {
       }
       return isCollision;
    }
+
 
    /*
     * check if ant is out of screen

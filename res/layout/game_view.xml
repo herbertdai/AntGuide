@@ -8,22 +8,41 @@
 	<RelativeLayout android:id="@+id/game_menu"
 		android:layout_width="fill_parent" android:layout_height="50dp"
 		android:background="#00112233">
-		<Chronometer android:id="@+id/game_chronometer"
+		<RelativeLayout android:id="@+id/game_time_board"
+			android:layout_width="wrap_content" android:layout_alignParentLeft="true"
+			android:layout_height="wrap_content" android:layout_marginTop="10px">
+
+			<ImageView android:id="@+id/time_min0"
+				android:layout_width="20px" android:layout_height="20px" />
+			<ImageView android:id="@+id/time_min1"
+				android:layout_width="20px" android:layout_height="20px"
+				android:layout_toRightOf="@id/time_min0" />
+			<ImageView android:id="@+id/time_split"
+				android:layout_width="10px" android:layout_height="20px"
+				android:layout_toRightOf="@id/time_min1" android:src="@drawable/colon"/>
+			<ImageView android:id="@+id/time_sec0"
+				android:layout_width="20px" android:layout_height="20px"
+				android:layout_toRightOf="@id/time_split" />
+			<ImageView android:id="@+id/time_sec1"
+				android:layout_width="20px" android:layout_height="20px"
+				android:layout_toRightOf="@id/time_sec0" />
+		</RelativeLayout>
+		<RelativeLayout android:id="@+id/game_score"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:layout_weight="0" android:paddingBottom="3dip"
-			android:textColor="#000000" android:paddingTop="3dip"
-			android:textSize="22sp" android:layout_alignParentLeft="true" />
+			android:layout_centerHorizontal="true" android:layout_marginTop="10px">
 
+			<ImageView android:id="@+id/score_0" android:layout_width="30px"
+				android:layout_height="30px" />
+			<ImageView android:id="@+id/score_1" android:layout_width="30px"
+				android:layout_height="30px" android:layout_toRightOf="@id/score_0" />
+			<ImageView android:id="@+id/score_2" android:layout_width="30px"
+				android:layout_height="30px" android:layout_toRightOf="@id/score_1" />
 
-		<TextView android:id="@+id/game_score" android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:text="0"
-			android:textColor="#000000" android:textSize="22sp"
-
-			android:layout_centerHorizontal="true" />
+		</RelativeLayout>
 
 
 		<FrameLayout android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:layout_alignParentRight="true">
+			android:layout_height="wrap_content" android:layout_alignParentRight="true" android:layout_marginTop="10px">
 			<ImageView android:id="@+id/game_pause"
 				android:layout_width="wrap_content" android:layout_height="wrap_content"
 				android:src="@drawable/pause" />
@@ -35,11 +54,12 @@
 	</RelativeLayout>
 
 	<FrameLayout android:id="@+id/game_view_info"
-	   android:layout_gravity="center_vertical" android:visibility="gone"
+		android:layout_gravity="center_vertical" android:visibility="gone"
 		android:layout_height="300px" android:layout_width="fill_parent">
-		<ImageView android:id="@+id/game_view_info_img"
-		   android:layout_width="fill_parent"
-			android:layout_height="fill_parent" android:background="#55667788" />
+		<TextView android:id="@+id/game_view_info_text"
+			android:layout_width="fill_parent" android:layout_height="fill_parent"
+			android:gravity="center" android:textSize="27sp" android:background="#55667788"
+			android:textColor="#000000" />
 
 
 	</FrameLayout>

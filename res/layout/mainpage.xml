@@ -1,27 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent" android:gravity="center_horizontal">
-	<ImageView android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:background="@drawable/mainpage_ant" />
-		
-	<LinearLayout android:layout_width="fill_parent" android:layout_height="30dp"/>
-	
-	<Button android:id="@+id/mainpage_start_btn"
-		android:layout_width="200dp" android:layout_height="wrap_content"
-		android:text="@string/start" />
-		
-	<LinearLayout android:layout_width="fill_parent" android:layout_height="10dp"/>
-	
-	<Button android:id="@+id/mainpage_hiscore_btn"
-		android:layout_width="200dp" android:layout_height="wrap_content"
-		android:text="@string/hiscore" />
-		
-	<LinearLayout android:layout_width="fill_parent" android:layout_height="10dp"/>
-	
+	android:layout_height="fill_parent" android:gravity="center_horizontal"
+	android:background="@drawable/background">
 
-	<Button android:id="@+id/mainpage_about_btn"
-		android:layout_width="200dp" android:layout_height="wrap_content"
-		android:text="@string/about" />
+	<LinearLayout android:layout_width="fill_parent" android:layout_marginTop="20dp"
+		android:layout_height="200px" android:background="@drawable/mymy" />
 
-</LinearLayout>
+	<RelativeLayout android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:layout_alignParentBottom="true"
+		android:layout_marginBottom="20dp">
+		<RelativeLayout android:id="@+id/element1"
+			android:layout_height="wrap_content" android:layout_width="wrap_content">
+			<ImageView android:id="@+id/mainpage_start"
+				android:layout_width="wrap_content" android:layout_height="70px"
+				android:src="@drawable/start" />
+
+			<LinearLayout android:layout_width="fill_parent"
+				android:layout_height="10dp" android:background="@drawable/split_line"
+				android:layout_below="@id/mainpage_start" />
+		</RelativeLayout>
+
+
+		<RelativeLayout android:id="@+id/element2"
+			android:layout_height="wrap_content" android:layout_width="wrap_content"
+			android:layout_below="@id/element1">
+
+			<ImageView android:id="@+id/mainpage_shop"
+				android:layout_width="fill_parent" android:layout_height="70px"
+				 android:src="@drawable/shop" />
+
+			<LinearLayout android:layout_width="fill_parent"
+				android:layout_below="@id/mainpage_shop" android:layout_height="10dp"
+				android:background="@drawable/split_line" />
+		</RelativeLayout>
+
+
+
+
+		<RelativeLayout android:id="@+id/element3"
+			android:layout_height="wrap_content" android:layout_width="fill_parent"
+			android:layout_below="@id/element2">
+			<ImageView android:id="@+id/mainpage_exit"
+				android:layout_width="fill_parent" android:layout_height="70px"
+
+				android:src="@drawable/exit" />
+
+			<LinearLayout android:layout_width="fill_parent"
+				android:layout_below="@id/mainpage_exit" android:layout_height="10dp"
+				android:background="@drawable/split_line" />
+		</RelativeLayout>
+
+
+
+	</RelativeLayout>
+
+</RelativeLayout>

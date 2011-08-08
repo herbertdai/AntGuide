@@ -15,8 +15,8 @@ import android.graphics.drawable.Drawable;
 public class FoodSprite extends Sprite {
    
    
-   private static final int FOOD_W = 40;
-   private static final int FOOD_H = 40;
+   private static final int FOOD_W = 17;
+   private static final int FOOD_H = 14;
    private static final int FOOD_RANGE_Y = 800;
    private static final int FOOD_RANGE_X = 480;
    
@@ -56,7 +56,7 @@ public class FoodSprite extends Sprite {
 
 	private void loadFood() {
 		Resources r = mContext.getResources();
-		Drawable holeDrawable = r.getDrawable(R.drawable.play);
+		Drawable holeDrawable = r.getDrawable(R.drawable.food);
 		Bitmap bitmap = Bitmap.createBitmap(FOOD_W, FOOD_H,
 				Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);

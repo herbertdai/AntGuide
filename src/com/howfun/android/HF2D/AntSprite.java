@@ -42,7 +42,7 @@ public class AntSprite extends Sprite {
       mPaint.setColor(Color.RED);
 
       mAngle = 30;
-      mSpeed = 1;
+      mSpeed = 2;
 
       mRect = new Rect();
 
@@ -102,8 +102,8 @@ public class AntSprite extends Sprite {
 
    private void loadAnt() {
       Resources r = mContext.getResources();
-      int drawableId[] = { R.drawable.ant0, R.drawable.ant1, R.drawable.ant2,
-            R.drawable.ant3, R.drawable.ant4, R.drawable.ant5 };
+      int drawableId[] = { R.drawable.black_ant0, R.drawable.black_ant1, R.drawable.black_ant2,
+            R.drawable.black_ant3, R.drawable.black_ant4, R.drawable.black_ant5 };
       mAntBmpArray = new Bitmap[drawableId.length];
       for (int i = 0; i < drawableId.length; i++) {
          Drawable antDrawable = r.getDrawable(drawableId[i]);

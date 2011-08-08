@@ -39,11 +39,17 @@ public class UpdateThread extends Thread {
 
    }
 
-   public void play() {
+   /**
+    * start drawing the canvas
+    */
+   public void startUpdate() {
       flag = true;
    }
 
-   public void pause() {
+   /**
+    * stop drawing the canvas
+    */
+   public void stopUpdate() {
       flag = false;
    }
 
