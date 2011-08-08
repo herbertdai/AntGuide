@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-   <string name="howfun">HOWFUN Studio (2011)</string>
+	<string name="email">howfun2011@163.com</string>
+   <string name="howfun">HOWFUN Studio (2011)\nhowfun2011@163.com</string>
 	<string name="app_name">Ant Guide</string>
     <string name="version">0.8.0</string>
 

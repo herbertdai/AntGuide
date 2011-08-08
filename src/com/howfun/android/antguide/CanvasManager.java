@@ -24,259 +24,237 @@ import com.howfun.android.HF2D.Sprite;
 
 public class CanvasManager {
 
-	private static final int GRASS_WIDTH = 50;
+   private static final int GRASS_WIDTH = 50;
+   private static final int GRASS_HEIGHT = 50;
 
-	private static final int HOLE_WIDTH = 50;
+   private static final int HOLE_WIDTH = 50;
+   private static final int HOLE_HIGHT = 40;
 
-	private static final int HOLE_HIGHT = 40;
+   private ArrayList<Sprite> mSprites;
 
-	private static final int GRASS_HEIGHT = 50;
+   private Bitmap mBg;
 
-	private ArrayList<Sprite> mSprites;
+   private Context mContext;
 
-	private Bitmap mBg;
+   private Bitmap mGrassBmp;
 
-	private Context mContext;
+   private Paint mBmpPaint;
+   private Paint mResultPaint;
 
-	private Bitmap mGrassBmp;
+   private Bitmap mBackgroundBmp;
 
-	private Paint mBmpPaint;
-	private Paint mResultPaint;
+   private AntSprite mAnt;
+   private LineSprite mLine;
+   private FoodSprite mFood;
 
-	private Bitmap mBackgroundBmp;
+   private static final String TAG = "CanvasManager";
 
-	private AntSprite mAnt;
-	private LineSprite mLine;
-	private FoodSprite mFood;
+   private boolean mIsAntLost;
+   private boolean mIsAntHome;
 
-	private SoundPool mSoundPool;
-	private static final int SOUND_EFFECT_COLLISION = 0;
-	private static final int SOUND_EFFECT_VICTORY = 1;
-	private static final int SOUND_EFFECT_FOOD = 2;
+   private float LOST_TEXT_SIZE = 50;
+   private float HOME_SPACE = 100; // leave space around home
 
-	private static final String TAG = "CanvasManager";
+   private HomeSprite mHome;
+   private Handler mHandler;
 
-	private int[] mSoundEffects = { R.raw.collision, R.raw.victory3,
-			R.raw.food };
-	private int[] mSoundIds;
+   public CanvasManager(Context c) {
+      mContext = c;
 
-	private boolean mIsAntLost;
-	private boolean mIsAntHome;
+      mSprites = new ArrayList<Sprite>();
 
-	private float LOST_TEXT_SIZE = 50;
-	private float HOME_SPACE = 100; // leave space around home
+      mBmpPaint = new Paint();
+      mBmpPaint.setColor(Color.YELLOW);
+      mResultPaint = new Paint();
+      mResultPaint.setTextSize(LOST_TEXT_SIZE);
 
-	private HomeSprite mHome;
-	private Handler mHandler;
+      loadGrass();
+      loadBackground();
+      initAllSprite();
+   }
 
-	public CanvasManager(Context c) {
-		mContext = c;
+   public void setHandler(Handler handler) {
+      mHandler = handler;
+      Utils.log(TAG, "set canvas manager handler");
+      // game time out 
+      mHandler.sendEmptyMessageDelayed(Utils.MSG_ANT_TIMEOUT, Utils.TIMEOUT);
+   }
 
-		mSoundPool = new SoundPool(mSoundEffects.length,
-				AudioManager.STREAM_MUSIC, 100);
-		mSoundIds = new int[] {
-				mSoundPool.load(mContext,
-						mSoundEffects[SOUND_EFFECT_COLLISION], 1),
-				mSoundPool.load(mContext, mSoundEffects[SOUND_EFFECT_VICTORY],
-						1),
-				mSoundPool.load(mContext, mSoundEffects[SOUND_EFFECT_FOOD],
-						1) };
+   public void initAllSprite() {
 
-		mSprites = new ArrayList<Sprite>();
+      if (mSprites == null) {
+         mSprites = new ArrayList<Sprite>();
+      }
 
-		mBmpPaint = new Paint();
-		mBmpPaint.setColor(Color.YELLOW);
-		mResultPaint = new Paint();
-		mResultPaint.setTextSize(LOST_TEXT_SIZE);
+      mSprites.clear();
+      mIsAntHome = false;
+      mIsAntLost = false;
 
-		loadGrass();
-		loadBackground();
-		initAllSprite();
-	}
+      AntSprite ant = new AntSprite(mContext);
+      mAnt = ant;
+      mSprites.add(ant);
 
-	public void setHandler(Handler handler) {
-		mHandler = handler;
-	}
+      LineSprite line = new LineSprite();
+      mLine = line;
+      mSprites.add(line);
 
-	public void initAllSprite() {
+      Pos homePos = HF2D.getNewPos(AntGuide.DEVICE_WIDTH,
+            AntGuide.DEVICE_HEIGHT);
+      mHome = new HomeSprite(mContext, homePos);
+      mSprites.add(mHome);
 
-		if (mSprites == null) {
-			mSprites = new ArrayList<Sprite>();
-		}
+      Pos foodPos = HF2D.getNewPos(AntGuide.DEVICE_WIDTH,
+            AntGuide.DEVICE_HEIGHT);
+      mFood = new FoodSprite(mContext, foodPos);
+      mSprites.add(mFood);
 
-		mSprites.clear();
-		mIsAntHome = false;
-		mIsAntLost = false;
+      // TODO add more sprites
+   }
 
-		AntSprite ant = new AntSprite(mContext);
-		mAnt = ant;
-		mSprites.add(ant);
+   public ArrayList<Sprite> getSprites() {
+      return mSprites;
+   }
 
-		LineSprite line = new LineSprite();
-		mLine = line;
-		mSprites.add(line);
+   /*
+    * Check collision of ant with line, hole, wall
+    */
+   public void checkCollision() {
+      checkLine();
+      checkHome();
+      checkOutOfScreen();
+      checkFoods();
+   }
 
-		Pos homePos = HF2D.getNewPos(AntGuide.DEVICE_WIDTH,
-				AntGuide.DEVICE_HEIGHT);
-		mHome = new HomeSprite(mContext, homePos);
-		mSprites.add(mHome);
+   private void checkLine() {
 
-		Pos foodPos = HF2D.getNewPos(AntGuide.DEVICE_WIDTH,
-				AntGuide.DEVICE_HEIGHT);
-		mFood = new FoodSprite(mContext, foodPos);
-		mSprites.add(mFood);
+      boolean isCollide = false;
 
-		// TODO add more sprites
-	}
+      isCollide = HF2D.checkRectAndLineCollision_mirror(mAnt, mLine);
 
-	public ArrayList<Sprite> getSprites() {
-		return mSprites;
-	}
+      if (isCollide) {
+         if(mHandler != null){
+            mHandler.sendMessage(mHandler.obtainMessage(Utils.MSG_ANT_COLLISION));
+         }
+      }
 
-	/*
-	 * Check collision of ant with line, hole, wall
-	 */
-	public void checkCollision() {
-		checkLine();
-		checkHome();
-		checkOutOfScreen();
-		checkFoods();
-	}
+   }
 
-	private void checkLine() {
+   private void checkHome() {
+      if (HF2D.checkCollsion(mAnt, mHome)) {
+         antHome();
+      }
 
-		boolean isCollide = false;
+   }
 
-		isCollide = HF2D.checkRectAndLineCollision(mAnt, mLine);
+   private void checkFoods() {
+      if (mFood != null) {
+         if (HF2D.checkCollsion(mAnt, mFood)) {
+            Utils.log(TAG, "Eat food!!!");
+            mFood.setNewPos();
+            mHandler.sendMessage(mHandler.obtainMessage(Utils.MSG_ANT_FOOD));
 
-		if (isCollide) {
-			mSoundPool
-					.play(mSoundIds[SOUND_EFFECT_COLLISION], 13, 15, 1, 0, 1f);
-		}
+         }
 
-	}
+      }
+   }
 
-	private void checkHome() {
-		if (HF2D.checkCollsion(mAnt, mHome)) {
-			antHome();
-		}
+   private void checkOutOfScreen() {
+      if (HF2D.checkOutOfScreen(mAnt, AntGuide.DEVICE_WIDTH,
+            AntGuide.DEVICE_HEIGHT)) {
+         antLost();
+      }
+   }
 
-	}
+   private void antLost() {
+      mIsAntLost = true;
+      mHandler.sendMessage(mHandler.obtainMessage(Utils.MSG_ANT_LOST));
+   }
 
-	private void checkFoods() {
-		if (mFood != null) {
-			if (HF2D.checkCollsion(mAnt, mFood)) {
-				Utils.log(TAG, "Eat food!!!");
-				mSoundPool
-				.play(mSoundIds[SOUND_EFFECT_FOOD], 13, 15, 1, 0, 1f);
-				
-				mFood.setNewPos();
-				mHandler.sendMessage(mHandler
-						.obtainMessage(Utils.MSG_UPDATE_SCORE));
+   private void antHome() {
+      mIsAntHome = true;
+      mHandler.sendMessage(mHandler.obtainMessage(Utils.MSG_ANT_HOME));
+   }
 
-			}
+   private void drawResult(Canvas canvas) {
+      if (mIsAntLost) {
+         // canvas.drawText("Ant is Lost!!!", 20, 100, mResultPaint);
+      } else if (mIsAntHome) {
+         // canvas.drawText("Ant is home....", 200, 200, mResultPaint);
 
-		}
-	}
+      }
+   }
 
-	private void checkOutOfScreen() {
-		if (HF2D.checkOutOfScreen(mAnt, AntGuide.DEVICE_WIDTH,
-				AntGuide.DEVICE_HEIGHT)) {
-			antLost();
-		}
-	}
+   public void draw(Canvas canvas) {
 
-	private void antLost() {
-		mIsAntLost = true;
-		mHandler.sendMessage(mHandler.obtainMessage(Utils.MSG_ANT_LOST));
-	}
+      checkCollision();
 
-	private void antHome() {
-		mIsAntHome = true;
-		mSoundPool.play(mSoundIds[SOUND_EFFECT_VICTORY], 13, 15, 1, 0, 1f);
-		mHandler.sendMessage(mHandler.obtainMessage(Utils.MSG_ANT_HOME));
-	}
+      drawBg(canvas);
 
-	private void drawResult(Canvas canvas) {
-		if (mIsAntLost) {
-			// canvas.drawText("Ant is Lost!!!", 20, 100, mResultPaint);
-		} else if (mIsAntHome) {
-			// canvas.drawText("Ant is home....", 200, 200, mResultPaint);
+      drawResult(canvas);
 
-		}
-	}
+      for (int i = 0; i < mSprites.size(); i++) {
+         mSprites.get(i).draw(canvas);
+      }
+   }
 
-	public void draw(Canvas canvas) {
+   public void setNewLine(Pos start, Pos end) {
 
-		checkCollision();
+      if (mLine != null) {
+         mLine.setPos(start, end);
+      }
 
-		drawBg(canvas);
+   }
 
-		drawResult(canvas);
+   private void drawBg(Canvas canvas) {
 
-		for (int i = 0; i < mSprites.size(); i++) {
-			mSprites.get(i).draw(canvas);
-		}
-	}
+      canvas.drawBitmap(mBackgroundBmp, 0, 0, mBmpPaint);
+//      canvas.drawBitmap(mGrassBmp, 68, 133, mBmpPaint);
+//      canvas.drawBitmap(mGrassBmp, 12, 190, mBmpPaint);
+//      canvas.drawBitmap(mGrassBmp, 310, 123, mBmpPaint);
+//      canvas.drawBitmap(mGrassBmp, 120, 99, mBmpPaint);
+//      canvas.drawBitmap(mGrassBmp, 200, 521, mBmpPaint);
+   }
 
-	public void setNewLine(Pos start, Pos end) {
+   private void loadGrass() {
+      Resources r = mContext.getResources();
+      Drawable grassDrawable = r.getDrawable(R.drawable.grass);
+      Bitmap bitmap = Bitmap.createBitmap(GRASS_WIDTH, GRASS_HEIGHT,
+            Bitmap.Config.ARGB_8888);
+      Canvas canvas = new Canvas(bitmap);
+      grassDrawable.setBounds(0, 0, 32, 32);
+      grassDrawable.draw(canvas);
+      mGrassBmp = bitmap;
+   }
 
-		if (mLine != null) {
-			mLine.setPos(start, end);
-		}
+   private void loadBackground() {
+      int width = AntGuide.DEVICE_WIDTH;
+      int height = AntGuide.DEVICE_HEIGHT;
 
-	}
+      Resources r = mContext.getResources();
+      Drawable holeDrawable = r.getDrawable(R.drawable.background);
+      Bitmap bitmap = Bitmap.createBitmap(width, height,
+            Bitmap.Config.ARGB_8888);
+      Canvas canvas = new Canvas(bitmap);
+      holeDrawable.setBounds(0, 0, width, height);
+      holeDrawable.draw(canvas);
+      mBackgroundBmp = bitmap;
+   }
 
-	private void drawBg(Canvas canvas) {
+   public void setWhichAntAnim(int which) {
+      if (mAnt != null) {
+         mAnt.mWhichAntAnim = which;
+      }
+   }
 
-		canvas.drawBitmap(mBackgroundBmp, 0, 0, mBmpPaint);
-		canvas.drawBitmap(mGrassBmp, 68, 133, mBmpPaint);
-		canvas.drawBitmap(mGrassBmp, 12, 190, mBmpPaint);
-		canvas.drawBitmap(mGrassBmp, 310, 123, mBmpPaint);
-		canvas.drawBitmap(mGrassBmp, 120, 99, mBmpPaint);
-		canvas.drawBitmap(mGrassBmp, 200, 521, mBmpPaint);
-	}
-
-	private void loadGrass() {
-		Resources r = mContext.getResources();
-		Drawable grassDrawable = r.getDrawable(R.drawable.grass);
-		Bitmap bitmap = Bitmap.createBitmap(GRASS_WIDTH, GRASS_HEIGHT,
-				Bitmap.Config.ARGB_8888);
-		Canvas canvas = new Canvas(bitmap);
-		grassDrawable.setBounds(0, 0, 32, 32);
-		grassDrawable.draw(canvas);
-		mGrassBmp = bitmap;
-	}
-
-	private void loadBackground() {
-		int width = AntGuide.DEVICE_WIDTH;
-		int height = AntGuide.DEVICE_HEIGHT;
-
-		Resources r = mContext.getResources();
-		Drawable holeDrawable = r.getDrawable(R.drawable.background);
-		Bitmap bitmap = Bitmap.createBitmap(width, height,
-				Bitmap.Config.ARGB_8888);
-		Canvas canvas = new Canvas(bitmap);
-		holeDrawable.setBounds(0, 0, width, height);
-		holeDrawable.draw(canvas);
-		mBackgroundBmp = bitmap;
-	}
-
-	public void setWhichAntAnim(int which) {
-		if (mAnt != null) {
-			mAnt.mWhichAntAnim = which;
-		}
-	}
-
-	// clear memory
-	public void clear() {
-		Utils.recycleBitmap(mBackgroundBmp);
-		Utils.recycleBitmap(mGrassBmp);
-		if (mSprites != null) {
-			for (int i = 0; i < mSprites.size(); i++) {
-				mSprites.get(i).clear();
-			}
-		}
-	}
+   // clear memory
+   public void clear() {
+      Utils.recycleBitmap(mBackgroundBmp);
+      Utils.recycleBitmap(mGrassBmp);
+      if (mSprites != null) {
+         for (int i = 0; i < mSprites.size(); i++) {
+            mSprites.get(i).clear();
+         }
+      }
+   }
 
 }

@@ -25,13 +25,13 @@ public class AntSprite extends Sprite {
    private Bitmap mRotatedBitmap;
    public int mWhichAntAnim = 0;
 
-   public static final int ANT_WIDTH = 32;
-   public static final int ANT_HEIGHT = 32;
+   public static final int ANT_WIDTH = 42;
+   public static final int ANT_HEIGHT = 42;
 
-   //Cool down after collision
+   // Cool down after collision
    public static final int COOL_DOWN = 15;
-   private int mCoolDown; 
-   
+   private int mCoolDown;
+
    public AntSprite(Context c) {
       mContext = c;
       init();
@@ -42,7 +42,7 @@ public class AntSprite extends Sprite {
       mPaint.setColor(Color.RED);
 
       mAngle = 30;
-      mSpeed = 1;
+      mSpeed = 2;
 
       mRect = new Rect();
 
@@ -101,44 +101,57 @@ public class AntSprite extends Sprite {
    }
 
    private void loadAnt() {
-      mAntBmpArray = new Bitmap[4];
       Resources r = mContext.getResources();
-      Drawable antDrawable0 = r.getDrawable(R.drawable.ant0);
-      Drawable antDrawable1 = r.getDrawable(R.drawable.ant1);
-      Drawable antDrawable2 = r.getDrawable(R.drawable.ant2);
-      Drawable antDrawable3 = r.getDrawable(R.drawable.ant3);
+      int drawableId[] = { R.drawable.black_ant0, R.drawable.black_ant1, R.drawable.black_ant2,
+            R.drawable.black_ant3, R.drawable.black_ant4, R.drawable.black_ant5 };
+      mAntBmpArray = new Bitmap[drawableId.length];
+      for (int i = 0; i < drawableId.length; i++) {
+         Drawable antDrawable = r.getDrawable(drawableId[i]);
 
-      Bitmap bitmap = Bitmap.createBitmap(ANT_WIDTH, ANT_HEIGHT,
-            Bitmap.Config.ARGB_8888);
-      Canvas canvas = new Canvas(bitmap);
-      antDrawable0.setBounds(0, 0, ANT_WIDTH, ANT_HEIGHT);
-      antDrawable0.draw(canvas);
-      mAntBmpArray[0] = bitmap;
+         Bitmap bitmap = Bitmap.createBitmap(ANT_WIDTH, ANT_HEIGHT,
+               Bitmap.Config.ARGB_8888);
+         Canvas canvas = new Canvas(bitmap);
+         antDrawable.setBounds(0, 0, ANT_WIDTH, ANT_HEIGHT);
+         antDrawable.draw(canvas);
+         mAntBmpArray[i] = bitmap;
+      }
 
-      bitmap = Bitmap.createBitmap(ANT_WIDTH, ANT_HEIGHT,
-            Bitmap.Config.ARGB_8888);
-      canvas = new Canvas(bitmap);
-      antDrawable1.setBounds(0, 0, ANT_WIDTH, ANT_HEIGHT);
-      antDrawable1.draw(canvas);
-      mAntBmpArray[1] = bitmap;
-
-      bitmap = Bitmap.createBitmap(ANT_WIDTH, ANT_HEIGHT,
-            Bitmap.Config.ARGB_8888);
-      canvas = new Canvas(bitmap);
-      antDrawable2.setBounds(0, 0, ANT_WIDTH, ANT_HEIGHT);
-      antDrawable2.draw(canvas);
-      mAntBmpArray[2] = bitmap;
-
-      bitmap = Bitmap.createBitmap(ANT_WIDTH, ANT_HEIGHT,
-            Bitmap.Config.ARGB_8888);
-      canvas = new Canvas(bitmap);
-      antDrawable3.setBounds(0, 0, ANT_WIDTH, ANT_HEIGHT);
-      antDrawable3.draw(canvas);
-      mAntBmpArray[3] = bitmap;
+      // Drawable antDrawable0 = r.getDrawable(R.drawable.ant0);
+      // Drawable antDrawable1 = r.getDrawable(R.drawable.ant1);
+      // Drawable antDrawable2 = r.getDrawable(R.drawable.ant2);
+      // Drawable antDrawable3 = r.getDrawable(R.drawable.ant3);
+      //
+      // Bitmap bitmap = Bitmap.createBitmap(ANT_WIDTH, ANT_HEIGHT,
+      // Bitmap.Config.ARGB_8888);
+      // Canvas canvas = new Canvas(bitmap);
+      // antDrawable0.setBounds(0, 0, ANT_WIDTH, ANT_HEIGHT);
+      // antDrawable0.draw(canvas);
+      // mAntBmpArray[0] = bitmap;
+      //
+      // bitmap = Bitmap.createBitmap(ANT_WIDTH, ANT_HEIGHT,
+      // Bitmap.Config.ARGB_8888);
+      // canvas = new Canvas(bitmap);
+      // antDrawable1.setBounds(0, 0, ANT_WIDTH, ANT_HEIGHT);
+      // antDrawable1.draw(canvas);
+      // mAntBmpArray[1] = bitmap;
+      //
+      // bitmap = Bitmap.createBitmap(ANT_WIDTH, ANT_HEIGHT,
+      // Bitmap.Config.ARGB_8888);
+      // canvas = new Canvas(bitmap);
+      // antDrawable2.setBounds(0, 0, ANT_WIDTH, ANT_HEIGHT);
+      // antDrawable2.draw(canvas);
+      // mAntBmpArray[2] = bitmap;
+      //
+      // bitmap = Bitmap.createBitmap(ANT_WIDTH, ANT_HEIGHT,
+      // Bitmap.Config.ARGB_8888);
+      // canvas = new Canvas(bitmap);
+      // antDrawable3.setBounds(0, 0, ANT_WIDTH, ANT_HEIGHT);
+      // antDrawable3.draw(canvas);
+      // mAntBmpArray[3] = bitmap;
    }
 
    private Bitmap rotate(Bitmap b, float degrees) {
-      if (degrees >= 0 && b != null) {
+      if (b != null) {
          Matrix m = new Matrix();
          m.setRotate(degrees);
 
@@ -165,11 +178,11 @@ public class AntSprite extends Sprite {
    public void startCoolDown() {
       mCoolDown = COOL_DOWN;
    }
-   
+
    public boolean checkIsCoolDown() {
-      if (mCoolDown -- <= 0) {
+      if (mCoolDown-- <= 0) {
          return false;
-      } else{
+      } else {
          return true;
       }
    }
