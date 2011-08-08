@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
@@ -17,6 +19,9 @@ public class MainPage extends Activity implements OnClickListener {
 
    public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
+      getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN);
+      this.requestWindowFeature(Window.FEATURE_NO_TITLE);
       setContentView(R.layout.mainpage);
       findViews();
    }
@@ -24,10 +29,8 @@ public class MainPage extends Activity implements OnClickListener {
    private void findViews() {
       mStart = (ImageView) findViewById(R.id.mainpage_start);
       mStart.setOnClickListener(this);
-      mHiScore = (ImageView) findViewById(R.id.mainpage_hiscore);
+      mHiScore = (ImageView) findViewById(R.id.mainpage_shop);
       mHiScore.setOnClickListener(this);
-      mAbout = (ImageView) findViewById(R.id.mainpage_about);
-      mAbout.setOnClickListener(this);
       mExit = (ImageView) findViewById(R.id.mainpage_exit);
       mExit.setOnClickListener(this);
 
@@ -41,15 +44,15 @@ public class MainPage extends Activity implements OnClickListener {
          intent.setClass(MainPage.this, AntGuide.class);
          startActivityForResult(intent, Utils.RESULT_ANT_GUIDE);
          break;
-      case R.id.mainpage_hiscore:
-         intent.setClass(MainPage.this, ScoreBoardActivity.class);
+      case R.id.mainpage_shop:
+         // intent.setClass(MainPage.this, ScoreBoardActivity.class);
+         // startActivity(intent);
+         intent.setClass(MainPage.this, ShopActivity.class);
          startActivity(intent);
-         break;
-      case R.id.mainpage_about:
-         showAbout();
          break;
 
       case R.id.mainpage_exit:
+         finish();
          break;
       default:
          break;
