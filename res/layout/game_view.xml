@@ -19,7 +19,7 @@
 				android:layout_toRightOf="@id/time_min0" />
 			<ImageView android:id="@+id/time_split"
 				android:layout_width="10px" android:layout_height="20px"
-				android:layout_toRightOf="@id/time_min1" />
+				android:layout_toRightOf="@id/time_min1" android:src="@drawable/colon"/>
 			<ImageView android:id="@+id/time_sec0"
 				android:layout_width="20px" android:layout_height="20px"
 				android:layout_toRightOf="@id/time_split" />
