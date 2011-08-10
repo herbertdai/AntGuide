@@ -12,6 +12,10 @@ public final class Utils {
 
    private static final String TAG = "Ant Guide";
 
+   public static final String PREF_SETTINGS = "settings";
+   public static final String PREF_SETTINGS_BACK_MUSIC_OFF = "back_musci_off";
+   public static final String PREF_SETTINGS_SOUND_EFFECT_OFF = "sound_effect_off";
+
    public static final long TIMEOUT = 3 * 60 * 1000L;
    public static final int TOP_SCORE_COUNT = 5;
 
@@ -22,7 +26,7 @@ public final class Utils {
    public static final int MSG_ANT_TIMEOUT = 5;
    public static final int MSG_SCORE_BOARD = 6;
    public static final int MSG_TIME_UPDATED = 7;
-   
+
    public static final int ANT_HOME = 1;
    public static final int ANT_LOST = 2;
    public static final int ANT_TIMEOUT = 3;

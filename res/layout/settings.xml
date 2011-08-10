@@ -10,12 +10,11 @@
 			android:paddingTop="50dp">
 			<TextView android:layout_width="wrap_content"
 				android:layout_height="wrap_content" android:textSize="22sp"
-				android:textColor="#000000" android:text="Music on"
+				android:textColor="#000000" android:text="Back Music"
 				android:layout_alignParentLeft="true" android:paddingLeft="30dp" />
 			<ImageView android:id="@+id/back_music_switcher"
 				android:layout_width="wrap_content" android:layout_height="wrap_content"
-				android:layout_alignParentRight="true" android:paddingRight="50dp"
-				android:src="@drawable/sound_on" />
+				android:layout_alignParentRight="true" android:layout_marginRight="50dp" />
 		</RelativeLayout>
 		<LinearLayout android:layout_width="fill_parent"
 			android:layout_height="10dp" android:background="@drawable/split_line" />
@@ -30,8 +29,7 @@
 				android:layout_alignParentLeft="true" android:paddingLeft="30dp" />
 			<ImageView android:id="@+id/sound_effect_switcher"
 				android:layout_width="wrap_content" android:layout_height="wrap_content"
-				android:layout_alignParentRight="true" android:paddingRight="50dp"
-				android:src="@drawable/sound_on" />
+				android:layout_alignParentRight="true" android:layout_marginRight="50dp" />
 		</RelativeLayout>
 		<LinearLayout android:layout_width="fill_parent"
 			android:layout_height="10dp" android:background="@drawable/split_line" />
