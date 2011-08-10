@@ -34,13 +34,26 @@
 				android:layout_below="@id/mainpage_shop" android:layout_height="10dp"
 				android:background="@drawable/split_line" />
 		</RelativeLayout>
-
-
-
-
+		
 		<RelativeLayout android:id="@+id/element3"
-			android:layout_height="wrap_content" android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:layout_width="wrap_content"
 			android:layout_below="@id/element2">
+
+			<ImageView android:id="@+id/mainpage_settings"
+				android:layout_width="fill_parent" android:layout_height="70px"
+				 android:src="@drawable/settings" />
+
+			<LinearLayout android:layout_width="fill_parent"
+				android:layout_below="@id/mainpage_settings" android:layout_height="10dp"
+				android:background="@drawable/split_line" />
+		</RelativeLayout>
+
+
+
+
+		<RelativeLayout android:id="@+id/element4"
+			android:layout_height="wrap_content" android:layout_width="fill_parent"
+			android:layout_below="@id/element3">
 			<ImageView android:id="@+id/mainpage_exit"
 				android:layout_width="fill_parent" android:layout_height="70px"
 

@@ -18,6 +18,7 @@ public class MainPage extends Activity implements OnClickListener {
    private ImageView mHiScore;
    private ImageView mAbout;
    private ImageView mExit;
+   private ImageView mSettings;
 
    public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
@@ -35,6 +36,8 @@ public class MainPage extends Activity implements OnClickListener {
       mHiScore.setOnClickListener(this);
       mExit = (ImageView) findViewById(R.id.mainpage_exit);
       mExit.setOnClickListener(this);
+      mSettings = (ImageView) findViewById(R.id.mainpage_settings);
+      mSettings.setOnClickListener(this);
 
    }
 
@@ -50,6 +53,11 @@ public class MainPage extends Activity implements OnClickListener {
          // intent.setClass(MainPage.this, ScoreBoardActivity.class);
          // startActivity(intent);
          intent.setClass(MainPage.this, ShopActivity.class);
+         startActivity(intent);
+         break;
+         
+      case R.id.mainpage_settings:
+         intent.setClass(MainPage.this, SettingsActivity.class);
          startActivity(intent);
          break;
 
