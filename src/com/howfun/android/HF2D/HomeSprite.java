@@ -56,7 +56,7 @@ public class HomeSprite extends Sprite {
       Bitmap bitmap = Bitmap.createBitmap(HOME_W, HOME_H,
             Bitmap.Config.ARGB_8888);
       Canvas canvas = new Canvas(bitmap);
-      holeDrawable.setBounds(0, 0, 32, 32);
+      holeDrawable.setBounds(0, 0, HOME_W, HOME_H);
       holeDrawable.draw(canvas);
       mHoleBmp = bitmap;
    }
