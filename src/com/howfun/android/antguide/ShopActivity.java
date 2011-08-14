@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -21,7 +22,9 @@ public class ShopActivity extends Activity {
       super.onCreate(savedInstanceState);
       getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN);
+      requestWindowFeature(Window.FEATURE_NO_TITLE);
       setContentView(R.layout.shop);
+      
 
       mGallery = (Gallery) findViewById(R.id.shop_gallery);
       ShopGalleryAdapter adapter = new ShopGalleryAdapter(this);
@@ -34,7 +37,7 @@ public class ShopActivity extends Activity {
                int position, long id) {
             
             //TODO judge if the shop can be open
-            Intent intent = new Intent(ShopActivity.this,AntGuide.class);
+            Intent intent = new Intent(ShopActivity.this,AntGuideActivity.class);
             startActivity(intent);
 
          }

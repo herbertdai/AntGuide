@@ -13,6 +13,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.howfun.android.antguide.entity.Score;
+import com.howfun.android.antguide.utils.DBAdapter;
+import com.howfun.android.antguide.utils.Utils;
+
 public class ScoreBoardActivity extends Activity {
 
    private TextView noScoreRecord;

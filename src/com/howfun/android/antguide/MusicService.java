@@ -6,6 +6,8 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
+import com.howfun.android.antguide.game.Sound;
+
 public class MusicService extends Service {
 
    private static final String TAG = "MusicService";

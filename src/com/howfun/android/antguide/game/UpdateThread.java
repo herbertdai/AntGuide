@@ -1,9 +1,9 @@
-package com.howfun.android.antguide;
+package com.howfun.android.antguide.game;
 
 import android.graphics.Canvas;
-import android.graphics.Rect;
-
 import android.view.SurfaceHolder;
+
+import com.howfun.android.antguide.view.AntView;
 
 public class UpdateThread extends Thread {
 
@@ -33,7 +33,8 @@ public class UpdateThread extends Thread {
 
    }
 
-   public void setRunning(boolean run) {
+
+public void setRunning(boolean run) {
 
       toRun = run;
 

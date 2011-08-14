@@ -1,8 +1,10 @@
-package com.howfun.android.antguide;
+package com.howfun.android.antguide.game;
 
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.util.Log;
+
+import com.howfun.android.antguide.utils.Utils;
 
 public class Sound {
 

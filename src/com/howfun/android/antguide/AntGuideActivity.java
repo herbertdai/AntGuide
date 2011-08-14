@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -22,7 +23,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class AntGuide extends Activity implements OnTouchListener {
+import com.howfun.android.antguide.entity.Score;
+import com.howfun.android.antguide.game.GameStatus;
+import com.howfun.android.antguide.game.TimeManager;
+import com.howfun.android.antguide.utils.DBAdapter;
+import com.howfun.android.antguide.utils.Utils;
+import com.howfun.android.antguide.view.AntView;
+
+public class AntGuideActivity extends Activity implements OnTouchListener {
    private static final String TAG = "AntGuide";
 
    // private AntView mAntView;
@@ -69,6 +77,10 @@ public class AntGuide extends Activity implements OnTouchListener {
 
    private GameStatus mGameStatus;
    private TimeManager mTimeManager;
+
+   private SharedPreferences mSettings;
+   private boolean mBackMusicOff;
+   private boolean mSoundEffectOff;
 
    private Handler mHandler = new Handler() {
 
@@ -138,8 +150,14 @@ public class AntGuide extends Activity implements OnTouchListener {
    protected void onResume() {
       super.onResume();
       Utils.log(TAG, "onresume..");
+      mBackMusicOff = mSettings.getBoolean(Utils.PREF_SETTINGS_BACK_MUSIC_OFF,
+            false);
+      mSoundEffectOff = mSettings.getBoolean(
+            Utils.PREF_SETTINGS_SOUND_EFFECT_OFF, false);
 
-      sendBroadcast(mIntentReceiver);
+      if (!mBackMusicOff) {
+         sendBroadcast(mIntentReceiver);
+      }
 
       antView.init(mHandler);
       int gameStatus = mGameStatus.getStatus();
@@ -162,8 +180,10 @@ public class AntGuide extends Activity implements OnTouchListener {
       Utils.log(TAG, "onPause..");
       pauseGame();
       // TODO pause bug
-      stopService(mIntentService);
-      
+      if (!mBackMusicOff) {
+         stopService(mIntentService);
+      }
+
    }
 
    @Override
@@ -256,6 +276,8 @@ public class AntGuide extends Activity implements OnTouchListener {
    }
 
    private void playSoundEffect(int id) {
+      if (mSoundEffectOff)
+         return;
       if (mSoundPool != null) {
          mSoundPool.play(mSoundIds[id], 13, 15, 1, 0, 1f);
       }
@@ -267,6 +289,8 @@ public class AntGuide extends Activity implements OnTouchListener {
 
       mGameStatus = new GameStatus();
       mTimeManager = new TimeManager(mHandler);
+
+      mSettings = getSharedPreferences(Utils.PREF_SETTINGS, 0);
    }
 
    private void playGame() {

@@ -11,7 +11,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 
 import com.howfun.android.antguide.R;
-import com.howfun.android.antguide.Utils;
+import com.howfun.android.antguide.utils.Utils;
 
 public class AntSprite extends Sprite {
    private static final String TAG = "AntSprite";
