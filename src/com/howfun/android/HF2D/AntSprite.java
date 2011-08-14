@@ -29,7 +29,7 @@ public class AntSprite extends Sprite {
    public static final int ANT_HEIGHT = 42;
 
    // Cool down after collision
-   public static final int COOL_DOWN = 15;
+   public static final int COOL_DOWN = 25;
    private int mCoolDown;
 
    public AntSprite(Context c) {

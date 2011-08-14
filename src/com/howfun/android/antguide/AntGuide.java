@@ -5,12 +5,14 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -22,13 +24,18 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.howfun.android.HF2D.Pos;
+
 public class AntGuide extends Activity implements OnTouchListener {
    private static final String TAG = "AntGuide";
 
-   // private AntView mAntView;
+   private static final String PREF = "ant pref";
+   private static final String GAME_STATE_PREF = "ant state pref";//Paused is true
 
    public static int DEVICE_WIDTH;
    public static int DEVICE_HEIGHT;
+
+   private boolean mIsBackPressed;
 
    private static final int SOUND_EFFECT_COLLISION = 0;
    private static final int SOUND_EFFECT_FOOD = 1;
@@ -142,6 +149,9 @@ public class AntGuide extends Activity implements OnTouchListener {
       sendBroadcast(mIntentReceiver);
 
       antView.init(mHandler);
+      SharedPreferences sp = this.getSharedPreferences(PREF, MODE_PRIVATE);
+      sp.getInt(GAME_STATE_PREF, GameStatus.GAME_INIT);
+      
       int gameStatus = mGameStatus.getStatus();
 
       if (gameStatus == GameStatus.GAME_INIT) {
@@ -149,7 +159,7 @@ public class AntGuide extends Activity implements OnTouchListener {
       } else if (gameStatus == GameStatus.GAME_STOPPED) {
          playGame();
       } else if (gameStatus == GameStatus.GAME_PAUSED) {
-         resumeGame();
+         restorePausedGame();
       } else {
          // TODO stop
       }
@@ -160,10 +170,12 @@ public class AntGuide extends Activity implements OnTouchListener {
    protected void onPause() {
       super.onPause();
       Utils.log(TAG, "onPause..");
+      // if (!mIsBackPressed) {
       pauseGame();
-      // TODO pause bug
+      saveState();
+      // }
       stopService(mIntentService);
-      
+
    }
 
    @Override
@@ -267,6 +279,7 @@ public class AntGuide extends Activity implements OnTouchListener {
 
       mGameStatus = new GameStatus();
       mTimeManager = new TimeManager(mHandler);
+      mIsBackPressed = false;
    }
 
    private void playGame() {
@@ -493,4 +506,58 @@ public class AntGuide extends Activity implements OnTouchListener {
       return flag;
    }
 
+   @Override
+   public boolean onKeyDown(int keyCode, KeyEvent event) {
+      Utils.log(TAG, "onKeyDown");
+      switch (keyCode) {
+      case KeyEvent.KEYCODE_BACK:
+         mIsBackPressed = true;
+         break;
+      default:
+         break;
+
+      }
+      return super.onKeyDown(keyCode, event);
+   }
+
+   @Override
+   protected void onSaveInstanceState(Bundle outState) {
+      Utils.log(TAG, "onSaveInstanceState");
+      saveState();
+   }
+
+   @Override
+   protected void onRestoreInstanceState(Bundle outState) {
+      Utils.log(TAG, "onRestoreInstanceState");
+      SharedPreferences sp = this.getSharedPreferences(PREF, MODE_PRIVATE);
+      int status = sp.getInt(GAME_STATE_PREF, GameStatus.GAME_INIT);
+      if (status == GameStatus.GAME_PAUSED) {
+         restorePausedGame();
+      }
+      
+   }
+   
+   private void saveState() {
+      Utils.log(TAG, "saveState");
+      SharedPreferences sp = this.getSharedPreferences(PREF, MODE_PRIVATE);
+      sp.edit().putInt(GAME_STATE_PREF, GameStatus.GAME_PAUSED).commit();
+      sp.edit().putInt("x", 100).commit();
+      sp.edit().putInt("y", 300).commit();
+      
+   }
+   
+   private void restorePausedGame() {
+      
+      SharedPreferences sp = this.getSharedPreferences(PREF, MODE_PRIVATE);
+      int x= sp.getInt("x", 0);
+      int y= sp.getInt("y", 0);
+      pauseGame();
+   }
+   
+   private class GameData {
+      protected Pos mAntPos; 
+      GameData(Pos pos) {
+         mAntPos = pos;
+      }
+   }
 }
