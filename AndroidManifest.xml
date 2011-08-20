@@ -5,12 +5,16 @@
 	<application android:icon="@drawable/icon" android:label="@string/app_name"
 		android:debuggable="true">
 
-		<activity android:name=".MainPage" android:label="@string/app_name"
+		<activity android:name=".Splash" android:label="@string/app_name"
 			android:screenOrientation="portrait">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
+		</activity>
+		
+		<activity android:name=".MainPage" android:label="@string/app_name"
+			android:screenOrientation="portrait">
 		</activity>
 		<activity android:name=".HelpPage" android:label="@string/app_name"
 			android:screenOrientation="portrait">
