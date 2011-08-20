@@ -11,6 +11,7 @@ public class GameStatus {
 
    private Pos mAntPos;
    private AntMap mMap;
+   private float mAntAngle;
 
    public GameStatus() {
       mStatus = GAME_INIT;
@@ -18,9 +19,6 @@ public class GameStatus {
 
    public void setStaus(int status) {
       mStatus = status;
-      switch (mStatus) {
-
-      }
    }
 
    public int getStatus() {
@@ -39,4 +37,10 @@ public class GameStatus {
       return mAntPos;
    }
 
+   public void setAntAngle(float angle) {
+      this.mAntAngle = angle;
+   }
+   public float getAntAngle() {
+      return this.mAntAngle;
+   }
 }

@@ -258,7 +258,18 @@ public class CanvasManager {
    }
 
    public void restoreGame(GameStatus gameStatus) {
-      mAnt.setPos(gameStatus.getAntPos());
+      if (mAnt != null) {
+         mAnt.setPos(gameStatus.getAntPos());
+         mAnt.setAngle(gameStatus.getAntAngle());
+         Utils.log(TAG, "set angle = " + gameStatus.getAntAngle());
+      }
+   }
+   
+   public void getGameStatus(GameStatus gameStatus) {
+      if (mAnt != null) {
+         gameStatus.setAntPos(mAnt.getPos());
+         gameStatus.setAntAngle(mAnt.getAngle());
+      }
       
    }
 }

@@ -30,6 +30,7 @@ public class TimeManager {
                   handler.sendMessage(msg);
                   Thread.sleep(1000);
                   add();
+                  Utils.log(TAG, "add time");
                } catch (InterruptedException e) {
                   e.printStackTrace();
                }
@@ -39,6 +40,8 @@ public class TimeManager {
    };
 
    public TimeManager(Handler h) {
+      Utils.log(TAG, "new timemanger..............ljjljlj");
+      
       handler = h;
       toRun = true;
       time = 0;
@@ -49,11 +52,23 @@ public class TimeManager {
 
    public void start() {
       flag = true;
-      reset();
    }
 
    public void resume() {
       flag = true;
+   }
+   
+   public void restoreTime(int minute, int second) {
+      this.minute = minute; 
+      this.second = second;
+   }
+   
+   public int getMin() {
+      return this.minute;
+   }
+   
+   public int getSec() {
+      return this.second;
    }
 
    public void pause() {
@@ -77,7 +92,7 @@ public class TimeManager {
       return second;
    }
 
-   private void reset() {
+   public void reset() {
       time = 0;
       minute = 0;
       second = 0;

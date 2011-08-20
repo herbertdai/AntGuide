@@ -191,4 +191,8 @@ public class AntSprite extends Sprite {
       mPos = antPos;
    }
 
+   public Pos getPos() {
+      return mPos;
+   }
+
 }

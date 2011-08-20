@@ -160,6 +160,7 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 
       if (mGameStatus != null) {
          if (mGameStatus.getStatus() == GameStatus.GAME_PAUSED) {
+            pauseGame();
             if (mCanvasManager != null) {
                mCanvasManager.restoreGame(mGameStatus);
             }
@@ -169,7 +170,6 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
                // TODO Auto-generated catch block
                e.printStackTrace();
             }
-            pauseGame();
          }
       }
 
@@ -215,6 +215,16 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 
    public void setRestoredState(GameStatus gameStatus) {
       this.mGameStatus = gameStatus;
+   }
+   
+   public void getGameStatus(GameStatus gameStatus) {
+      if(mCanvasManager != null) {
+         if (gameStatus == null) {
+            gameStatus = new GameStatus();
+         }
+         mCanvasManager.getGameStatus(gameStatus);
+      }
+      mGameStatus = gameStatus;
    }
 
 }

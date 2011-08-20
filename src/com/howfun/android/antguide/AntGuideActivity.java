@@ -37,7 +37,8 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
    private static final String TAG = "AntGuide";
 
    private static final String PREF = "ant pref";
-   private static final String GAME_STATE_PREF = "ant state pref";//Paused is true
+   private static final String GAME_STATE_PREF = "ant state pref";// Paused is
+                                                                  // true
 
    public static int DEVICE_WIDTH;
    public static int DEVICE_HEIGHT;
@@ -148,7 +149,7 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
       setupListeners();
       loadSoundEffects();
       initScoreBoard();
-      init();
+//      init();
 
    }
 
@@ -156,6 +157,7 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
    protected void onResume() {
       super.onResume();
       Utils.log(TAG, "onresume..");
+      init();
       mBackMusicOff = mSettings.getBoolean(Utils.PREF_SETTINGS_BACK_MUSIC_OFF,
             false);
       mSoundEffectOff = mSettings.getBoolean(
@@ -168,8 +170,8 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
       antView.init(mHandler);
       SharedPreferences sp = this.getSharedPreferences(PREF, MODE_PRIVATE);
       int gameStatus = sp.getInt(GAME_STATE_PREF, GameStatus.GAME_INIT);
-      
-//      int gameStatus = mGameStatus.getStatus();
+
+      // int gameStatus = mGameStatus.getStatus();
 
       if (gameStatus == GameStatus.GAME_INIT) {
          playGame();
@@ -185,13 +187,9 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
 
    @Override
    protected void onPause() {
-      super.onPause();
       Utils.log(TAG, "onPause..");
       // if (!mIsBackPressed) {
       // TODO pause bug
-      if (!mBackMusicOff) {
-         stopService(mIntentService);
-      }
       if (this.isFinishing()) {
          Utils.log(TAG, "this isfinishing!");
          resetState();
@@ -200,6 +198,10 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
          pauseGame();
          saveState();
       }
+      if (!mBackMusicOff) {
+         stopService(mIntentService);
+      }
+      super.onPause();
 
    }
 
@@ -321,6 +323,7 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
       hideGameInfo();
 
       // TODO timing starts
+      mTimeManager.reset();
       mTimeManager.start();
 
    }
@@ -341,8 +344,8 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
     */
    private void pauseGame() {
       Utils.log(TAG, "pauseGame..");
-      mGameStatus.setStaus(GameStatus.GAME_PAUSED);
       antView.pauseGame();
+      mGameStatus.setStaus(GameStatus.GAME_PAUSED);
       hideGamePause();
       showGameInfo("game paused");
       // TODO timing pause
@@ -541,8 +544,10 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
       switch (keyCode) {
       case KeyEvent.KEYCODE_BACK:
          mIsBackPressed = true;
+         antView.pauseGame();
+         mGameStatus.setStaus(GameStatus.GAME_PAUSED);
          break;
-      
+
       default:
          break;
 
@@ -553,7 +558,6 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
    @Override
    protected void onSaveInstanceState(Bundle outState) {
       Utils.log(TAG, "onSaveInstanceState");
-      saveState();
    }
 
    @Override
@@ -564,33 +568,58 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
       if (status == GameStatus.GAME_PAUSED) {
          restorePausedGame();
       }
-      
+
    }
-   
+
    private void resetState() {
       SharedPreferences sp = this.getSharedPreferences(PREF, MODE_PRIVATE);
       sp.edit().putInt(GAME_STATE_PREF, GameStatus.GAME_INIT).commit();
-      
+
    }
+
    private void saveState() {
       Utils.log(TAG, "saveState");
+
+      antView.getGameStatus(mGameStatus);
+
       SharedPreferences sp = this.getSharedPreferences(PREF, MODE_PRIVATE);
       sp.edit().putInt(GAME_STATE_PREF, GameStatus.GAME_PAUSED).commit();
-      sp.edit().putInt("x", 100).commit();
-      sp.edit().putInt("y", 300).commit();
-      
+
+      float x = mGameStatus.getAntPos().x;
+      float y = mGameStatus.getAntPos().y;
+      float angle = mGameStatus.getAntAngle();
+      sp.edit().putFloat("x", x).commit();
+      sp.edit().putFloat("y", y).commit();
+      sp.edit().putFloat("angle", angle).commit();
+      sp.edit().putInt("min", this.mTimeManager.getMin()).commit();
+      sp.edit().putInt("sec", this.mTimeManager.getSec()).commit();
+
    }
-   
+
    private void restorePausedGame() {
-      
+
       SharedPreferences sp = this.getSharedPreferences(PREF, MODE_PRIVATE);
-      int x= sp.getInt("x", 0);
-      int y= sp.getInt("y", 0);
+      float x = sp.getFloat("x", 0);
+      float y = sp.getFloat("y", 0);
+      float angle = sp.getFloat("angle", 0);
+      int min = sp.getInt("min", 0);
+      int sec = sp.getInt("sec", 0);
+      
+      if (mTimeManager !=null) {
+         mTimeManager.restoreTime(min, sec);
+         mTimeManager.pause();
+         Utils.log(TAG, "resume time min = " + min + ",sec = " + sec);
+         
+      } else {
+         Utils.log(TAG, "lllllllllllllllltime is null");
+      }
+
       mGameStatus.setStaus(GameStatus.GAME_PAUSED);
-      mGameStatus.setAntPos(new Pos(x,y));
+      mGameStatus.setAntAngle(angle);
+      mGameStatus.setAntPos(new Pos(x, y));
       if (antView != null) {
          antView.setRestoredState(mGameStatus);
       }
    }
-   
+
 }

@@ -30,6 +30,7 @@ public class Splash extends Activity {
 				// TODO Auto-generated method stub
 				Intent i = new Intent(Splash.this,MainPage.class);
 				startActivity(i);
+				Splash.this.finish();
 
 			}
 		}, 2000L);
