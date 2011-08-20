@@ -9,6 +9,7 @@ import android.view.SurfaceView;
 
 import com.howfun.android.HF2D.Pos;
 import com.howfun.android.antguide.game.CanvasManager;
+import com.howfun.android.antguide.game.GameStatus;
 import com.howfun.android.antguide.game.UpdateThread;
 import com.howfun.android.antguide.utils.Utils;
 
@@ -32,6 +33,8 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 
    private Context mContext;
 
+   private GameStatus mGameStatus;
+
    public AntView(Context context) {
 
       super(context);
@@ -54,14 +57,13 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
       mCanvasManager = new CanvasManager(mContext);
 
    }
-   
-   public void init(Handler handler){
-      if(mCanvasManager == null){
+
+   public void init(Handler handler) {
+      if (mCanvasManager == null) {
          mCanvasManager = new CanvasManager(mContext);
       }
       mCanvasManager.setHandler(handler);
    }
-
 
    public void setHandler(Handler handler) {
       if (mCanvasManager != null) {
@@ -156,6 +158,21 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 
       updateThread.start();
 
+      if (mGameStatus != null) {
+         if (mGameStatus.getStatus() == GameStatus.GAME_PAUSED) {
+            if (mCanvasManager != null) {
+               mCanvasManager.restoreGame(mGameStatus);
+            }
+            try {
+               updateThread.sleep(500); // let game init in a short time.
+            } catch (InterruptedException e) {
+               // TODO Auto-generated catch block
+               e.printStackTrace();
+            }
+            pauseGame();
+         }
+      }
+
    }
 
    public void surfaceChanged(SurfaceHolder holder, int format, int width,
@@ -167,6 +184,8 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
    public void surfaceDestroyed(SurfaceHolder holder) {
 
       Utils.log(TAG, "surfaceDestroyed()....");
+      
+      updateThread.setRunning(false);
 
       // TODO: save running data if press HOME, and enter into pause mode
 
@@ -177,7 +196,6 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 
       boolean retry = true;
 
-      updateThread.setRunning(false);
 
       while (retry) {
 
@@ -193,6 +211,10 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 
       }
 
+   }
+
+   public void setRestoredState(GameStatus gameStatus) {
+      this.mGameStatus = gameStatus;
    }
 
 }

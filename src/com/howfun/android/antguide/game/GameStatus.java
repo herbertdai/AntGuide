@@ -1,6 +1,6 @@
 package com.howfun.android.antguide.game;
 
-import android.content.Context;
+import com.howfun.android.HF2D.Pos;
 
 public class GameStatus {
    private int mStatus;
@@ -9,6 +9,8 @@ public class GameStatus {
    public static final int GAME_PAUSED = 2;
    public static final int GAME_STOPPED = 3;
 
+   private Pos mAntPos;
+   private AntMap mMap;
 
    public GameStatus() {
       mStatus = GAME_INIT;
@@ -27,6 +29,14 @@ public class GameStatus {
 
    private void setPref(int status) {
 
+   }
+
+   public void setAntPos(Pos mPos) {
+      this.mAntPos = mPos;
+   }
+
+   public Pos getAntPos() {
+      return mAntPos;
    }
 
 }

@@ -34,7 +34,6 @@ public class TimeManager {
                   e.printStackTrace();
                }
             }
-            Utils.log(TAG, "in time manager");
          }
       }
    };

@@ -257,4 +257,8 @@ public class CanvasManager {
       }
    }
 
+   public void restoreGame(GameStatus gameStatus) {
+      mAnt.setPos(gameStatus.getAntPos());
+      
+   }
 }

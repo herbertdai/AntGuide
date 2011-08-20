@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -29,14 +30,19 @@ import com.howfun.android.antguide.game.TimeManager;
 import com.howfun.android.antguide.utils.DBAdapter;
 import com.howfun.android.antguide.utils.Utils;
 import com.howfun.android.antguide.view.AntView;
+import com.howfun.android.HF2D.Pos;
 
 public class AntGuideActivity extends Activity implements OnTouchListener {
+
    private static final String TAG = "AntGuide";
 
-   // private AntView mAntView;
+   private static final String PREF = "ant pref";
+   private static final String GAME_STATE_PREF = "ant state pref";//Paused is true
 
    public static int DEVICE_WIDTH;
    public static int DEVICE_HEIGHT;
+
+   private boolean mIsBackPressed;
 
    private static final int SOUND_EFFECT_COLLISION = 0;
    private static final int SOUND_EFFECT_FOOD = 1;
@@ -160,14 +166,17 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
       }
 
       antView.init(mHandler);
-      int gameStatus = mGameStatus.getStatus();
+      SharedPreferences sp = this.getSharedPreferences(PREF, MODE_PRIVATE);
+      int gameStatus = sp.getInt(GAME_STATE_PREF, GameStatus.GAME_INIT);
+      
+//      int gameStatus = mGameStatus.getStatus();
 
       if (gameStatus == GameStatus.GAME_INIT) {
          playGame();
       } else if (gameStatus == GameStatus.GAME_STOPPED) {
          playGame();
       } else if (gameStatus == GameStatus.GAME_PAUSED) {
-         resumeGame();
+         restorePausedGame();
       } else {
          // TODO stop
       }
@@ -178,10 +187,18 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
    protected void onPause() {
       super.onPause();
       Utils.log(TAG, "onPause..");
-      pauseGame();
+      // if (!mIsBackPressed) {
       // TODO pause bug
       if (!mBackMusicOff) {
          stopService(mIntentService);
+      }
+      if (this.isFinishing()) {
+         Utils.log(TAG, "this isfinishing!");
+         resetState();
+      } else {
+         Utils.log(TAG, "not this isfinishing!");
+         pauseGame();
+         saveState();
       }
 
    }
@@ -291,6 +308,7 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
       mTimeManager = new TimeManager(mHandler);
 
       mSettings = getSharedPreferences(Utils.PREF_SETTINGS, 0);
+      mIsBackPressed = false;
    }
 
    private void playGame() {
@@ -517,4 +535,62 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
       return flag;
    }
 
+   @Override
+   public boolean onKeyDown(int keyCode, KeyEvent event) {
+      Utils.log(TAG, "onKeyDown");
+      switch (keyCode) {
+      case KeyEvent.KEYCODE_BACK:
+         mIsBackPressed = true;
+         break;
+      
+      default:
+         break;
+
+      }
+      return super.onKeyDown(keyCode, event);
+   }
+
+   @Override
+   protected void onSaveInstanceState(Bundle outState) {
+      Utils.log(TAG, "onSaveInstanceState");
+      saveState();
+   }
+
+   @Override
+   protected void onRestoreInstanceState(Bundle outState) {
+      Utils.log(TAG, "onRestoreInstanceState");
+      SharedPreferences sp = this.getSharedPreferences(PREF, MODE_PRIVATE);
+      int status = sp.getInt(GAME_STATE_PREF, GameStatus.GAME_INIT);
+      if (status == GameStatus.GAME_PAUSED) {
+         restorePausedGame();
+      }
+      
+   }
+   
+   private void resetState() {
+      SharedPreferences sp = this.getSharedPreferences(PREF, MODE_PRIVATE);
+      sp.edit().putInt(GAME_STATE_PREF, GameStatus.GAME_INIT).commit();
+      
+   }
+   private void saveState() {
+      Utils.log(TAG, "saveState");
+      SharedPreferences sp = this.getSharedPreferences(PREF, MODE_PRIVATE);
+      sp.edit().putInt(GAME_STATE_PREF, GameStatus.GAME_PAUSED).commit();
+      sp.edit().putInt("x", 100).commit();
+      sp.edit().putInt("y", 300).commit();
+      
+   }
+   
+   private void restorePausedGame() {
+      
+      SharedPreferences sp = this.getSharedPreferences(PREF, MODE_PRIVATE);
+      int x= sp.getInt("x", 0);
+      int y= sp.getInt("y", 0);
+      mGameStatus.setStaus(GameStatus.GAME_PAUSED);
+      mGameStatus.setAntPos(new Pos(x,y));
+      if (antView != null) {
+         antView.setRestoredState(mGameStatus);
+      }
+   }
+   
 }
