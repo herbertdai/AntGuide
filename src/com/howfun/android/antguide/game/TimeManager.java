@@ -58,9 +58,12 @@ public class TimeManager {
       flag = true;
    }
    
-   public void restoreTime(int minute, int second) {
-      this.minute = minute; 
-      this.second = second;
+   public void restoreTime(int time) {
+      this.time = time;
+   }
+   
+   public int getTime() {
+      return this.time;
    }
    
    public int getMin() {
@@ -93,6 +96,7 @@ public class TimeManager {
    }
 
    public void reset() {
+      Utils.log(TAG, "timer reset");
       time = 0;
       minute = 0;
       second = 0;

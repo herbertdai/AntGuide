@@ -591,8 +591,7 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
       sp.edit().putFloat("x", x).commit();
       sp.edit().putFloat("y", y).commit();
       sp.edit().putFloat("angle", angle).commit();
-      sp.edit().putInt("min", this.mTimeManager.getMin()).commit();
-      sp.edit().putInt("sec", this.mTimeManager.getSec()).commit();
+      sp.edit().putInt("time", this.mTimeManager.getTime()).commit();
 
    }
 
@@ -602,13 +601,11 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
       float x = sp.getFloat("x", 0);
       float y = sp.getFloat("y", 0);
       float angle = sp.getFloat("angle", 0);
-      int min = sp.getInt("min", 0);
-      int sec = sp.getInt("sec", 0);
+      int time = sp.getInt("time", 0);
       
       if (mTimeManager !=null) {
-         mTimeManager.restoreTime(min, sec);
+         mTimeManager.restoreTime(time);
          mTimeManager.pause();
-         Utils.log(TAG, "resume time min = " + min + ",sec = " + sec);
          
       } else {
          Utils.log(TAG, "lllllllllllllllltime is null");
