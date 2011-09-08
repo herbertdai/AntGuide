@@ -25,19 +25,19 @@ public class MusicService extends Service {
 
    @Override
    public void onCreate() {
-      mSound = new Sound(this);
+//      mSound = new Sound(this);
    }
 
    @Override
    public void onStart(Intent intent, int startId) {
-      int which = RNG.nextInt(MUSIC_RES.length);
-      int res = MUSIC_RES[which];
-      mSound.play(res, true);
+//      int which = RNG.nextInt(MUSIC_RES.length);
+//      int res = MUSIC_RES[which];
+//      mSound.play(res, true);
    }
 
    @Override
    public void onDestroy() {
-      mSound.stop();
+//      mSound.stop();
    }
 
 }

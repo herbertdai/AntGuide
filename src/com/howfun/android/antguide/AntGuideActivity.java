@@ -24,13 +24,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.howfun.android.HF2D.Pos;
 import com.howfun.android.antguide.entity.Score;
 import com.howfun.android.antguide.game.GameStatus;
+import com.howfun.android.antguide.game.Sound;
 import com.howfun.android.antguide.game.TimeManager;
 import com.howfun.android.antguide.utils.DBAdapter;
 import com.howfun.android.antguide.utils.Utils;
 import com.howfun.android.antguide.view.AntView;
-import com.howfun.android.HF2D.Pos;
 
 public class AntGuideActivity extends Activity implements OnTouchListener {
 
@@ -39,6 +40,7 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
    private static final String PREF = "ant pref";
    private static final String GAME_STATE_PREF = "ant state pref";// Paused is
                                                                   // true
+   private Sound mSound;
 
    public static int DEVICE_WIDTH;
    public static int DEVICE_HEIGHT;
@@ -149,6 +151,7 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
       setupListeners();
       loadSoundEffects();
       initScoreBoard();
+      mSound = new Sound(this);
 //      init();
 
    }
@@ -156,6 +159,7 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
    @Override
    protected void onResume() {
       super.onResume();
+      mSound.play(R.raw.background, true);
       Utils.log(TAG, "onresume..");
       init();
       mBackMusicOff = mSettings.getBoolean(Utils.PREF_SETTINGS_BACK_MUSIC_OFF,
@@ -188,11 +192,13 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
    @Override
    protected void onPause() {
       Utils.log(TAG, "onPause..");
-      // if (!mIsBackPressed) {
-      // TODO pause bug
-      if (this.isFinishing()) {
-         Utils.log(TAG, "this isfinishing!");
+      if (mSound != null) {
+         mSound.stop();
+      }
+      if (this.isFinishing() || mGameStatus.getStatus() == GameStatus.GAME_STOPPED) {
+         Utils.log(TAG, "this isfinishing! or game stopped");
          resetState();
+         finish();
       } else {
          Utils.log(TAG, "not this isfinishing!");
          pauseGame();
@@ -249,9 +255,10 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
             public void onClick(View v) {
                if (mGameStatus.getStatus() == GameStatus.GAME_PAUSED) {
                   resumeGame();
-               } else if (mGameStatus.getStatus() == GameStatus.GAME_STOPPED) {
-                  playGame();
-               }
+               } 
+//               else if (mGameStatus.getStatus() == GameStatus.GAME_STOPPED) {
+//                  playGame();
+//               }
             }
          });
       }
@@ -316,13 +323,11 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
    private void playGame() {
       Utils.log(TAG, "playGame..");
       mGameStatus.setStaus(GameStatus.GAME_RUNNING);
-      antView.playGame();
 
       showGamePause();
 
       hideGameInfo();
 
-      // TODO timing starts
       mTimeManager.reset();
       mTimeManager.start();
 

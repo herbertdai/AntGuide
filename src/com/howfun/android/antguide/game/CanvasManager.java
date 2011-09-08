@@ -1,6 +1,7 @@
 package com.howfun.android.antguide.game;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -32,6 +33,8 @@ public class CanvasManager {
 
    private ArrayList<Sprite> mSprites;
 
+   private AntMap mMap;
+   
    private Bitmap mBg;
 
    private Context mContext;
@@ -57,6 +60,8 @@ public class CanvasManager {
 
    private HomeSprite mHome;
    private Handler mHandler;
+   
+   private ArrayList<Pos> mObstacleList;
 
    public CanvasManager(Context c) {
       mContext = c;
@@ -70,7 +75,6 @@ public class CanvasManager {
 
       loadGrass();
       loadBackground();
-      initAllSprite();
    }
 
    public void setHandler(Handler handler) {
@@ -82,6 +86,7 @@ public class CanvasManager {
 
    public void initAllSprite() {
 
+      Utils.log(TAG, "initAllSprite");
       if (mSprites == null) {
          mSprites = new ArrayList<Sprite>();
       }
@@ -98,8 +103,11 @@ public class CanvasManager {
       mLine = line;
       mSprites.add(line);
 
-      Pos homePos = HF2D.getNewPos(AntGuideActivity.DEVICE_WIDTH,
-            AntGuideActivity.DEVICE_HEIGHT);
+      int mapId = 0; //TODO:load from pref.dwy11sep5
+      Pos homePos = null;
+      if (mMap != null) {
+         homePos = mMap.getHome(mapId);
+      }
       mHome = new HomeSprite(mContext, homePos);
       mSprites.add(mHome);
 
@@ -107,6 +115,13 @@ public class CanvasManager {
             AntGuideActivity.DEVICE_HEIGHT);
       mFood = new FoodSprite(mContext, foodPos);
       mSprites.add(mFood);
+      
+      //Obstacles 
+      
+      if (mMap != null) {
+         mObstacleList = mMap.getObs(mapId);
+         
+      }
 
       // TODO add more sprites
    }
@@ -129,7 +144,9 @@ public class CanvasManager {
 
       boolean isCollide = false;
 
-      isCollide = HF2D.checkRectAndLineCollision_mirror(mAnt, mLine);
+      if (mAnt != null && mLine != null) {
+         isCollide = HF2D.checkRectAndLineCollision_mirror(mAnt, mLine);
+      }
 
       if (isCollide) {
          if(mHandler != null){
@@ -175,22 +192,25 @@ public class CanvasManager {
       mHandler.sendMessage(mHandler.obtainMessage(Utils.MSG_ANT_HOME));
    }
 
-   private void drawResult(Canvas canvas) {
-      if (mIsAntLost) {
-         // canvas.drawText("Ant is Lost!!!", 20, 100, mResultPaint);
-      } else if (mIsAntHome) {
-         // canvas.drawText("Ant is home....", 200, 200, mResultPaint);
-
+   private void drawObs(Canvas canvas)  {
+      //TODO: draw
+      Iterator<Pos> it = mObstacleList.iterator();
+      while(it.hasNext()) {
+         Pos pos = it.next();
+         canvas.drawBitmap(mGrassBmp, pos.x, pos.y, mBmpPaint);
+      }
+      if (mObstacleList == null) {
+         return;
       }
    }
-
+   
    public void draw(Canvas canvas) {
 
       checkCollision();
 
       drawBg(canvas);
 
-      drawResult(canvas);
+      drawObs(canvas);
 
       for (int i = 0; i < mSprites.size(); i++) {
          mSprites.get(i).draw(canvas);
@@ -271,5 +291,9 @@ public class CanvasManager {
          gameStatus.setAntAngle(mAnt.getAngle());
       }
       
+   }
+
+   public void setMap(AntMap map) {
+      mMap = map;
    }
 }

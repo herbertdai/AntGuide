@@ -8,6 +8,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.howfun.android.HF2D.Pos;
+import com.howfun.android.antguide.game.AntMap;
 import com.howfun.android.antguide.game.CanvasManager;
 import com.howfun.android.antguide.game.GameStatus;
 import com.howfun.android.antguide.game.UpdateThread;
@@ -34,6 +35,8 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
    private Context mContext;
 
    private GameStatus mGameStatus;
+   
+   private AntMap mMap;
 
    public AntView(Context context) {
 
@@ -55,7 +58,8 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
       getHolder().addCallback(this);
 
       mCanvasManager = new CanvasManager(mContext);
-
+      
+      mMap = new AntMap();
    }
 
    public void init(Handler handler) {
@@ -63,6 +67,7 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
          mCanvasManager = new CanvasManager(mContext);
       }
       mCanvasManager.setHandler(handler);
+      mCanvasManager.setMap(mMap);
    }
 
    public void setHandler(Handler handler) {
@@ -118,9 +123,9 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
          return;
       }
       mCanvasManager.initAllSprite();
-      if (updateThread != null) {
-         updateThread.startUpdate();
-      }
+//      if (updateThread != null) {
+//         updateThread.startUpdate();
+//      }
    }
 
    /**
@@ -149,15 +154,16 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
    public void surfaceCreated(SurfaceHolder holder) {
 
       Utils.log(TAG, "surfaceCreated()....");
-      if (mCanvasManager != null) {
-         mCanvasManager.initAllSprite();
-      }
+      
+      playGame();
+      
       updateThread = new UpdateThread(AntView.this);
 
       updateThread.setRunning(true);
 
       updateThread.start();
-
+      
+      
       if (mGameStatus != null) {
          if (mGameStatus.getStatus() == GameStatus.GAME_PAUSED) {
             pauseGame();
@@ -167,7 +173,6 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
             try {
                updateThread.sleep(500); // let game init in a short time.
             } catch (InterruptedException e) {
-               // TODO Auto-generated catch block
                e.printStackTrace();
             }
          }

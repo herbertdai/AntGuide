@@ -314,6 +314,12 @@ public class HF2D {
     * @param[in] mPos center point
     */
    public static void calRectByPos(Rect mRect, Pos mPos, int width, int height) {
+      if (mPos == null) {
+         mRect.left = 0;
+         mRect.right = 100;
+         mRect.top = 0;
+         mRect.bottom = 100;
+      }
       mRect.left = (int) (mPos.x - width / 2);
       mRect.right = mRect.left + width;
       mRect.top = (int) (mPos.y - height / 2);
