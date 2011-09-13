@@ -292,6 +292,7 @@ public class HF2D {
       }
       return checkRectCollision(sprite1.mRect, sprite1.mPos, sprite2.mRect, sprite2.mPos);
    }
+   
    /*
     * Check collision of two rect
     */
@@ -304,6 +305,16 @@ public class HF2D {
          return true;
       }
       return false;
+   }
+   
+   public static boolean checkRectCollision(Rect r1, Rect r2) {
+      if (r1 == null || r2 == null) {
+         Utils.log(TAG, "Rect is null");
+         return false;
+      }
+      Pos pos1 = new Pos(r1.left + (r1.right - r1.left) / 2, r1.top + (r1.bottom - r1.top) / 2);
+      Pos pos2 = new Pos(r2.left + (r2.right - r2.left) / 2, r2.top + (r2.bottom - r2.top) / 2);
+      return checkRectCollision(r1, pos1, r2, pos2);
    }
 
    /*

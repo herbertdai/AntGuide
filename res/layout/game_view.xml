@@ -53,9 +53,10 @@
 		</FrameLayout>
 	</RelativeLayout>
 
-	<FrameLayout android:id="@+id/game_view_info"
+	<LinearLayout android:id="@+id/game_view_info"
 		android:layout_gravity="center_vertical" android:visibility="gone"
-		android:layout_height="300px" android:layout_width="fill_parent">
+		android:layout_height="300px" android:layout_width="fill_parent"
+		android:orientation="vertical">
 		<TextView android:id="@+id/game_view_info_text"
 			android:layout_width="fill_parent" android:layout_height="fill_parent"
 			android:gravity="center" android:textSize="27sp" android:background="#55667788"
@@ -63,6 +64,7 @@
 		<LinearLayout
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
+		    android:layout_gravity="center_horizontal"
 		    >
 		    <Button
 		       android:id="@+id/game_view_play_btn"
@@ -86,7 +88,7 @@
 	    </LinearLayout>
 
 
-	</FrameLayout>
+	</LinearLayout>
 
 </FrameLayout>
 

@@ -20,9 +20,11 @@ public class Sound {
    public void play(int res, boolean loop) {
       Utils.log(TAG, "in play,audio res id:" + res);
       mPlayer = MediaPlayer.create(mContext, res);
-      mPlayer.setLooping(loop);
-      mPlayer.start();
-      mPlayer.setOnCompletionListener(mCompletionListener);
+      if (mPlayer != null) {
+         mPlayer.setLooping(loop);
+         mPlayer.start();
+         mPlayer.setOnCompletionListener(mCompletionListener);
+      }
    }
 
    private MediaPlayer.OnCompletionListener mCompletionListener = new MediaPlayer.OnCompletionListener() {

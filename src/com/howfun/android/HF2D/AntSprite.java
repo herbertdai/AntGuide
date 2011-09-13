@@ -195,4 +195,15 @@ public class AntSprite extends Sprite {
       return mPos;
    }
 
+   public Rect getRect() {
+      return mRect;
+   }
+
+   public void reset() {
+      mAngle = 30;
+      mSpeed = 2;
+
+      mPos = new Pos(10, 10);
+   }
+
 }

@@ -20,8 +20,10 @@ import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.howfun.android.HF2D.Pos;
@@ -70,7 +72,7 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
    private ImageView gamePause;
    private ImageView gamePlay;
    private AntView antView;
-   private FrameLayout mGameInfo;
+   private LinearLayout mGameInfo;
    private TextView mGameInfoText;
 
    private ImageView mTimeMin0;
@@ -103,6 +105,10 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
             playSoundEffect(SOUND_EFFECT_LOST);
             stopGame(Utils.ANT_LOST);
             break;
+         case Utils.MSG_ANT_TRAPPED:
+            playSoundEffect(SOUND_EFFECT_LOST);
+            stopGame(Utils.ANT_TRAPPED);
+            break;
          case Utils.MSG_ANT_COLLISION:
             playSoundEffect(SOUND_EFFECT_COLLISION);
             break;
@@ -130,6 +136,12 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
       }
 
    };
+
+   private Button mGameInfoNextLvBtn;
+
+   private Button mGameInfoRestartBtn;
+
+   private Button mGameInfoPlayBtn;
 
    @Override
    public void onCreate(Bundle savedInstanceState) {
@@ -222,9 +234,12 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
       gamePause = (ImageView) findViewById(R.id.game_pause);
       gamePlay = (ImageView) findViewById(R.id.game_play);
       antView = (AntView) findViewById(R.id.ant_view);
-      mGameInfo = (FrameLayout) findViewById(R.id.game_view_info);
 
+      mGameInfo = (LinearLayout) findViewById(R.id.game_view_info);
       mGameInfoText = (TextView) findViewById(R.id.game_view_info_text);
+      mGameInfoPlayBtn = (Button) findViewById(R.id.game_view_play_btn);
+      mGameInfoRestartBtn = (Button) findViewById(R.id.game_view_restart_btn);
+      mGameInfoNextLvBtn =  (Button) findViewById(R.id.game_view_next_level);
 
       mTimeMin0 = (ImageView) findViewById(R.id.time_min0);
       mTimeMin1 = (ImageView) findViewById(R.id.time_min1);
@@ -237,10 +252,20 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
    }
 
    private void setupListeners() {
+      
+      if (mGameInfoPlayBtn != null) {
+         mGameInfoPlayBtn.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+               
+            }
+         
+         });
+      }
 
       if (gamePause != null) {
          gamePause.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
                pauseGame();
@@ -250,15 +275,14 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
 
       if (gamePlay != null) {
          gamePlay.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
                if (mGameStatus.getStatus() == GameStatus.GAME_PAUSED) {
                   resumeGame();
                } 
-//               else if (mGameStatus.getStatus() == GameStatus.GAME_STOPPED) {
-//                  playGame();
-//               }
+               else if (mGameStatus.getStatus() == GameStatus.GAME_STOPPED) {
+                  resetGame();
+               }
             }
          });
       }
@@ -288,6 +312,7 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
 
          });
       }
+      
    }
 
    private void loadSoundEffects() {
@@ -325,14 +350,17 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
       mGameStatus.setStaus(GameStatus.GAME_RUNNING);
 
       showGamePause();
-
       hideGameInfo();
 
       mTimeManager.reset();
       mTimeManager.start();
-
    }
 
+   private void resetGame() {
+      Utils.log(TAG, "reset game");
+      playGame();
+   }
+   
    private void resumeGame() {
       mGameStatus.setStaus(GameStatus.GAME_RUNNING);
 
@@ -376,7 +404,10 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
          info = "Opps,Ant got lost!!!";
       } else if (why == Utils.ANT_TIMEOUT) {
          info = "Oh,Time Out....";
-      } else {
+      } else if (why == Utils.ANT_TRAPPED) {
+         info = "Ant trapped...";   
+      }
+      else {
          info = "Ehhhhhhhhhhhhh!";
       }
       showGameInfo(info);

@@ -30,6 +30,10 @@ public class TimeManager {
                   handler.sendMessage(msg);
                   Thread.sleep(1000);
                   add();
+                  // game time out 
+                  if (time > Utils.TIMEOUT) {
+                     handler.sendEmptyMessage(Utils.MSG_ANT_TIMEOUT);
+                  }
                   Utils.log(TAG, "add time");
                } catch (InterruptedException e) {
                   e.printStackTrace();

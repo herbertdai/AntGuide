@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 
@@ -28,14 +29,9 @@ public class CanvasManager {
    private static final int GRASS_WIDTH = 50;
    private static final int GRASS_HEIGHT = 50;
 
-   private static final int HOLE_WIDTH = 50;
-   private static final int HOLE_HIGHT = 40;
-
    private ArrayList<Sprite> mSprites;
 
    private AntMap mMap;
-   
-   private Bitmap mBg;
 
    private Context mContext;
 
@@ -60,7 +56,7 @@ public class CanvasManager {
 
    private HomeSprite mHome;
    private Handler mHandler;
-   
+
    private ArrayList<Pos> mObstacleList;
 
    public CanvasManager(Context c) {
@@ -80,47 +76,54 @@ public class CanvasManager {
    public void setHandler(Handler handler) {
       mHandler = handler;
       Utils.log(TAG, "set canvas manager handler");
-      // game time out 
-      mHandler.sendEmptyMessageDelayed(Utils.MSG_ANT_TIMEOUT, Utils.TIMEOUT);
    }
 
    public void initAllSprite() {
-
       Utils.log(TAG, "initAllSprite");
-      if (mSprites == null) {
-         mSprites = new ArrayList<Sprite>();
-      }
 
-      mSprites.clear();
       mIsAntHome = false;
       mIsAntLost = false;
 
-      AntSprite ant = new AntSprite(mContext);
-      mAnt = ant;
-      mSprites.add(ant);
+      if (mSprites == null) {
+         mSprites = new ArrayList<Sprite>();
+      } 
 
-      LineSprite line = new LineSprite();
-      mLine = line;
-      mSprites.add(line);
+      if (mAnt == null) {
+         AntSprite ant = new AntSprite(mContext);
+         mAnt = ant;
+         mSprites.add(ant);
+      } else {
+         mAnt.reset();
+      }
 
-      int mapId = 0; //TODO:load from pref.dwy11sep5
+      if (mLine == null) {
+         LineSprite line = new LineSprite();
+         mLine = line;
+         mSprites.add(line);
+      }
+
+      int mapId = 0; // TODO:load from pref.dwy11sep5
       Pos homePos = null;
       if (mMap != null) {
          homePos = mMap.getHome(mapId);
       }
-      mHome = new HomeSprite(mContext, homePos);
-      mSprites.add(mHome);
+      
+      if (mHome == null) {
+         mHome = new HomeSprite(mContext, homePos);
+         mSprites.add(mHome);
+      }
 
       Pos foodPos = HF2D.getNewPos(AntGuideActivity.DEVICE_WIDTH,
             AntGuideActivity.DEVICE_HEIGHT);
-      mFood = new FoodSprite(mContext, foodPos);
-      mSprites.add(mFood);
-      
-      //Obstacles 
-      
+      if (mFood == null) {
+         mFood = new FoodSprite(mContext, foodPos);
+         mSprites.add(mFood);
+      } else {
+         mFood.setNewPos();
+      }
+
       if (mMap != null) {
          mObstacleList = mMap.getObs(mapId);
-         
       }
 
       // TODO add more sprites
@@ -138,6 +141,33 @@ public class CanvasManager {
       checkHome();
       checkOutOfScreen();
       checkFoods();
+      checkObstacle();
+   }
+
+   private void checkObstacle() {
+      if (mAnt == null) {
+         return;
+      }
+
+      if (mObstacleList != null && mObstacleList.size() > 0) {
+         Iterator<Pos> it = mObstacleList.iterator();
+         while (it.hasNext()) {
+            Pos pos = it.next();
+            int obsW = mMap.getObsW();
+            int obsH = mMap.getObsH();
+            Rect obsRect = new Rect((int) pos.x, (int) pos.y, (int) pos.x
+                  + obsW, (int) pos.y + obsH);
+
+            if (HF2D.checkRectCollision(obsRect, mAnt.getRect())) {
+               if (mHandler != null) {
+                  mHandler.sendMessage(mHandler
+                        .obtainMessage(Utils.MSG_ANT_TRAPPED));
+               }
+               break;
+            }
+         }
+      }
+
    }
 
    private void checkLine() {
@@ -149,8 +179,9 @@ public class CanvasManager {
       }
 
       if (isCollide) {
-         if(mHandler != null){
-            mHandler.sendMessage(mHandler.obtainMessage(Utils.MSG_ANT_COLLISION));
+         if (mHandler != null) {
+            mHandler.sendMessage(mHandler
+                  .obtainMessage(Utils.MSG_ANT_COLLISION));
          }
       }
 
@@ -192,10 +223,10 @@ public class CanvasManager {
       mHandler.sendMessage(mHandler.obtainMessage(Utils.MSG_ANT_HOME));
    }
 
-   private void drawObs(Canvas canvas)  {
-      //TODO: draw
+   private void drawObs(Canvas canvas) {
+      // TODO: draw
       Iterator<Pos> it = mObstacleList.iterator();
-      while(it.hasNext()) {
+      while (it.hasNext()) {
          Pos pos = it.next();
          canvas.drawBitmap(mGrassBmp, pos.x, pos.y, mBmpPaint);
       }
@@ -203,7 +234,7 @@ public class CanvasManager {
          return;
       }
    }
-   
+
    public void draw(Canvas canvas) {
 
       checkCollision();
@@ -226,13 +257,7 @@ public class CanvasManager {
    }
 
    private void drawBg(Canvas canvas) {
-
       canvas.drawBitmap(mBackgroundBmp, 0, 0, mBmpPaint);
-//      canvas.drawBitmap(mGrassBmp, 68, 133, mBmpPaint);
-//      canvas.drawBitmap(mGrassBmp, 12, 190, mBmpPaint);
-//      canvas.drawBitmap(mGrassBmp, 310, 123, mBmpPaint);
-//      canvas.drawBitmap(mGrassBmp, 120, 99, mBmpPaint);
-//      canvas.drawBitmap(mGrassBmp, 200, 521, mBmpPaint);
    }
 
    private void loadGrass() {
@@ -284,13 +309,13 @@ public class CanvasManager {
          Utils.log(TAG, "set angle = " + gameStatus.getAntAngle());
       }
    }
-   
+
    public void getGameStatus(GameStatus gameStatus) {
       if (mAnt != null) {
          gameStatus.setAntPos(mAnt.getPos());
          gameStatus.setAntAngle(mAnt.getAngle());
       }
-      
+
    }
 
    public void setMap(AntMap map) {

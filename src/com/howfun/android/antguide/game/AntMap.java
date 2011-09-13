@@ -17,6 +17,9 @@ public class AntMap {
    
    private ArrayList<PosData> mPosDataList;
    
+   private final int mObsH = 30;
+   private final int mObsW = 30;
+   
    public AntMap() {
       mPosDataList = new ArrayList<PosData>();
       mPosDataList.add(new PosData(_home1, _pos1));
@@ -44,6 +47,13 @@ public class AntMap {
       }
       Utils.log(TAG, "Obstacles in map is null");
       return null;
+   }
+   
+   public int getObsW() {
+      return mObsW;
+   }
+   public int getObsH() {
+      return mObsH;
    }
    
    public class PosData {
