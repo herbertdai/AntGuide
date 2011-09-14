@@ -123,9 +123,6 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
          return;
       }
       mCanvasManager.initAllSprite();
-//      if (updateThread != null) {
-//         updateThread.startUpdate();
-//      }
    }
 
    /**
@@ -230,6 +227,29 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
          mCanvasManager.getGameStatus(gameStatus);
       }
       mGameStatus = gameStatus;
+   }
+   
+   public void resetGame() {
+         
+      if (mCanvasManager != null) {
+         mCanvasManager.reset();
+      }
+      
+      touchDownX = 1000;
+      touchDownY = 1000;
+      touchUpX = 1001;
+      touchUpY = 1001;
+      
+      mShowBlockLine = true;
+      
+      if (updateThread != null) {
+         updateThread.setRunning(true); 
+         updateThread.startUpdate();
+      }else {
+         updateThread = new UpdateThread(AntView.this);
+         updateThread.setRunning(true);
+         updateThread.start();
+      }
    }
 
 }

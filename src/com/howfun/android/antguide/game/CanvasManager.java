@@ -321,4 +321,9 @@ public class CanvasManager {
    public void setMap(AntMap map) {
       mMap = map;
    }
+
+   public void reset() {
+      mAnt.reset();
+      
+   }
 }

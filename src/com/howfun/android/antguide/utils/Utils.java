@@ -32,10 +32,12 @@ public final class Utils {
    public static final int ANT_LOST = 2;
    public static final int ANT_TIMEOUT = 3;
    public static final int ANT_TRAPPED = 4;
+   public static final int ANT_PAUSED = 5;
 
    public static final int RESULT_ANT_GUIDE = 1;
 
    public static final String SCORE = "score";
+
 
    public static void log(String tag, String info) {
       if (AntGuideApplication.DEBUG) {

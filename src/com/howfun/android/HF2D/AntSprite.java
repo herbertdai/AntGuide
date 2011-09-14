@@ -202,8 +202,15 @@ public class AntSprite extends Sprite {
    public void reset() {
       mAngle = 30;
       mSpeed = 2;
-
-      mPos = new Pos(10, 10);
+      mPos = new Pos(0, 0);
+      if (mRect == null) {
+         mRect = new Rect(0,0,10,10);
+      } else {
+         mRect.left = 0;
+         mRect.top = 0;
+         mRect.right = 10;
+         mRect.bottom = 10;
+      }
    }
 
 }

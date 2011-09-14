@@ -255,12 +255,20 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
       
       if (mGameInfoPlayBtn != null) {
          mGameInfoPlayBtn.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
-               
+               if (mGameStatus.getStatus() == GameStatus.GAME_PAUSED) {
+                  resumeGame();
+               } 
             }
-         
+         });
+      }
+      if (mGameInfoRestartBtn != null) {
+         mGameInfoRestartBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               resetGame();
+            }
          });
       }
 
@@ -280,9 +288,9 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
                if (mGameStatus.getStatus() == GameStatus.GAME_PAUSED) {
                   resumeGame();
                } 
-               else if (mGameStatus.getStatus() == GameStatus.GAME_STOPPED) {
-                  resetGame();
-               }
+//               else if (mGameStatus.getStatus() == GameStatus.GAME_STOPPED) {
+//                  resetGame();
+//               }
             }
          });
       }
@@ -358,17 +366,16 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
 
    private void resetGame() {
       Utils.log(TAG, "reset game");
+      antView.resetGame();
       playGame();
    }
    
    private void resumeGame() {
       mGameStatus.setStaus(GameStatus.GAME_RUNNING);
-
       antView.resumeGame();
 
       showGamePause();
       hideGameInfo();
-      // TODO timing resume
       mTimeManager.resume();
    }
 
@@ -380,7 +387,7 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
       antView.pauseGame();
       mGameStatus.setStaus(GameStatus.GAME_PAUSED);
       hideGamePause();
-      showGameInfo("game paused");
+      showGameInfo(Utils.ANT_PAUSED, "game paused");
       // TODO timing pause
       mTimeManager.pause();
    }
@@ -410,7 +417,7 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
       else {
          info = "Ehhhhhhhhhhhhh!";
       }
-      showGameInfo(info);
+      showGameInfo(why, info);
       // TODO timing clear
       mTimeManager.stop();
 
@@ -429,7 +436,7 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
 
    private void hideGamePause() {
       gamePause.setVisibility(View.INVISIBLE);
-      gamePlay.setVisibility(View.VISIBLE);
+//      gamePlay.setVisibility(View.VISIBLE);
    }
 
    private void hideGameInfo() {
@@ -441,9 +448,34 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
     * @param info
     *           pause or game over
     */
-   private void showGameInfo(String info) {
+   private void showGameInfo(int why, String info) {
       mGameInfo.setVisibility(View.VISIBLE);
       mGameInfoText.setText(info);
+      switch (why) {
+      case Utils.ANT_HOME:
+         mGameInfoPlayBtn.setVisibility(View.GONE);
+         mGameInfoRestartBtn.setVisibility(View.GONE);
+         mGameInfoNextLvBtn.setVisibility(View.VISIBLE);
+         break;
+      case Utils.ANT_LOST:
+         mGameInfoPlayBtn.setVisibility(View.GONE);
+         mGameInfoRestartBtn.setVisibility(View.VISIBLE);
+         mGameInfoNextLvBtn.setVisibility(View.GONE);
+         break;
+      case Utils.ANT_PAUSED:
+         mGameInfoPlayBtn.setVisibility(View.VISIBLE);
+         mGameInfoRestartBtn.setVisibility(View.GONE);
+         mGameInfoNextLvBtn.setVisibility(View.GONE);
+         break;
+      case Utils.ANT_TRAPPED:
+         mGameInfoPlayBtn.setVisibility(View.GONE);
+         mGameInfoRestartBtn.setVisibility(View.VISIBLE);
+         mGameInfoNextLvBtn.setVisibility(View.GONE);
+         break;
+      
+         
+         
+      }
    }
 
    @Override

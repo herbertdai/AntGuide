@@ -34,7 +34,6 @@ public class TimeManager {
                   if (time > Utils.TIMEOUT) {
                      handler.sendEmptyMessage(Utils.MSG_ANT_TIMEOUT);
                   }
-                  Utils.log(TAG, "add time");
                } catch (InterruptedException e) {
                   e.printStackTrace();
                }
@@ -44,7 +43,6 @@ public class TimeManager {
    };
 
    public TimeManager(Handler h) {
-      Utils.log(TAG, "new timemanger..............ljjljlj");
       
       handler = h;
       toRun = true;
