@@ -252,6 +252,15 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
    }
 
    private void setupListeners() {
+      if (mGameInfoNextLvBtn != null) {
+         mGameInfoNextLvBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               goNextLv();
+               resetGame();
+            }
+         });
+      }
       
       if (mGameInfoPlayBtn != null) {
          mGameInfoPlayBtn.setOnClickListener(new OnClickListener() {
@@ -288,9 +297,6 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
                if (mGameStatus.getStatus() == GameStatus.GAME_PAUSED) {
                   resumeGame();
                } 
-//               else if (mGameStatus.getStatus() == GameStatus.GAME_STOPPED) {
-//                  resetGame();
-//               }
             }
          });
       }
@@ -321,6 +327,12 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
          });
       }
       
+   }
+
+   protected void goNextLv() {
+      if (antView != null) {
+         antView.goNextLv();
+      }
    }
 
    private void loadSoundEffects() {

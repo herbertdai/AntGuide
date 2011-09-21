@@ -45,6 +45,8 @@ public class CanvasManager {
    private AntSprite mAnt;
    private LineSprite mLine;
    private FoodSprite mFood;
+   
+   private int mMapLevel;
 
    private static final String TAG = "CanvasManager";
 
@@ -102,10 +104,9 @@ public class CanvasManager {
          mSprites.add(line);
       }
 
-      int mapId = 0; // TODO:load from pref.dwy11sep5
       Pos homePos = null;
       if (mMap != null) {
-         homePos = mMap.getHome(mapId);
+         homePos = mMap.getHome(mMapLevel);
       }
       
       if (mHome == null) {
@@ -123,7 +124,7 @@ public class CanvasManager {
       }
 
       if (mMap != null) {
-         mObstacleList = mMap.getObs(mapId);
+         mObstacleList = mMap.getObs(mMapLevel);
       }
 
       // TODO add more sprites
@@ -320,6 +321,20 @@ public class CanvasManager {
 
    public void setMap(AntMap map) {
       mMap = map;
+   }
+   
+   public void setMapLevel(int level) {
+      mMapLevel = level;
+      if (mMap != null) {
+         if (mObstacleList != null) {
+            mObstacleList.clear();
+         }
+         mObstacleList = mMap.getObs(mMapLevel);
+      }
+      if (mHome != null) {
+         Pos pos = mMap.getHome(mMapLevel);
+         mHome.setPos(pos);
+      }
    }
 
    public void reset() {

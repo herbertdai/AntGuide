@@ -24,9 +24,9 @@ public class GamePref {
       mContext = context;
    }
 
-   public static GamePref getInstance() {
+   public static GamePref getInstance(Context context) {
       if (instance == null) {
-         return new GamePref();
+         instance = new GamePref(context);
       }
       return instance;
    }

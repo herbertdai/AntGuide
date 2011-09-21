@@ -8,6 +8,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.howfun.android.HF2D.Pos;
+import com.howfun.android.antguide.GamePref;
 import com.howfun.android.antguide.game.AntMap;
 import com.howfun.android.antguide.game.CanvasManager;
 import com.howfun.android.antguide.game.GameStatus;
@@ -38,6 +39,8 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
    
    private AntMap mMap;
 
+   private int mLevel;
+   
    public AntView(Context context) {
 
       super(context);
@@ -68,6 +71,8 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
       }
       mCanvasManager.setHandler(handler);
       mCanvasManager.setMap(mMap);
+      mLevel = GamePref.getInstance(mContext).getLevelPref();
+      mCanvasManager.setMapLevel(mLevel);
    }
 
    public void setHandler(Handler handler) {
@@ -249,6 +254,15 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
          updateThread = new UpdateThread(AntView.this);
          updateThread.setRunning(true);
          updateThread.start();
+      }
+   }
+   
+   public void goNextLv() {
+      mLevel = ++mLevel % mMap.getMapCount();
+      
+      if (mCanvasManager != null) {
+         mCanvasManager.setMapLevel(mLevel);
+         GamePref.getInstance(mContext).setLevelPref(mLevel);
       }
    }
 

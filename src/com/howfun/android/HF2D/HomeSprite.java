@@ -30,6 +30,11 @@ public class HomeSprite extends Sprite {
       mPaint = new Paint();
 
    }
+   
+   public void setPos(Pos pos) {
+      mPos = pos;
+      HF2D.calRectByPos(mRect, mPos, HOME_W, HOME_H);
+   }
 
    @Override
    protected boolean checkCollision(Sprite s) {

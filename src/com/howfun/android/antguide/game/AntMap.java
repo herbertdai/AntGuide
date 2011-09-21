@@ -12,8 +12,17 @@ public class AntMap {
    
    private static final String TAG = "AntMap";
    
-   private static Pos _home1 = new Pos(200, 600);
-   private static Pos [] _pos1 = {new Pos(100, 200), new Pos(200, 300), new Pos(300, 400)};
+   private static Pos _home1 = new Pos(100, 600);
+   private static Pos _home2 = new Pos(200, 600);
+   private static Pos _home3 = new Pos(300, 600);
+   private static Pos _home4 = new Pos(400, 600);
+   private static Pos _home5 = new Pos(400, 700);
+   
+   private static Pos [] _pos1 = {new Pos(200, 300)};
+   private static Pos [] _pos2 = {new Pos(200, 300), new Pos(300, 400)};
+   private static Pos [] _pos3 = {new Pos(100, 200), new Pos(200, 300), new Pos(300, 400)};
+   private static Pos [] _pos4 = {new Pos(100, 200), new Pos(300, 300), new Pos(400, 400)};
+   private static Pos [] _pos5 = {new Pos(100, 200), new Pos(200, 400), new Pos(300, 500)};
    
    private ArrayList<PosData> mPosDataList;
    
@@ -23,7 +32,17 @@ public class AntMap {
    public AntMap() {
       mPosDataList = new ArrayList<PosData>();
       mPosDataList.add(new PosData(_home1, _pos1));
-      assert(mPosDataList.size()==5);
+      mPosDataList.add(new PosData(_home2, _pos2));
+      mPosDataList.add(new PosData(_home3, _pos3));
+      mPosDataList.add(new PosData(_home4, _pos4));
+      mPosDataList.add(new PosData(_home5, _pos5));
+   }
+   
+   public int getMapCount() {
+      if (mPosDataList != null) {
+         return mPosDataList.size();
+      }
+      return 0;
    }
    
    public Pos getHome(int mapId){
