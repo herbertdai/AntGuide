@@ -142,6 +142,8 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
    private Button mGameInfoRestartBtn;
 
    private Button mGameInfoPlayBtn;
+   
+   private int mLevel;
 
    @Override
    public void onCreate(Bundle savedInstanceState) {
@@ -164,8 +166,8 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
       loadSoundEffects();
       initScoreBoard();
       mSound = new Sound(this);
-//      init();
 
+      
    }
 
    @Override
@@ -174,6 +176,7 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
       mSound.play(R.raw.background, true);
       Utils.log(TAG, "onresume..");
       init();
+      
       mBackMusicOff = mSettings.getBoolean(Utils.PREF_SETTINGS_BACK_MUSIC_OFF,
             false);
       mSoundEffectOff = mSettings.getBoolean(
@@ -183,7 +186,10 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
          sendBroadcast(mIntentReceiver);
       }
 
-      antView.init(mHandler);
+      mLevel = this.getIntent().getIntExtra(Utils.LEVEL_REF, 0);
+      antView.init(mHandler, mLevel);
+      Utils.log(TAG, "entering level = " + mLevel);
+      
       SharedPreferences sp = this.getSharedPreferences(PREF, MODE_PRIVATE);
       int gameStatus = sp.getInt(GAME_STATE_PREF, GameStatus.GAME_INIT);
 

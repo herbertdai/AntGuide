@@ -45,7 +45,7 @@ public class CanvasManager {
    private AntSprite mAnt;
    private LineSprite mLine;
    private FoodSprite mFood;
-   
+
    private int mMapLevel;
 
    private static final String TAG = "CanvasManager";
@@ -88,7 +88,7 @@ public class CanvasManager {
 
       if (mSprites == null) {
          mSprites = new ArrayList<Sprite>();
-      } 
+      }
 
       if (mAnt == null) {
          AntSprite ant = new AntSprite(mContext);
@@ -108,7 +108,7 @@ public class CanvasManager {
       if (mMap != null) {
          homePos = mMap.getHome(mMapLevel);
       }
-      
+
       if (mHome == null) {
          mHome = new HomeSprite(mContext, homePos);
          mSprites.add(mHome);
@@ -270,6 +270,7 @@ public class CanvasManager {
       grassDrawable.setBounds(0, 0, 32, 32);
       grassDrawable.draw(canvas);
       mGrassBmp = bitmap;
+      Utils.log(TAG, "loadGrass bmp = " + mGrassBmp);
    }
 
    private void loadBackground() {
@@ -322,14 +323,12 @@ public class CanvasManager {
    public void setMap(AntMap map) {
       mMap = map;
    }
-   
+
    public void setMapLevel(int level) {
       mMapLevel = level;
       if (mMap != null) {
-         if (mObstacleList != null) {
-            mObstacleList.clear();
-         }
          mObstacleList = mMap.getObs(mMapLevel);
+         Utils.log(TAG, "setMapLevel() obstacle list size = " + mObstacleList.size());
       }
       if (mHome != null) {
          Pos pos = mMap.getHome(mMapLevel);
@@ -339,6 +338,6 @@ public class CanvasManager {
 
    public void reset() {
       mAnt.reset();
-      
+
    }
 }

@@ -36,11 +36,11 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
    private Context mContext;
 
    private GameStatus mGameStatus;
-   
+
    private AntMap mMap;
 
    private int mLevel;
-   
+
    public AntView(Context context) {
 
       super(context);
@@ -61,18 +61,18 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
       getHolder().addCallback(this);
 
       mCanvasManager = new CanvasManager(mContext);
-      
+
       mMap = new AntMap();
    }
 
-   public void init(Handler handler) {
+   public void init(Handler handler, int level) {
       if (mCanvasManager == null) {
          mCanvasManager = new CanvasManager(mContext);
       }
       mCanvasManager.setHandler(handler);
       mCanvasManager.setMap(mMap);
-      mLevel = GamePref.getInstance(mContext).getLevelPref();
-      mCanvasManager.setMapLevel(mLevel);
+      mLevel = level;
+      mCanvasManager.setMapLevel(level);
    }
 
    public void setHandler(Handler handler) {
@@ -156,16 +156,15 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
    public void surfaceCreated(SurfaceHolder holder) {
 
       Utils.log(TAG, "surfaceCreated()....");
-      
+
       playGame();
-      
+
       updateThread = new UpdateThread(AntView.this);
 
       updateThread.setRunning(true);
 
       updateThread.start();
-      
-      
+
       if (mGameStatus != null) {
          if (mGameStatus.getStatus() == GameStatus.GAME_PAUSED) {
             pauseGame();
@@ -191,7 +190,7 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
    public void surfaceDestroyed(SurfaceHolder holder) {
 
       Utils.log(TAG, "surfaceDestroyed()....");
-      
+
       updateThread.setRunning(false);
 
       // TODO: save running data if press HOME, and enter into pause mode
@@ -202,7 +201,6 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
       }
 
       boolean retry = true;
-
 
       while (retry) {
 
@@ -223,9 +221,9 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
    public void setRestoredState(GameStatus gameStatus) {
       this.mGameStatus = gameStatus;
    }
-   
+
    public void getGameStatus(GameStatus gameStatus) {
-      if(mCanvasManager != null) {
+      if (mCanvasManager != null) {
          if (gameStatus == null) {
             gameStatus = new GameStatus();
          }
@@ -233,36 +231,47 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
       }
       mGameStatus = gameStatus;
    }
-   
+
    public void resetGame() {
-         
+
       if (mCanvasManager != null) {
          mCanvasManager.reset();
+         mCanvasManager.setMapLevel(mLevel);
       }
-      
+
       touchDownX = 1000;
       touchDownY = 1000;
       touchUpX = 1001;
       touchUpY = 1001;
-      
+
       mShowBlockLine = true;
-      
+
       if (updateThread != null) {
-         updateThread.setRunning(true); 
+         updateThread.setRunning(true);
          updateThread.startUpdate();
-      }else {
+      } else {
          updateThread = new UpdateThread(AntView.this);
          updateThread.setRunning(true);
          updateThread.start();
       }
    }
-   
+
    public void goNextLv() {
-      mLevel = ++mLevel % mMap.getMapCount();
-      
-      if (mCanvasManager != null) {
-         mCanvasManager.setMapLevel(mLevel);
+
+      int passedLevel = GamePref.getInstance(mContext).getLevelPref();
+      if (mLevel > passedLevel) {
+         Utils.log(TAG, "set new passed level = " + mLevel);
          GamePref.getInstance(mContext).setLevelPref(mLevel);
+      }
+     
+      Utils.log(TAG, "current level = " + mLevel);
+
+      mLevel = ++mLevel % mMap.getMapCount();
+
+      Utils.log(TAG, "next level = " + mLevel);
+
+      if (mCanvasManager != null) {
+//         mCanvasManager.setMapLevel(mLevel);
       }
    }
 

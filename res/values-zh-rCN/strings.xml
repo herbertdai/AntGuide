@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+   <string name="howfun">好风工作室 (2011)</string>
+	<string name="app_name">蚂蚁迷呀</string>
+	<string name="lock">请依次解锁前面关卡</string>
+   <string name="about">关于</string>
+	<string name="exit">退出</string>
+</resources>

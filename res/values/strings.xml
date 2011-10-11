@@ -13,5 +13,6 @@
 	<string name="record_play_error_text"> Audio playback failed </string>
 	
 	<string name="start">Start</string>
+	<string name="lock">Level locked</string>
 	<string name="hiscore">High Score</string>
 </resources>

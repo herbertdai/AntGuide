@@ -38,6 +38,8 @@ public final class Utils {
 
    public static final String SCORE = "score";
 
+   public static final String LEVEL_REF = "level ref";
+
 
    public static void log(String tag, String info) {
       if (AntGuideApplication.DEBUG) {
