@@ -4,15 +4,15 @@
 	android:layout_height="fill_parent" android:gravity="center_horizontal">
 
 	<FrameLayout android:layout_height="wrap_content"
-		android:layout_width="wrap_content" android:background="@drawable/square_bg">
+		android:layout_width="wrap_content" android:background="@drawable/square_bg"
+		android:padding="50dp">
 		<com.howfun.android.antguide.view.CustomNumberView
 			android:id="@+id/level_gallery_item_level"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
 			android:layout_gravity="center" />
 		<ImageView android:id="@+id/level_gallery_item_watermark"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			 android:paddingTop="100px"
-			android:paddingLeft="100px"/>
+			/>
 
 	</FrameLayout>
 </LinearLayout>

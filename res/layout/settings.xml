@@ -4,7 +4,8 @@
 	android:layout_height="fill_parent" android:background="#bfbfbf">
 	<LinearLayout android:orientation="vertical"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:layout_gravity="center" android:background="@drawable/square_bg">
+		android:layout_gravity="center" android:background="@drawable/square_bg"
+		android:padding="15dp">
 		<RelativeLayout android:orientation="horizontal"
 			android:layout_width="fill_parent" android:layout_height="wrap_content"
 			android:paddingTop="50dp">

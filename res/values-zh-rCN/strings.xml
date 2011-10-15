@@ -5,4 +5,12 @@
 	<string name="lock">请依次解锁前面关卡</string>
    <string name="about">关于</string>
 	<string name="exit">退出</string>
+	<string name="next">下一关</string>
+	<string name="restart">重新开始</string>
+	
+	<string name="trapped">不好，蚂蚁被困住！</string>
+	<string name="get_home">回家咯。。。</string>
+	<string name="paused">游戏暂停中。。。</string>
+	<string name="lost">蚂蚁丢了。。。</string>
+	<string name="time_out">时间用光了。。。</string>
 </resources>

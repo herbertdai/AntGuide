@@ -12,3 +12,15 @@ V0.80.00
    TODO: Add Images and icons
    
    Done: Add Cool down of collision check.
+   
+=====================
+V0.90.00
+   2011Oct16
+   Changes: Add Level select.
+            Add map.
+            Add new UI
+   TODO: Performance tuning: Add more maps. 
+                             Soft down the collision check.
+                             Draw splash UI.
+                             Draw new help.
+                             

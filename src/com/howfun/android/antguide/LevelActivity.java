@@ -112,7 +112,7 @@ public class LevelActivity extends Activity {
          boolean isPassed = mPassedLevel >= position; 
          if (isPassed) {
             //set unlock icon
-            passView.setImageResource(R.drawable.num_9);
+            passView.setImageResource(R.drawable.passed);
          } else {
             //if is next level of passed one, set unlock icon
             //else set lock icon,
@@ -121,7 +121,7 @@ public class LevelActivity extends Activity {
             if (nextLevel) {
                passView.setImageResource(R.drawable.new_icon);
             } else {
-               passView.setBackgroundResource(R.drawable.grass);
+               passView.setBackgroundResource(R.drawable.lock);
             }
 
          }

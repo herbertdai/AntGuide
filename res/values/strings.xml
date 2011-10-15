@@ -15,4 +15,14 @@
 	<string name="start">Start</string>
 	<string name="lock">Level locked</string>
 	<string name="hiscore">High Score</string>
+	<string name="next">Next</string>
+	<string name="restart">Restart</string>
+	
+	<string name="trapped">Opps! Ant get trapped!</string>
+	<string name="get_home">Great! Ant get home.</string>
+	<string name="paused">Paused</string>
+	<string name="lost">Oh! Ant get lost!</string>
+	<string name="time_out">Time out.</string>
+	
+	
 </resources>

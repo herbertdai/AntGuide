@@ -13,8 +13,8 @@ import com.howfun.android.antguide.utils.Utils;
 
 public class HomeSprite extends Sprite {
 
-   private static final int HOME_W = 70;
-   private static final int HOME_H = 70;
+   private static final int HOME_W = 100;
+   private static final int HOME_H = 80;
 
    private Bitmap mHoleBmp;
    private Context mContext;
@@ -57,7 +57,7 @@ public class HomeSprite extends Sprite {
 
    private void loadHole() {
       Resources r = mContext.getResources();
-      Drawable holeDrawable = r.getDrawable(R.drawable.hole);
+      Drawable holeDrawable = r.getDrawable(R.drawable.home);
       Bitmap bitmap = Bitmap.createBitmap(HOME_W, HOME_H,
             Bitmap.Config.ARGB_8888);
       Canvas canvas = new Canvas(bitmap);

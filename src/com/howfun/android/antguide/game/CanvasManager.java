@@ -35,7 +35,7 @@ public class CanvasManager {
 
    private Context mContext;
 
-   private Bitmap mGrassBmp;
+   private Bitmap mObsBmp;
 
    private Paint mBmpPaint;
    private Paint mResultPaint;
@@ -54,7 +54,6 @@ public class CanvasManager {
    private boolean mIsAntHome;
 
    private float LOST_TEXT_SIZE = 50;
-   private float HOME_SPACE = 100; // leave space around home
 
    private HomeSprite mHome;
    private Handler mHandler;
@@ -71,7 +70,7 @@ public class CanvasManager {
       mResultPaint = new Paint();
       mResultPaint.setTextSize(LOST_TEXT_SIZE);
 
-      loadGrass();
+      loadObstacle();
       loadBackground();
    }
 
@@ -229,7 +228,7 @@ public class CanvasManager {
       Iterator<Pos> it = mObstacleList.iterator();
       while (it.hasNext()) {
          Pos pos = it.next();
-         canvas.drawBitmap(mGrassBmp, pos.x, pos.y, mBmpPaint);
+         canvas.drawBitmap(mObsBmp, pos.x, pos.y, mBmpPaint);
       }
       if (mObstacleList == null) {
          return;
@@ -261,16 +260,16 @@ public class CanvasManager {
       canvas.drawBitmap(mBackgroundBmp, 0, 0, mBmpPaint);
    }
 
-   private void loadGrass() {
+   private void loadObstacle() {
       Resources r = mContext.getResources();
-      Drawable grassDrawable = r.getDrawable(R.drawable.grass);
+      Drawable grassDrawable = r.getDrawable(R.drawable.trap);
       Bitmap bitmap = Bitmap.createBitmap(GRASS_WIDTH, GRASS_HEIGHT,
             Bitmap.Config.ARGB_8888);
       Canvas canvas = new Canvas(bitmap);
       grassDrawable.setBounds(0, 0, 32, 32);
       grassDrawable.draw(canvas);
-      mGrassBmp = bitmap;
-      Utils.log(TAG, "loadGrass bmp = " + mGrassBmp);
+      mObsBmp = bitmap;
+      Utils.log(TAG, "loadGrass bmp = " + mObsBmp);
    }
 
    private void loadBackground() {
@@ -296,7 +295,7 @@ public class CanvasManager {
    // clear memory
    public void clear() {
       Utils.recycleBitmap(mBackgroundBmp);
-      Utils.recycleBitmap(mGrassBmp);
+      Utils.recycleBitmap(mObsBmp);
       if (mSprites != null) {
          for (int i = 0; i < mSprites.size(); i++) {
             mSprites.get(i).clear();

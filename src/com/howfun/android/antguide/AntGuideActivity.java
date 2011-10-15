@@ -405,7 +405,7 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
       antView.pauseGame();
       mGameStatus.setStaus(GameStatus.GAME_PAUSED);
       hideGamePause();
-      showGameInfo(Utils.ANT_PAUSED, "game paused");
+      showGameInfo(Utils.ANT_PAUSED, R.string.paused);
       // TODO timing pause
       mTimeManager.pause();
    }
@@ -422,18 +422,19 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
       antView.stopGame();
       hideGamePause();
 
-      String info = "";
+      int info = R.string.app_name;
+      
       if (why == Utils.ANT_HOME) {
-         info = "Great,Ant got home!";
+         info = R.string.get_home;
       } else if (why == Utils.ANT_LOST) {
-         info = "Opps,Ant got lost!!!";
+         info = R.string.lost;
       } else if (why == Utils.ANT_TIMEOUT) {
-         info = "Oh,Time Out....";
+         info = R.string.time_out;
       } else if (why == Utils.ANT_TRAPPED) {
-         info = "Ant trapped...";   
+         info = R.string.trapped;   
       }
       else {
-         info = "Ehhhhhhhhhhhhh!";
+         info = R.string.app_name;
       }
       showGameInfo(why, info);
       // TODO timing clear
@@ -463,12 +464,15 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
 
    /**
     * 
-    * @param info
+    * @param paused
     *           pause or game over
     */
-   private void showGameInfo(int why, String info) {
-      mGameInfo.setVisibility(View.VISIBLE);
+   private void showGameInfo(int why, int infoId) {
+      
+      String info = this.getResources().getString(infoId);
       mGameInfoText.setText(info);
+      mGameInfo.setVisibility(View.VISIBLE);
+      
       switch (why) {
       case Utils.ANT_HOME:
          mGameInfoPlayBtn.setVisibility(View.GONE);
