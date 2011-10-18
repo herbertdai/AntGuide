@@ -25,8 +25,8 @@ public class HelpPage extends Activity implements OnClickListener {
 	}
 
 	private void findViews() {
-		mStart = (ImageView) findViewById(R.id.helppage_start);
-		mStart.setOnClickListener(this);
+//		mStart = (ImageView) findViewById(R.id.helppage_start);
+//		mStart.setOnClickListener(this);
 
 	}
 
@@ -34,11 +34,11 @@ public class HelpPage extends Activity implements OnClickListener {
 	public void onClick(View arg0) {
 		Intent intent = new Intent();
 		switch (arg0.getId()) {
-		case R.id.helppage_start:
-			intent.setClass(HelpPage.this, AntGuideActivity.class);
-			startActivityForResult(intent, Utils.RESULT_ANT_GUIDE);
-			finish();
-			break;
+//		case R.id.helppage_start:
+//			intent.setClass(HelpPage.this, LevelActivity.class);
+//			startActivityForResult(intent, Utils.RESULT_ANT_GUIDE);
+//			finish();
+//			break;
 
 		default:
 			break;

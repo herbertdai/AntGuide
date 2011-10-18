@@ -17,7 +17,6 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -29,7 +28,6 @@ public class LevelActivity extends Activity {
    
    private int mPassedLevel;
    private Context mContext;
-   private boolean mClickable = false;
 
    public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);

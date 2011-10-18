@@ -2,6 +2,7 @@
 <resources>
    <string name="howfun">好风工作室 (2011)</string>
 	<string name="app_name">蚂蚁迷呀</string>
+	<string name="mymy">..ma.yi.mi.ya..</string>
 	<string name="lock">请依次解锁前面关卡</string>
    <string name="about">关于</string>
 	<string name="exit">退出</string>
@@ -13,4 +14,7 @@
 	<string name="paused">游戏暂停中。。。</string>
 	<string name="lost">蚂蚁丢了。。。</string>
 	<string name="time_out">时间用光了。。。</string>
+	<string name="help_txt_1">小蚂蚁迷路了，帮它找到回家的路吧！</string>
+	<string name="help_txt_2">在屏幕上划线，指引小蚂蚁回家:</string>
+	<string name="help_txt_3">它会按规律调转方向的，注意绕开路上的陷阱哦！</string>
 </resources>

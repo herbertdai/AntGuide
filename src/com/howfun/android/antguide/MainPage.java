@@ -15,10 +15,10 @@ import com.howfun.android.antguide.utils.Utils;
 public class MainPage extends Activity implements OnClickListener {
 
    private ImageView mStart;
-   private ImageView mHiScore;
    private ImageView mAbout;
    private ImageView mExit;
    private ImageView mSettings;
+   private ImageView mHelp;
 
    public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
@@ -32,12 +32,14 @@ public class MainPage extends Activity implements OnClickListener {
    private void findViews() {
       mStart = (ImageView) findViewById(R.id.mainpage_start);
       mStart.setOnClickListener(this);
-      mHiScore = (ImageView) findViewById(R.id.mainpage_shop);
-      mHiScore.setOnClickListener(this);
+      mHelp = (ImageView) findViewById(R.id.mainpage_help);
+      mHelp.setOnClickListener(this);
       mExit = (ImageView) findViewById(R.id.mainpage_exit);
       mExit.setOnClickListener(this);
       mSettings = (ImageView) findViewById(R.id.mainpage_settings);
       mSettings.setOnClickListener(this);
+      mAbout= (ImageView)findViewById(R.id.mainpage_about);
+      mAbout.setOnClickListener(this);
 
    }
 
@@ -50,12 +52,10 @@ public class MainPage extends Activity implements OnClickListener {
          intent.setClass(MainPage.this, LevelActivity.class);
          startActivity(intent);
          break;
-//      case R.id.mainpage_shop:
-//         // intent.setClass(MainPage.this, ScoreBoardActivity.class);
-//         // startActivity(intent);
-//         intent.setClass(MainPage.this, LevelActivity.class);
-//         startActivity(intent);
-//         break;
+      case R.id.mainpage_help:
+         intent.setClass(MainPage.this, HelpPage.class);
+         startActivity(intent);
+         break;
          
       case R.id.mainpage_settings:
          intent.setClass(MainPage.this, SettingsActivity.class);
@@ -64,6 +64,9 @@ public class MainPage extends Activity implements OnClickListener {
 
       case R.id.mainpage_exit:
          finish();
+         break;
+      case R.id.mainpage_about:
+         Utils.showAbout(this);
          break;
       default:
          break;
