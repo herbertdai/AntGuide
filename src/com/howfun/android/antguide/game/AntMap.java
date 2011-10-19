@@ -31,8 +31,8 @@ public class AntMap {
 
    private static ArrayList<PosData> mPosDataList;
 
-   private final int mObsH = 30;
-   private final int mObsW = 30;
+   public static final int OBS_H = 30;
+   public static final int OBS_W= 30;
 
    public AntMap() {
       mPosDataList = new ArrayList<PosData>();
@@ -76,11 +76,11 @@ public class AntMap {
    }
 
    public int getObsW() {
-      return mObsW;
+      return OBS_W;
    }
 
    public int getObsH() {
-      return mObsH;
+      return OBS_H;
    }
 
    public class PosData {

@@ -9,6 +9,7 @@ public class HF2D {
    private static final String TAG = "HF2D";
    private static final int YUZHI = 6;
    private static final double SPACE = 150;
+   private static final int TUNE_DEEP = 10;
 
    /*
     * Get next pos by angle and speed
@@ -293,15 +294,22 @@ public class HF2D {
       return checkRectCollision(sprite1.mRect, sprite1.mPos, sprite2.mRect, sprite2.mPos);
    }
    
+   public static boolean checkRoundCollision(Pos pos1, int r1, Pos pos2, int r2) {
+      if (Math.sqrt(Math.pow(pos1.x - pos2.x, 2) + Math.pow(pos1.y - pos2.y, 2)) < (r1 + r2) - TUNE_DEEP) {
+         return true;
+      }
+      return false; 
+   }
    /*
     * Check collision of two rect
     */
    public static boolean checkRectCollision(Rect r1, Pos pos1, Rect r2, Pos pos2) {
       if (
-            (Math.abs(pos1.x - pos2.x) < (r1.width() + r2.width()) / 2)
-            && (Math.abs(pos1.y - pos2.y) <= (r1.height() + r2.height()) / 2 )
+            (Math.abs(pos1.x - pos2.x) + TUNE_DEEP < (r1.width() + r2.width()) / 2)
+            && (Math.abs(pos1.y - pos2.y) + TUNE_DEEP < (r1.height() + r2.height()) / 2 )
             ) {
          Utils.log(TAG, "pos1=" + pos1.x + ", " + pos1.y + "   pos2=" + pos2.x + ", " + pos2.y);
+         Utils.log(TAG, "r1 rect=" + r1.width() + ", " + r1.height() + "/nr2 width = " + r2.width() + ", " + r2.height());
          return true;
       }
       return false;
@@ -314,7 +322,8 @@ public class HF2D {
       }
       Pos pos1 = new Pos(r1.left + (r1.right - r1.left) / 2, r1.top + (r1.bottom - r1.top) / 2);
       Pos pos2 = new Pos(r2.left + (r2.right - r2.left) / 2, r2.top + (r2.bottom - r2.top) / 2);
-      return checkRectCollision(r1, pos1, r2, pos2);
+//      return checkRectCollision(r1, pos1, r2, pos2);
+      return checkRoundCollision(pos1, r1.width()/2, pos2, r2.width() / 2);
    }
 
    /*

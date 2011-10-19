@@ -26,9 +26,6 @@ import com.howfun.android.antguide.utils.Utils;
 
 public class CanvasManager {
 
-   private static final int GRASS_WIDTH = 50;
-   private static final int GRASS_HEIGHT = 50;
-
    private ArrayList<Sprite> mSprites;
 
    private AntMap mMap;
@@ -263,10 +260,10 @@ public class CanvasManager {
    private void loadObstacle() {
       Resources r = mContext.getResources();
       Drawable grassDrawable = r.getDrawable(R.drawable.trap);
-      Bitmap bitmap = Bitmap.createBitmap(GRASS_WIDTH, GRASS_HEIGHT,
+      Bitmap bitmap = Bitmap.createBitmap(AntMap.OBS_W, AntMap.OBS_H,
             Bitmap.Config.ARGB_8888);
       Canvas canvas = new Canvas(bitmap);
-      grassDrawable.setBounds(0, 0, 32, 32);
+      grassDrawable.setBounds(0, 0, AntMap.OBS_W, AntMap.OBS_H);
       grassDrawable.draw(canvas);
       mObsBmp = bitmap;
       Utils.log(TAG, "loadGrass bmp = " + mObsBmp);
