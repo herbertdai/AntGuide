@@ -1,49 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent" android:background="@drawable/background"
-	>
+	android:layout_height="fill_parent" android:background="@drawable/background">
 
 	<LinearLayout android:layout_width="fill_parent"
 		android:layout_height="fill_parent" android:orientation="vertical"
-		android:gravity="center_horizontal"
-		android:paddingLeft="20dp"
-		android:paddingRight="20dp"
-		>
+		android:gravity="center_horizontal" android:paddingLeft="20dp"
+		android:paddingRight="20dp">
 		<LinearLayout android:layout_height="wrap_content"
-		android:layout_width="fill_parent">
-		<ImageView android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:background="@drawable/black_ant0"
-			 android:scaleType="fitCenter" />
-		<ImageView android:layout_width="wrap_content"
-			android:layout_height="wrap_content" android:background="@drawable/black_ant5"
-			 android:scaleType="fitCenter" />
-		
-			 </LinearLayout>
+			android:layout_width="fill_parent" android:paddingLeft="100dp">
+			<ImageView android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:background="@drawable/black_ant0"
+				android:scaleType="fitCenter" />
+
+
+		</LinearLayout>
 
 		<TextView android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:text="@string/help_txt_1" 
-			android:textSize="22sp"
-			android:textColor="#996633"
-			/>
+			android:layout_height="wrap_content" android:text="@string/help_txt_1"
+			android:textSize="22sp" android:textColor="#996633" />
 		<ImageView android:layout_width="fill_parent"
 			android:layout_height="160px" android:background="@drawable/help_map_2"
-			 android:scaleType="fitCenter" />
+			android:scaleType="fitCenter" />
 		<ImageView android:layout_width="wrap_content"
 			android:layout_height="520px" android:background="@drawable/help_map_1"
 			android:scaleType="center" />
 		<TextView android:layout_width="fill_parent"
-			android:layout_height="fill_parent" android:text="@string/help_txt_2" 
-			android:textSize="22sp"
-			android:textColor="#996633"
-			/>
+			android:layout_height="fill_parent" android:text="@string/help_txt_2"
+			android:textSize="22sp" android:textColor="#996633" />
 		<ImageView android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:background="@drawable/home" />
 		<TextView android:layout_width="fill_parent"
-			android:layout_height="fill_parent" android:text="@string/help_txt_3" 
-			android:textSize="22sp"
-			android:textColor="#996633"
-			/>
+			android:layout_height="fill_parent" android:text="@string/help_txt_3"
+			android:textSize="22sp" android:textColor="#996633" />
 		<ImageView android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:background="@drawable/trap" />
 
