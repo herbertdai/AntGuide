@@ -164,7 +164,6 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
       findViews();
       setupListeners();
       loadSoundEffects();
-      initScoreBoard();
       mSound = new Sound(this);
 
       
@@ -225,6 +224,7 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
       if (!mBackMusicOff) {
          stopService(mIntentService);
       }
+      
       super.onPause();
 
    }
@@ -336,6 +336,12 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
    }
 
    protected void goNextLv() {
+      
+      if (mScore > 0) {
+         GamePref.getInstance(this).SetScorePref(mScore); 
+         Utils.log(TAG, "write score to pref: " + mScore);
+      }
+      
       if (antView != null) {
          antView.goNextLv();
       }
@@ -361,6 +367,12 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
    }
 
    private void init() {
+      
+      mScore = GamePref.getInstance(this).getScorePref();
+      initScoreBoard();
+      
+      Utils.log(TAG, "score is " + mScore);
+      
       mIntentService = new Intent("com.howfun.android.antguide.MusicService");
       mIntentReceiver = new Intent("com.howfun.android.antguide.MusicReceiver");
 
@@ -437,7 +449,6 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
          info = R.string.app_name;
       }
       showGameInfo(why, info);
-      // TODO timing clear
       mTimeManager.stop();
 
       // if (isHighScore(mScore)) {
@@ -542,6 +553,7 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
    }
 
    private void initScoreBoard() {
+      
       int score0 = getHundred(mScore);
       int score1 = getTen(mScore);
       int score2 = getUnit(mScore);

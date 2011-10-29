@@ -10,6 +10,7 @@ public class HF2D {
    private static final int YUZHI = 6;
    private static final double SPACE = 150;
    private static final int TUNE_DEEP = 10;
+   private static final int TUNE_BOARD = 20;
 
    /*
     * Get next pos by angle and speed
@@ -278,10 +279,10 @@ public class HF2D {
     */
    public static boolean checkOutOfScreen(AntSprite ant, int screenWidth,
          int screenHeight) {
-
-      if ((ant.mPos.x < -AntSprite.ANT_WIDTH) || (ant.mPos.x > screenWidth)
+      
+      if ((ant.mPos.x < -AntSprite.ANT_WIDTH) || (ant.mPos.x > screenWidth + TUNE_BOARD)
             || (ant.mPos.y < -AntSprite.ANT_HEIGHT)
-            || (ant.mPos.y > screenHeight)) {
+            || (ant.mPos.y > screenHeight + TUNE_BOARD)) {
          return true;
       }
       return false;

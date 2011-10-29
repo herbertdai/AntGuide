@@ -16,6 +16,8 @@ public class GamePref {
 
    private static final String GAME_LEVEL_PREF = "game level pref";
 
+   private static final String GAME_SCORE_PREF = "game score pref";
+
    public GamePref() {
 
    }
@@ -31,12 +33,23 @@ public class GamePref {
       return instance;
    }
 
-   public void setLevelPref(int level) {
+   public boolean setLevelPref(int level) {
+//      if (mContext != null) {
+//         SharedPreferences sp = mContext.getSharedPreferences(PREF,
+//               Context.MODE_PRIVATE);
+//         sp.edit().putInt(GAME_LEVEL_PREF, level).commit();
+//      }
+      return setIntPref(GAME_LEVEL_PREF, level);
+   }
+   
+   public boolean setIntPref(String pref, int data) {
       if (mContext != null) {
          SharedPreferences sp = mContext.getSharedPreferences(PREF,
                Context.MODE_PRIVATE);
-         sp.edit().putInt(GAME_LEVEL_PREF, level).commit();
+         return sp.edit().putInt(pref, data).commit();
       }
+      return false;
+      
    }
    
    public int getLevelPref() {
@@ -49,7 +62,19 @@ public class GamePref {
       return level;
    }
    
+   public int getScorePref() {
+      int score = 0;
+      if (mContext != null) {
+         SharedPreferences sp = mContext.getSharedPreferences(PREF,
+               Context.MODE_PRIVATE);
+         score = sp.getInt(GAME_SCORE_PREF, 0);
+         
+      }
+      return score;
+   }
    
-   
+   public boolean SetScorePref(int score) {
+      return setIntPref(GAME_SCORE_PREF, score);
+   }
 
 }

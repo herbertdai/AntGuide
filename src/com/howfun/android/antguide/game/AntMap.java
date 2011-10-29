@@ -111,7 +111,7 @@ public class AntMap {
    private static Pos[] _pos14 = { 
       new Pos(300, 650), new Pos(350,650), new Pos(400,650), new Pos(450,650),
       new Pos(300, 700),
-      new Pos(300, 750),
+      new Pos(300, 730),
       };
    private static Pos _home15 = new Pos(200, 420);
    private static Pos[] _pos15 = { 
