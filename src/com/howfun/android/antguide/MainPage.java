@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 import com.howfun.android.antguide.utils.Utils;
+import com.sosceo.android.ads.AdView;
 
 public class MainPage extends Activity implements OnClickListener {
 
@@ -27,6 +28,7 @@ public class MainPage extends Activity implements OnClickListener {
       this.requestWindowFeature(Window.FEATURE_NO_TITLE);
       setContentView(R.layout.mainpage);
       findViews();
+      sosceo();
    }
 
    private void findViews() {
@@ -42,7 +44,13 @@ public class MainPage extends Activity implements OnClickListener {
       mAbout.setOnClickListener(this);
 
    }
-
+   
+   private void sosceo() {
+      AdView mAdView = (AdView) findViewById(R.id.ad);
+      mAdView.showAgreement();
+ 
+   }
+   
    @Override
    public void onClick(View arg0) {
       Intent intent = new Intent();

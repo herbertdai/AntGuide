@@ -50,14 +50,16 @@ public class AntMap {
    private static Pos[] _pos7 = { 
       new Pos(100, 200),  new Pos(100, 400),
       new Pos(200, 200),  new Pos(200, 400),
-      new Pos(300, 200),  new Pos(300, 400) 
+      new Pos(300, 200),  new Pos(300, 400),
+      new Pos(400, 200),  new Pos(400, 400) 
    };
    
-   private static Pos _home8 = new Pos(400, 700);
+   private static Pos _home8 = new Pos(50, 700);
    private static Pos[] _pos8 = { 
       new Pos(100, 200), new Pos(100, 300), new Pos(100, 400),
       new Pos(200, 200), new Pos(200, 300), new Pos(200, 400),
-      new Pos(300, 200), new Pos(300, 300), new Pos(300, 400) 
+      new Pos(300, 200), new Pos(300, 300), new Pos(300, 400),
+      new Pos(50, 600), new Pos(150, 600), new Pos(300, 600), new Pos(400, 600) 
    };
    
    private static Pos _home9 = new Pos(300, 700);

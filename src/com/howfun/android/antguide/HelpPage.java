@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 import com.howfun.android.antguide.utils.Utils;
+import com.sosceo.android.ads.AdView;
 
 public class HelpPage extends Activity implements OnClickListener {
 

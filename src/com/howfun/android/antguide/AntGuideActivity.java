@@ -53,6 +53,7 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
    private static final int SOUND_EFFECT_FOOD = 1;
    private static final int SOUND_EFFECT_VICTORY = 2;
    private static final int SOUND_EFFECT_LOST = 3;
+   private static final int SOUND_EFFECT_TRAPPED = 4;
 
    private static final int MAX_SCORE = 999;
 
@@ -106,7 +107,7 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
             stopGame(Utils.ANT_LOST);
             break;
          case Utils.MSG_ANT_TRAPPED:
-            playSoundEffect(SOUND_EFFECT_LOST);
+            playSoundEffect(SOUND_EFFECT_TRAPPED);
             stopGame(Utils.ANT_TRAPPED);
             break;
          case Utils.MSG_ANT_COLLISION:
@@ -349,13 +350,14 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
 
    private void loadSoundEffects() {
       mSounds = new int[] { R.raw.collision, R.raw.food, R.raw.victory,
-            R.raw.lost };
+            R.raw.lost, R.raw.trapped };
       mSoundPool = new SoundPool(mSounds.length, AudioManager.STREAM_MUSIC, 100);
       mSoundIds = new int[] {
             mSoundPool.load(this, mSounds[SOUND_EFFECT_COLLISION], 1),
             mSoundPool.load(this, mSounds[SOUND_EFFECT_FOOD], 1),
             mSoundPool.load(this, mSounds[SOUND_EFFECT_VICTORY], 1),
-            mSoundPool.load(this, mSounds[SOUND_EFFECT_LOST], 1) };
+            mSoundPool.load(this, mSounds[SOUND_EFFECT_LOST], 1), 
+            mSoundPool.load(this, mSounds[SOUND_EFFECT_TRAPPED], 1) };
    }
 
    private void playSoundEffect(int id) {

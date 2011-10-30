@@ -7,6 +7,13 @@
 		android:layout_height="fill_parent" android:orientation="vertical"
 		android:gravity="center_horizontal" android:paddingLeft="20dp"
 		android:paddingRight="20dp">
+		<com.sosceo.android.ads.AdView
+      android:id="@+id/ad" android:layout_gravity="top"
+      android:layout_width="fill_parent" android:textColor="#FFFFFF"
+      android:background="@android:color/transparent" android:layout_height="50px"
+      android:visibility="gone"
+       />
+      
 		<LinearLayout android:layout_height="wrap_content"
 			android:layout_width="fill_parent" android:paddingLeft="100dp">
 			<ImageView android:layout_width="wrap_content"
