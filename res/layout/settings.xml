@@ -7,7 +7,7 @@
       android:id="@+id/ad" android:layout_gravity="top"
       android:layout_width="fill_parent" android:textColor="#FFFFFF"
       android:background="@android:color/transparent" android:layout_height="50px"
-      android:visibility="gone"
+      
        />
 	<LinearLayout android:orientation="vertical"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"

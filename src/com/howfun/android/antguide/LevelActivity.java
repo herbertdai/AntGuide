@@ -63,6 +63,8 @@ public class LevelActivity extends Activity {
 
          }
       });
+      
+      Utils.setAD(this);
 
    }
    

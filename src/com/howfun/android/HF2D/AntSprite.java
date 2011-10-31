@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 
+import com.howfun.android.antguide.GamePref;
 import com.howfun.android.antguide.R;
 import com.howfun.android.antguide.utils.Utils;
 
@@ -42,7 +43,9 @@ public class AntSprite extends Sprite {
       mPaint.setColor(Color.RED);
 
       mAngle = 30;
-      mSpeed = 2;
+      
+      mSpeed = GamePref.getInstance(mContext).getSpeedRef();
+      Utils.log(TAG, "Ant speed = " + mSpeed);
 
       mRect = new Rect();
 
@@ -201,7 +204,9 @@ public class AntSprite extends Sprite {
 
    public void reset() {
       mAngle = 30;
-      mSpeed = 2;
+      mSpeed = GamePref.getInstance(mContext).getSpeedRef();
+      Utils.log(TAG, "Ant speed = " + mSpeed);
+      
       mPos = new Pos(0, 0);
       if (mRect == null) {
          mRect = new Rect(0,0,10,10);

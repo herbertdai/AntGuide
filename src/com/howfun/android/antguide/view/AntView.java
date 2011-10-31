@@ -6,9 +6,11 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
 import com.howfun.android.HF2D.Pos;
 import com.howfun.android.antguide.GamePref;
+import com.howfun.android.antguide.R;
 import com.howfun.android.antguide.game.AntMap;
 import com.howfun.android.antguide.game.CanvasManager;
 import com.howfun.android.antguide.game.GameStatus;
@@ -262,6 +264,13 @@ public class AntView extends SurfaceView implements SurfaceHolder.Callback {
       if (mLevel > passedLevel) {
          Utils.log(TAG, "set new passed level = " + mLevel);
          GamePref.getInstance(mContext).setLevelPref(mLevel);
+      }
+      
+      if (mLevel == mMap.getMapCount() - 1) {
+         int speed = GamePref.getInstance(mContext).getSpeedRef();
+         speed ++;
+         GamePref.getInstance(mContext).SetSpeedPref(speed);
+         Toast.makeText(mContext, R.string.new_round, Toast.LENGTH_LONG).show();
       }
      
       Utils.log(TAG, "current level = " + mLevel);

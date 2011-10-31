@@ -3,6 +3,8 @@
  */
 package com.howfun.android.antguide;
 
+import com.howfun.android.antguide.utils.Utils;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -17,6 +19,10 @@ public class GamePref {
    private static final String GAME_LEVEL_PREF = "game level pref";
 
    private static final String GAME_SCORE_PREF = "game score pref";
+   
+   private static final String GAME_SPEED_PREF = "game speed pref";
+
+   private static final String TAG = "GamePref";
 
    public GamePref() {
 
@@ -77,4 +83,19 @@ public class GamePref {
       return setIntPref(GAME_SCORE_PREF, score);
    }
 
+   public int getSpeedRef() {
+      int speed = 2;
+      if (mContext != null) {
+         SharedPreferences sp = mContext.getSharedPreferences(PREF,
+               Context.MODE_PRIVATE);
+         speed = sp.getInt(GAME_SPEED_PREF, 2);
+         
+      }
+      return speed;
+   }
+   
+   public boolean SetSpeedPref(int speed) {
+      Utils.log(TAG, "set ant speed to " + speed);
+      return setIntPref(GAME_SPEED_PREF, speed);
+   }
 }

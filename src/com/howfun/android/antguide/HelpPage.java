@@ -29,6 +29,7 @@ public class HelpPage extends Activity implements OnClickListener {
 //		mStart = (ImageView) findViewById(R.id.helppage_start);
 //		mStart.setOnClickListener(this);
 
+      Utils.setAD(this);
 	}
 
 	@Override

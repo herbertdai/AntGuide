@@ -7,7 +7,7 @@
       android:id="@+id/ad" android:layout_gravity="top"
       android:layout_width="fill_parent" android:textColor="#FFFFFF"
       android:background="@android:color/transparent" android:layout_height="50px" 
-      android:visibility="gone"
+      
       />
       
 	<Gallery android:id="@+id/level_select_gallery" android:layout_width="fill_parent"

@@ -1,9 +1,11 @@
 package com.howfun.android.antguide.utils;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.view.View;
 
 import com.howfun.android.antguide.AntGuideApplication;
 import com.howfun.android.antguide.R;
@@ -11,6 +13,8 @@ import com.howfun.android.antguide.R;
 public final class Utils {
 
    private static final String TAG = "Ant Guide";
+   
+   public static final boolean AD_VER = true;
 
    public static final String PREF_SETTINGS = "settings";
    public static final String PREF_SETTINGS_BACK_MUSIC_OFF = "back_musci_off";
@@ -66,6 +70,14 @@ public final class Utils {
          bitmap.recycle();
          bitmap = null;
       }
+   }
+
+   public static void setAD(Activity a) {
+      if (!Utils.AD_VER) {
+         View ad = (View) a.findViewById(R.id.ad);
+         ad.setVisibility(View.GONE);
+      }
+      
    }
 
 }

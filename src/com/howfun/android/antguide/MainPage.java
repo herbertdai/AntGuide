@@ -28,7 +28,10 @@ public class MainPage extends Activity implements OnClickListener {
       this.requestWindowFeature(Window.FEATURE_NO_TITLE);
       setContentView(R.layout.mainpage);
       findViews();
-      sosceo();
+      
+      if (Utils.AD_VER) {
+         sosceo();
+      }
    }
 
    private void findViews() {
@@ -42,6 +45,8 @@ public class MainPage extends Activity implements OnClickListener {
       mSettings.setOnClickListener(this);
       mAbout= (ImageView)findViewById(R.id.mainpage_about);
       mAbout.setOnClickListener(this);
+      
+      Utils.setAD(this);
 
    }
    

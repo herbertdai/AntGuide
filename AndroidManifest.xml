@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.howfun.android.antguide" android:versionCode="1"
-	android:versionName="1.0.0">
+	android:versionName="1.0.2">
 	<application android:icon="@drawable/icon" android:label="@string/app_name"
 		android:debuggable="true">
 
@@ -53,7 +53,7 @@
 			</intent-filter>
 		</receiver>
 		
-		<meta-data android:value="h79i6dnl"
+		<meta-data android:value="xtjdqxz2"
          android:name="com.sosceo.android.ads.SOSCEO_APP_ID" />
 
 	</application>
