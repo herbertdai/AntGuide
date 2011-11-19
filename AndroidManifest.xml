@@ -53,7 +53,8 @@
 			</intent-filter>
 		</receiver>
 		
-		<meta-data android:value="xtjdqxz2"
+<!--		<meta-data android:value="xtjdqxz2"-->
+		<meta-data android:value="zerh6ze4"
          android:name="com.sosceo.android.ads.SOSCEO_APP_ID" />
 
 	</application>

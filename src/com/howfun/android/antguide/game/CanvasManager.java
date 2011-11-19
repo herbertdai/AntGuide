@@ -270,13 +270,18 @@ public class CanvasManager {
    }
 
    private void loadBackground() {
+      int[] bgIds = {R.drawable.background0, R.drawable.background1,
+            R.drawable.background2, R.drawable.background3, R.drawable.background};
+      
       int width = AntGuideActivity.DEVICE_WIDTH;
       int height = AntGuideActivity.DEVICE_HEIGHT;
 
       Resources r = mContext.getResources();
-      Drawable holeDrawable = r.getDrawable(R.drawable.background);
+      
+      int randomBg = (int)(Math.random() * bgIds.length);
+      Drawable holeDrawable = r.getDrawable(bgIds[randomBg]);
       Bitmap bitmap = Bitmap.createBitmap(width, height,
-            Bitmap.Config.ARGB_8888);
+            Bitmap.Config.RGB_565);
       Canvas canvas = new Canvas(bitmap);
       holeDrawable.setBounds(0, 0, width, height);
       holeDrawable.draw(canvas);
