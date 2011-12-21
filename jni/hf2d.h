@@ -17,11 +17,11 @@ JNIEXPORT jstring JNICALL Java_com_howfun_android_antguide_hf2djni_hf2d_stringFr
 
 /*
  * Class:     com_howfun_android_antguide_hf2djni_hf2d
- * Method:    test
- * Signature: (Lcom/howfun/android/HF2D/AntSprite;)Ljava/lang/String;
+ * Method:    accessField
+ * Signature: ()Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_com_howfun_android_antguide_hf2djni_hf2d_test
-  (JNIEnv *, jobject, jobject);
+JNIEXPORT jstring JNICALL Java_com_howfun_android_antguide_hf2djni_hf2d_accessField
+  (JNIEnv *, jobject);
 
 #ifdef __cplusplus
 }

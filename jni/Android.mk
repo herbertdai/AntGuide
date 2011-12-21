@@ -18,5 +18,5 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE    := hf2d 
 LOCAL_SRC_FILES := hf2d.c
-
+LOCAL_LDLIBS := -llog # 如果不包含这一句，会提示：__android_log_print 未定义
 include $(BUILD_SHARED_LIBRARY)
