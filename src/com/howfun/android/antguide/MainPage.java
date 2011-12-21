@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
+import com.howfun.android.antguide.hf2djni.hf2d;
 import com.howfun.android.antguide.utils.Utils;
 import com.sosceo.android.ads.AdView;
 
@@ -66,7 +67,9 @@ public class MainPage extends Activity implements OnClickListener {
          startActivity(intent);
          break;
       case R.id.mainpage_help:
-         intent.setClass(MainPage.this, HelpPage.class);
+//         intent.setClass(MainPage.this, HelpPage.class);
+         //test
+         intent.setClass(MainPage.this, hf2d.class);
          startActivity(intent);
          break;
          

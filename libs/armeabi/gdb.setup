@@ -1,0 +1,3 @@
+set solib-search-path /home/herbert/workspace/AntGuide/obj/local/armeabi
+directory /home/herbert/Project/android/ndk/android-ndk-r4b/build/platforms/android-5/arch-arm/usr/include
+directory /home/herbert/workspace/AntGuide/jni
