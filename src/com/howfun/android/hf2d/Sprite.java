@@ -1,6 +1,6 @@
-package com.howfun.android.HF2D;
+package com.howfun.android.hf2d;
 
-import com.howfun.android.HF2D.Pos;
+import com.howfun.android.hf2d.Pos;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

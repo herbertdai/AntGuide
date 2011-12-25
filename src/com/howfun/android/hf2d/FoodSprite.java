@@ -1,4 +1,4 @@
-package com.howfun.android.HF2D;
+package com.howfun.android.hf2d;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -27,7 +27,7 @@ public class FoodSprite extends Sprite {
       mContext = context;
       mPos = pos;
       mRect = new Rect();
-      HF2D.calRectByPos(mRect, mPos, FOOD_W, FOOD_H);
+      Hf2djava.calRectByPos(mRect, mPos, FOOD_W, FOOD_H);
       
       loadFood();
       mPaint = new Paint();
@@ -72,7 +72,7 @@ public class FoodSprite extends Sprite {
    }
 
    public void setNewPos() {
-      mPos = HF2D.getNewPos(FOOD_RANGE_X, FOOD_RANGE_Y);
-      HF2D.calRectByPos(mRect, mPos, FOOD_W, FOOD_H);
+      mPos = Hf2djava.getNewPos(FOOD_RANGE_X, FOOD_RANGE_Y);
+      Hf2djava.calRectByPos(mRect, mPos, FOOD_W, FOOD_H);
    }
 }

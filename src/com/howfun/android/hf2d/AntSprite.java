@@ -1,4 +1,4 @@
-package com.howfun.android.HF2D;
+package com.howfun.android.hf2d;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -81,8 +81,8 @@ public class AntSprite extends Sprite {
 
    @Override
    protected Pos getNextPos() {
-      HF2D.getNextPos(mPos, mSpeed, mAngle);
-      HF2D.calRectByPos(mRect, mPos, ANT_WIDTH, ANT_HEIGHT);
+      Hf2djava.getNextPos(mPos, mSpeed, mAngle);
+      Hf2djava.calRectByPos(mRect, mPos, ANT_WIDTH, ANT_HEIGHT);
       return mPos;
    }
 

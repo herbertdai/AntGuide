@@ -26,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.howfun.android.HF2D.Pos;
 import com.howfun.android.antguide.entity.Score;
 import com.howfun.android.antguide.game.GameStatus;
 import com.howfun.android.antguide.game.Sound;
@@ -34,6 +33,7 @@ import com.howfun.android.antguide.game.TimeManager;
 import com.howfun.android.antguide.utils.DBAdapter;
 import com.howfun.android.antguide.utils.Utils;
 import com.howfun.android.antguide.view.AntView;
+import com.howfun.android.hf2d.Pos;
 
 public class AntGuideActivity extends Activity implements OnTouchListener {
 

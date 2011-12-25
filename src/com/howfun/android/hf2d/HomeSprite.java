@@ -1,4 +1,4 @@
-package com.howfun.android.HF2D;
+package com.howfun.android.hf2d;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -24,7 +24,7 @@ public class HomeSprite extends Sprite {
       mContext = context;
       mPos = pos;
       mRect = new Rect();
-      HF2D.calRectByPos(mRect, mPos, HOME_W, HOME_H);
+      Hf2djava.calRectByPos(mRect, mPos, HOME_W, HOME_H);
 
       loadHole();
       mPaint = new Paint();
@@ -33,7 +33,7 @@ public class HomeSprite extends Sprite {
    
    public void setPos(Pos pos) {
       mPos = pos;
-      HF2D.calRectByPos(mRect, mPos, HOME_W, HOME_H);
+      Hf2djava.calRectByPos(mRect, mPos, HOME_W, HOME_H);
    }
 
    @Override

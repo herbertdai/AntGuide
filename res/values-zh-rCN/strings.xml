@@ -18,4 +18,13 @@
 	<string name="help_txt_2">在屏幕上划线，指引小蚂蚁回家:</string>
 	<string name="help_txt_3">它会按规律调转方向的,可是如果在它身上划过时，路线是随机的。注意绕开路上的陷阱哦！</string>
 	<string name="new_round">恭喜您通关了，蚂蚁将提速！</string>
+    <string name="version">V1.0.2</string>
+
+   <string name="clear">Clear</string>
+   <string name="help">Welcome to Ant guide, Click to play! (Find
+      more in menu...)</string>
+   <string name="record_play_error_text"> Audio playback failed </string>
+   
+   <string name="start">Start</string>
+   <string name="hiscore">High Score</string>
 </resources>

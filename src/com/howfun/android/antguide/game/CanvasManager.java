@@ -13,18 +13,21 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 
-import com.howfun.android.HF2D.AntSprite;
-import com.howfun.android.HF2D.FoodSprite;
-import com.howfun.android.HF2D.HF2D;
-import com.howfun.android.HF2D.HomeSprite;
-import com.howfun.android.HF2D.LineSprite;
-import com.howfun.android.HF2D.Pos;
-import com.howfun.android.HF2D.Sprite;
 import com.howfun.android.antguide.AntGuideActivity;
 import com.howfun.android.antguide.R;
+import com.howfun.android.antguide.hf2djni.hf2d;
 import com.howfun.android.antguide.utils.Utils;
+import com.howfun.android.hf2d.AntSprite;
+import com.howfun.android.hf2d.FoodSprite;
+import com.howfun.android.hf2d.Hf2djava;
+import com.howfun.android.hf2d.HomeSprite;
+import com.howfun.android.hf2d.LineSprite;
+import com.howfun.android.hf2d.Pos;
+import com.howfun.android.hf2d.Sprite;
 
 public class CanvasManager {
+    
+   private boolean USE_JNI = true;
 
    private ArrayList<Sprite> mSprites;
 
@@ -110,7 +113,7 @@ public class CanvasManager {
          mSprites.add(mHome);
       }
 
-      Pos foodPos = HF2D.getNewPos(AntGuideActivity.DEVICE_WIDTH,
+      Pos foodPos = Hf2djava.getNewPos(AntGuideActivity.DEVICE_WIDTH,
             AntGuideActivity.DEVICE_HEIGHT);
       if (mFood == null) {
          mFood = new FoodSprite(mContext, foodPos);
@@ -155,7 +158,7 @@ public class CanvasManager {
             Rect obsRect = new Rect((int) pos.x, (int) pos.y, (int) pos.x
                   + obsW, (int) pos.y + obsH);
 
-            if (HF2D.checkRectCollision(obsRect, mAnt.getRect())) {
+            if (Hf2djava.checkRectCollision(obsRect, mAnt.getRect())) {
                if (mHandler != null) {
                   mHandler.sendMessage(mHandler
                         .obtainMessage(Utils.MSG_ANT_TRAPPED));
@@ -171,8 +174,15 @@ public class CanvasManager {
 
       boolean isCollide = false;
 
+      if (mAnt.checkIsCoolDown()) {
+         return;
+      }
       if (mAnt != null && mLine != null) {
-         isCollide = HF2D.checkRectAndLineCollision_mirror(mAnt, mLine);
+         if (USE_JNI) {
+            isCollide = hf2d.checkRectAndLineCollisionMirror(mAnt, mLine);
+         } else {
+            isCollide = Hf2djava.checkRectAndLineCollision_mirror(mAnt, mLine);
+         }
       }
 
       if (isCollide) {
@@ -180,12 +190,13 @@ public class CanvasManager {
             mHandler.sendMessage(mHandler
                   .obtainMessage(Utils.MSG_ANT_COLLISION));
          }
+         mAnt.startCoolDown();
       }
 
    }
 
    private void checkHome() {
-      if (HF2D.checkCollsion(mAnt, mHome)) {
+      if (Hf2djava.checkCollsion(mAnt, mHome)) {
          antHome();
       }
 
@@ -193,7 +204,7 @@ public class CanvasManager {
 
    private void checkFoods() {
       if (mFood != null) {
-         if (HF2D.checkCollsion(mAnt, mFood)) {
+         if (Hf2djava.checkCollsion(mAnt, mFood)) {
             Utils.log(TAG, "Eat food!!!");
             mFood.setNewPos();
             mHandler.sendMessage(mHandler.obtainMessage(Utils.MSG_ANT_FOOD));
@@ -204,7 +215,7 @@ public class CanvasManager {
    }
 
    private void checkOutOfScreen() {
-      if (HF2D.checkOutOfScreen(mAnt, AntGuideActivity.DEVICE_WIDTH,
+      if (Hf2djava.checkOutOfScreen(mAnt, AntGuideActivity.DEVICE_WIDTH,
             AntGuideActivity.DEVICE_HEIGHT)) {
          antLost();
       }

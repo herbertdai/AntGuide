@@ -1,10 +1,10 @@
-package com.howfun.android.HF2D;
+package com.howfun.android.hf2d;
 
 import android.graphics.Rect;
 
 import com.howfun.android.antguide.utils.Utils;
 
-public class HF2D {
+public class Hf2djava {
 
    private static final String TAG = "HF2D";
    private static final int YUZHI = 6;
@@ -172,10 +172,6 @@ public class HF2D {
     */
    public static boolean checkRectAndLineCollision_mirror(AntSprite ant, LineSprite line) {
       
-      if (ant.checkIsCoolDown()) {
-         return false;
-      }
-
       if (ant == null || line == null) {
          Utils.log(TAG, "ant or line is null in checkCollision()");
          return false;
@@ -267,9 +263,6 @@ public class HF2D {
          }
       }
 
-      if (isCollision) {
-         ant.startCoolDown();
-      }
       return isCollision;
    }
 

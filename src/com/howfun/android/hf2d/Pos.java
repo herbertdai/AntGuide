@@ -1,4 +1,4 @@
-package com.howfun.android.HF2D;
+package com.howfun.android.hf2d;
 
 public class Pos {
    

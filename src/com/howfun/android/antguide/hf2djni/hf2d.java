@@ -1,6 +1,7 @@
 package com.howfun.android.antguide.hf2djni;
 
-import com.howfun.android.HF2D.AntSprite;
+import com.howfun.android.hf2d.AntSprite;
+import com.howfun.android.hf2d.LineSprite;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -27,8 +28,13 @@ public class hf2d extends Activity{
       setContentView(tv);
    }
    
-   public native String stringFromJNI() ;
+   public native String stringFromJNI();
    public native String accessField();
+   /*
+    * Check collision of rect and line if collision, then set a mirror angle 
+    * @return true collision
+    */
+   public native static boolean checkRectAndLineCollisionMirror(AntSprite ant, LineSprite line);
 
    static {
       System.loadLibrary("hf2d");

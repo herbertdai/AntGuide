@@ -8,7 +8,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Toast;
 
-import com.howfun.android.HF2D.Pos;
 import com.howfun.android.antguide.GamePref;
 import com.howfun.android.antguide.R;
 import com.howfun.android.antguide.game.AntMap;
@@ -16,6 +15,7 @@ import com.howfun.android.antguide.game.CanvasManager;
 import com.howfun.android.antguide.game.GameStatus;
 import com.howfun.android.antguide.game.UpdateThread;
 import com.howfun.android.antguide.utils.Utils;
+import com.howfun.android.hf2d.Pos;
 
 public class AntView extends SurfaceView implements SurfaceHolder.Callback {
 

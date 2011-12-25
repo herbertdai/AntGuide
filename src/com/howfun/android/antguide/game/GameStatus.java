@@ -1,6 +1,6 @@
 package com.howfun.android.antguide.game;
 
-import com.howfun.android.HF2D.Pos;
+import com.howfun.android.hf2d.Pos;
 
 public class GameStatus {
    private int mStatus;
