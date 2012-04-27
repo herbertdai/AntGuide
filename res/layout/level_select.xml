@@ -3,13 +3,6 @@
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent" android:gravity="center_horizontal"
 	android:background="@drawable/background">
-   <com.sosceo.android.ads.AdView
-      android:id="@+id/ad" android:layout_gravity="top"
-      android:layout_width="fill_parent" android:textColor="#FFFFFF"
-      android:background="@android:color/transparent" android:layout_height="50px" 
-      
-      />
-      
 	<Gallery android:id="@+id/level_select_gallery" android:layout_width="fill_parent"
 		android:layout_height="fill_parent" />
 </FrameLayout>

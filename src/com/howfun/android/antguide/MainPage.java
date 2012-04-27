@@ -12,7 +12,7 @@ import android.widget.ImageView;
 
 import com.howfun.android.antguide.hf2djni.hf2d;
 import com.howfun.android.antguide.utils.Utils;
-import com.sosceo.android.ads.AdView;
+//import com.sosceo.android.ads.AdView;
 
 public class MainPage extends Activity implements OnClickListener {
 
@@ -31,7 +31,7 @@ public class MainPage extends Activity implements OnClickListener {
       findViews();
       
       if (Utils.AD_VER) {
-         sosceo();
+         //sosceo();
       }
    }
 
@@ -51,11 +51,11 @@ public class MainPage extends Activity implements OnClickListener {
 
    }
    
-   private void sosceo() {
+/*   private void sosceo() {
       AdView mAdView = (AdView) findViewById(R.id.ad);
       mAdView.showAgreement();
  
-   }
+   }*/
    
    @Override
    public void onClick(View arg0) {
