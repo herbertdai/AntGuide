@@ -10,3 +10,7 @@ default.properties
 .settings/
 AntGuide.iml
 out/
+
+oozic-release-key.keystore
+ship.sh
+ship.sh~

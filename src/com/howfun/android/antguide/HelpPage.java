@@ -10,7 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 import com.howfun.android.antguide.utils.Utils;
-//import com.sosceo.android.ads.AdView;
+
 
 public class HelpPage extends Activity implements OnClickListener {
 
@@ -26,10 +26,6 @@ public class HelpPage extends Activity implements OnClickListener {
 	}
 
 	private void findViews() {
-//		mStart = (ImageView) findViewById(R.id.helppage_start);
-//		mStart.setOnClickListener(this);
-
-      Utils.setAD(this);
 	}
 
 	@Override

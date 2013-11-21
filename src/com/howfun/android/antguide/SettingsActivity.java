@@ -57,7 +57,6 @@ public class SettingsActivity extends Activity {
          }
       });
 
-      Utils.setAD(this);
    }
 
    private boolean isBackMusicOff() {

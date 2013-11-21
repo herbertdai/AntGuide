@@ -72,12 +72,4 @@ public final class Utils {
       }
    }
 
-   public static void setAD(Activity a) {
-      if (!Utils.AD_VER) {
-         View ad = (View) a.findViewById(R.id.ad);
-         ad.setVisibility(View.GONE);
-      }
-      
-   }
-
 }

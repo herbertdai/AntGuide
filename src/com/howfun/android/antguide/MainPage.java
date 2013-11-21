@@ -47,15 +47,7 @@ public class MainPage extends Activity implements OnClickListener {
       mAbout= (ImageView)findViewById(R.id.mainpage_about);
       mAbout.setOnClickListener(this);
       
-      Utils.setAD(this);
-
    }
-   
-/*   private void sosceo() {
-      AdView mAdView = (AdView) findViewById(R.id.ad);
-      mAdView.showAgreement();
- 
-   }*/
    
    @Override
    public void onClick(View arg0) {
@@ -67,9 +59,9 @@ public class MainPage extends Activity implements OnClickListener {
          startActivity(intent);
          break;
       case R.id.mainpage_help:
-//         intent.setClass(MainPage.this, HelpPage.class);
-         //test
-         intent.setClass(MainPage.this, hf2d.class);
+         intent.setClass(MainPage.this, HelpPage.class);
+
+//         intent.setClass(MainPage.this, hf2d.class);//test
          startActivity(intent);
          break;
          
