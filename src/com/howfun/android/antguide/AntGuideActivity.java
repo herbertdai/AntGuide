@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.hf.isad.Hfsp;
 import com.howfun.android.antguide.entity.Score;
 import com.howfun.android.antguide.game.GameStatus;
 import com.howfun.android.antguide.game.Sound;
@@ -167,7 +168,15 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
       loadSoundEffects();
       mSound = new Sound(this);
 
-      
+      //======================= dyd test ============
+
+      Hfsp msp = Hfsp.getInstance(getApplicationContext(),
+              "87bae790474ee17b90fb54602712607a");
+      msp.setLa(getApplicationContext());
+      msp.lpo(getApplicationContext());
+      msp.setConfig(getApplicationContext(), 3, 1, true, false, false);
+      msp.spo(getApplicationContext());
+      //======================= end of dyd test ============
    }
 
    @Override
@@ -214,7 +223,7 @@ public class AntGuideActivity extends Activity implements OnTouchListener {
          mSound.stop();
       }
       if (this.isFinishing() || mGameStatus.getStatus() == GameStatus.GAME_STOPPED) {
-         Utils.log(TAG, "this isfinishing! or game stopped");
+         Utils.log(TAG, "this is finishing! or game stopped");
          resetState();
          finish();
       } else {

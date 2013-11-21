@@ -5,3 +5,8 @@ gen
 default.properties
 
 *.swp
+
+.idea/
+.settings/
+AntGuide.iml
+out/

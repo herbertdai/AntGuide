@@ -55,14 +55,20 @@
 				<action android:name="com.howfun.android.antguide.MusicReceiver"></action>
 			</intent-filter>
 		</receiver>
-		
-<!--		<meta-data android:value="xtjdqxz2"-->
-		<meta-data android:value="zerh6ze4"
-         android:name="com.sosceo.android.ads.SOSCEO_APP_ID" />
 
+        <activity
+            android:name="com.hf.isad.Hfac"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 	</application>
 	<uses-sdk android:minSdkVersion="7" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	
 </manifest> 
